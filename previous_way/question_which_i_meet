@@ -1,0 +1,116 @@
+TypeError: Expected bool for argument 'transpose_a' not <tf.Variable 'Variable_4:0' shape=(10, 32) dtype=float32_ref>.
+
+
+AttributeError: 'str' object has no attribute 'queue_ref'  少了file_queue = tf.train.string_input_producer([filename],num_epochs=num_epochs)
+
+
+定义feature Column TensorFlow 使用 FeatureColumn 来表示数据集中的一个的特征，我们需要根据特征类型（连续或者分类）把原来的特征都转换成 FeatureColumn。此处数据已经都是连续数值了，所以直接使用 tf.contrib.layers.real_valued_column() 来转换成 FeatureColumn，如果是分类变量，则需要使用 tf.contrib.layers.sparse_column_with_keys() 或者 tf.contrib.layers.sparse_column_with_hash_bucket()。
+
+tensorflow.python.training.basic_session_run_hooks.NanLossDuringTrainingError: NaN loss during training.
+这个需要将表数据里面的空数据去掉，处理方式是：data = data.dropna(axis=0)
+
+
+但是在使用梯度下降优化算法的时候：
+使用了上面的把NaN去除之后还是会出现：tensorflow.python.training.basic_session_run_hooks.NanLossDuringTrainingError: NaN loss during training.
+
+
+当我在将原来的模型的优化方法去掉之后出现了：NotFoundError (see above for traceback): Key linear/linear_model/bias_weights/Ftrl not found in checkpoint
+	 [[Node: save/RestoreV2 = RestoreV2[dtypes=[DT_INT64, DT_FLOAT, DT_FLOAT, DT_FLOAT, DT_FLOAT, DT_FLOAT, DT_FLOAT], _device="/job:localhost/replica:0/task:0/device:CPU:0"](_arg_save/Const_0_0, save/RestoreV2/tensor_names, save/RestoreV2/shape_and_slices)]]
+
+个人感觉是由于estimator在训练的时候也会去查找模型保存目录下以前训练的模型在之前的基础上再进行训练，如果你之后改变模型他可能会出现上面的错误；
+
+ev: {'average_loss': 14039.319, 'loss': 1797032.9, 'global_step': 400} 可以看出他是再之前的模型上进行的模型上进行训练或者是测试的；
+
+
+tf.logging.set_verbosity(tf.logging.INFO) #答应出日志记录观察到一条：INFO:tensorflow:Restoring parameters from ./models/dnnlregressor\model.ckpt-400
+说明他是在之前的模型之上进行学习的；
+
+ValueError: Passed header names mismatches usecols:取出数据的列和name命名个数不匹配；
+
+FailedPreconditionError (see above for traceback): Table not initialized.
+	 [[Node: hash_table_Lookup = LookupTableFindV2[Tin=DT_STRING, Tout=DT_INT64, _device="/job:localhost/replica:0/task:0/device:CPU:0"](tradeTypeName_lookup/hash_table, to_sparse_input/values, tradeTypeName_lookup/hash_table/Const)]]
+ 解决办法：session.run(tf.tables_initializer())
+
+
+
+ValueError: Fetch argument 'tradeTypeName' cannot be interpreted as a Tensor. ("The name 'tradeTypeName' refers to an Operation not in the graph.")
+
+
+ValueError: Feature tradeTypeName is not in features dictionary.
+
+TypeError: 'numpy.ndarray' object is not callable
+
+ValueError: Column dtype and SparseTensors dtype must be compatible. key: tradeTypeName, column dtype: <dtype: 'string'>, tensor dtype: <dtype: 'int64'>
+
+
+https://blog.csdn.net/heyc861221/article/details/80131369  关于wide-deep模型的介绍；
+
+
+误差的处理方式：print("误差：",sum(abs(predictions - testing_label))/len(testing_label))
+
+数据的处理方式：
+#用Sigmoid函数实现离散值归一化
+#用Sigmoid函数实现离散值归一化
+# data['buildingTypeId'] = 1.0 / (1 + np.exp(-data['buildingTypeId']))
+# data['tradeTypeId'] = 1.0 / (1 + np.exp(-data['tradeTypeId']))
+
+#Min-Max Normalization
+data['price'] = abs((data['price']-np.min(data['price']))/(np.max(data['price'])-np.min(data['price'])))
+data['expectedDealPrice'] = abs((data['expectedDealPrice']-np.min(data['expectedDealPrice']))
+                                /(np.max(data['expectedDealPrice'])-np.min(data['expectedDealPrice'])))
+
+
+对原始数据的处理：
+data = house_data.dropna()
+data = data.drop(['province'],1)
+data = data.drop(['city'],1)
+data = data.drop(['address'],1)
+data = data.drop(['postalCode'],1)
+data = data.drop(['buildingTypeName'],1)
+data = data.drop(['tradeTypeName'],1)
+data = data.drop(['listingDate'],1)
+data = data.drop(['delislingDate'],1)
+
+data=data[data['longitude'] < 0]
+data=data[data['longitude'] > -134.485]
+data=data[data['latitude'] < 57.9533]
+data=data[data['latitude'] > 35.9605]
+data=data[data['price'] <= 1205540]
+data=data[data['expectedDealPrice'] <= 1194230]
+data=data[data['daysOnMarket'] <= 133]
+
+
+ValueError: Passed header names mismatches usecols   :这是由于再读入数据的时候没有对应好；或者是有一楼的column
+
+
+ValueError: Feature age is not in features dictionary.
+
+ValueError: Column dtype and SparseTensors dtype must be compatible. key: buildingTypeId, column dtype: <dtype: 'string'>, tensor dtype: <dtype: 'int64'>
+需要解决默认值的错误，
+解决方法，可以再取入数据的时候指定默认值；用dscode方法
+
+
+
+遇到一个无限输出问题：这是由于 模型中有一个参数是：num_epochs=None, 如果值为None则会无限循环读数；应该设置为1，再测试或者是预测的时候；
+
+
+
+
+ValueError: sequence too large; cannot be greater than 32，ndarray不能过大；
+
+对于pandas 数据类型的转换可以使用astype进行强制转换；
+
+注意pandas series.values的类型是np.array类型的数；
+
+相比较而言，pandas对数据的处理更好一些，但是，numpy对矩阵的支持更好一些；各有优缺点，
+
+
+ValueError: Column dtype and SparseTensors dtype must be compatible. key: year, column dtype: <dtype: 'int32'>, tensor dtype: <dtype: 'float32'>
+这是由于categorical_columnlist必须是str类型的，所以需要改为‘2017’，‘2018’
+
+对于输入时这种错误，input_tensormust be string or integer，这是需要再numpy.array后面加上astype（‘str')即可
+
+
+其实可以这样理解，buketized_column，和categorical_column_with_identity其实对数字的分桶，
+而categorial_column_with_vocabulary_list 和hash_bucket是进行的类别分桶；
+

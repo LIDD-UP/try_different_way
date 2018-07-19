@@ -1,0 +1,71 @@
+1:在dnncolumn中去掉numericcolumn之后误差变大了，只有embedding 和indicite 的时候
+1:当 dnncolumn只有 longitude 和latitude 的时候，误差是30；
+2：只剩一个buckitedprice 是31；
+3：dnn少了buckitedprice 的时候变成45；
+
+
+------------------------------------------------------>>>>>>>>>>>>>>>>>>>>>
+base_columns = [
+    price_bucket,  tradeTypeId, province, city, address, buildingTypeId, year_categorical,
+    month_bucket, day_bucket, longitude_bucket, latitude_bucket
+]
+
+crossed_columns = [tf.feature_column.crossed_column(
+    ['province', 'city', 'address'], hash_bucket_size=1000
+),
+
+    tf.feature_column.crossed_column(
+        [longitude_bucket, latitude_bucket], 1000
+    )
+]
+
+deep_columns = [
+    # price,
+    latitude,
+    longitude,
+
+    # embedding将高纬的稀疏tensor转化成低维的tensor
+    tf.feature_column.embedding_column(province, 8),
+    tf.feature_column.embedding_column(city, 8),
+    tf.feature_column.embedding_column(address, 8),
+    tf.feature_column.embedding_column(buildingTypeId, 8),
+    tf.feature_column.embedding_column(price_bucket, 8),
+
+    tf.feature_column.indicator_column(tradeTypeId),
+    tf.feature_column.indicator_column(year_categorical),
+
+    # tf.feature_column.indicator_column(province),
+    # tf.feature_column.indicator_column(city),
+    # tf.feature_column.indicator_column(address),
+    # tf.feature_column.indicator_column(buildingTypeId)
+]
+最低29.几；49，45
+--------------------------------------------------------------->>>>>>>>>>>>
+deep_columns = [
+    # longitude,
+    # latitude,
+    # price,
+    # month,
+    # day,
+    price_bucket,
+    # month_bucket,
+    # day_bucket,
+    # longitude_bucket,
+    # latitude_bucket,
+    # embedding将高纬的稀疏tensor转化成低维的tensor
+    # tf.feature_column.embedding_column(province, 8),
+    # tf.feature_column.embedding_column(city, 8),
+    # tf.feature_column.embedding_column(address, 8),
+    # tf.feature_column.embedding_column(buildingTypeId, 8),
+
+    # tf.feature_column.indicator_column(province),
+    # tf.feature_column.indicator_column(city),
+    # tf.feature_column.indicator_column(address),
+    # tf.feature_column.indicator_column(buildingTypeId),
+
+    # tf.feature_column.indicator_column(price_bucket),
+
+    # tf.feature_column.indicator_column(tradeTypeId),
+]
+31：
+
