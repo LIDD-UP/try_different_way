@@ -9,6 +9,9 @@ import pandas as pd
 import os
 import numpy as np
 from sklearn.metrics import mean_absolute_error
+import os
+import sys
+model_save_file = os.path.basename(sys.argv[0]).split(".")[0]
 
 
 tf.logging.set_verbosity(tf.logging.INFO)
@@ -91,7 +94,7 @@ deep_columns = [
 ]
 
 estimator_model = tf.estimator.DNNRegressor(
-    model_dir='./five/predict_model',
+    model_dir='./{}'.format(model_save_file),
     feature_columns=deep_columns,
     hidden_units=[2]
 )
