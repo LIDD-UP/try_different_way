@@ -25,8 +25,8 @@ from sklearn.metrics import mean_absolute_error
 tf.logging.set_verbosity(tf.logging.INFO)
 
 dirname = os.path.dirname(os.getcwd())
-train_filename = '\\month_4_2.csv'
-test_filename = '\\test_data_6_2.csv'
+train_filename = '\\month_4_1.csv'
+test_filename = '\\test_data_6_1.csv'
 
 # 加载训练数据
 data = pd.read_csv(dirname + train_filename, header=0)
