@@ -25,8 +25,8 @@ from sklearn.metrics import mean_absolute_error
 tf.logging.set_verbosity(tf.logging.INFO)
 
 dirname = os.path.dirname(os.getcwd())
-train_filename = '\\try_different_way\\in_a_month_1.csv'
-test_filename = '\\try_different_way\\test_data2_1.csv'
+train_filename = '\\try_different_way\\month_4_2.csv'
+test_filename = '\\try_different_way\\test_data_6_2.csv'
 
 # 加载训练数据
 data = pd.read_csv(dirname + train_filename, header=0)
@@ -160,11 +160,11 @@ deep_columns = [
 
 # 定义模型（估计器）
 estimator_model = tf.estimator.DNNLinearCombinedRegressor(
-    model_dir='./tmp_official1/predict_model',
+    model_dir='./tmp_official1_2/predict_model',
     linear_feature_columns=base_columns + crossed_columns,
     dnn_feature_columns=deep_columns,
     # dnn_hidden_units= [2048,1024, 512, 256,128,64,32,16],
-    dnn_hidden_units= [32,64],
+    dnn_hidden_units= [32,64,128],
     # dnn_hidden_units=[16, 32, 64, 128, 256, 512, 1024, 2048],
     linear_optimizer=tf.train.AdadeltaOptimizer(),
     dnn_optimizer= tf.train.AdamOptimizer()
