@@ -93,7 +93,7 @@ deep_columns = [
 estimator_model = tf.estimator.DNNRegressor(
     model_dir='./five/predict_model',
     feature_columns=deep_columns,
-    hidden_units=[512, 256, 128, 64, 32],
+    hidden_units=[2]
 )
 
 
@@ -126,7 +126,7 @@ test_input_fn = tf.estimator.inputs.numpy_input_fn(
 # 训练
 # for j in range(30):
 #     estimator_model.train(input_fn=train_input_fn,steps=1000)ss
-estimator_model.train(input_fn=train_input_fn, steps=3000)
+estimator_model.train(input_fn=train_input_fn, steps=100)
 
 # 测试
 ev = estimator_model.evaluate(input_fn=test_input_fn, steps=100)
@@ -143,9 +143,40 @@ for i in range(len(label_test)):
     list_value.append(x)
 
 print(list_value)
-print('prediction_mean',np.mean(list_value))
-print('label_mean',np.mean(label_test))
+prediction_mean = np.mean(list_value)
+label_mean = list(np.mean(label_test))[0]
+error = mean_absolute_error(label_test, list_value)
 
-print(mean_absolute_error(label_test,list_value))
+print('prediction_mean:', prediction_mean)
+print('label_mean:', label_mean)
+print('error:', error)
+
+def last_process():
+    '''
+    this function is to save prediction value as a csv file
+    and prediction_mean,label_mean,error to log.txt (each log in one line)
+    :return:
+    '''
+    import os
+    import sys
+    prediction_filename = os.path.basename(sys.argv[0]).split(".")[0]
+    prediction_dataframe = pd.DataFrame(list_value)
+    prediction_dataframe.to_csv('./{}.csv'.format(prediction_filename),index=False)
+    prediction_mean = np.mean(list_value)
+    label_mean = list(np.mean(label_test))[0]
+    error = mean_absolute_error(label_test, list_value)
+    with open('./log.txt','a+') as f:
+        f.write('filename:{}'.format(prediction_filename))
+        f.write('-------->>>   ')
+        f.write('prediction_mean:{}'.format(prediction_mean))
+        f.write(',  ')
+        f.write('label_mean:{}'.format(label_mean))
+        f.write(',  ')
+        f.write('error:{}'.format(error))
+        f.write('\n')
+
+
+last_process()
+
 
 
