@@ -47,17 +47,41 @@ latitude_min = int(example['latitude'].min())
 latitude_max = int(example['latitude'].max())
 
 
+# 处理日期把日期拆分成为年月日三列：
+def date_processing(_date_data):
+    list_date = list(_date_data['listingDate'])
+    list_break_together = []
+    for data in list_date:
+        list_break = data.split('/')
+        list_break_together.append(list_break)
+    date_data_after_processing = pd.DataFrame(list_break_together, columns=['year', 'month', 'day'], dtype='float32')
+    return date_data_after_processing
+
+
+example_date_data = date_processing(example)
+test_date_data = date_processing(example_test)
+
+
+
 # 定义连续型连续
 longitude = tf.feature_column.numeric_column('longitude')
 latitude = tf.feature_column.numeric_column('latitude')
 price = tf.feature_column.numeric_column('price')
+month = tf.feature_column.numeric_column('month')
+day = tf.feature_column.numeric_column('day')
+bedrooms = tf.feature_column.numeric_column('bedrooms')
 
+# 交易类型
 buildingTypeId = tf.feature_column.categorical_column_with_vocabulary_list('buildingTypeId', [1, 2])
 
 price_bucket = tf.feature_column.bucketized_column(price,
                                                    [500000, 1000000, 1500000,
                                                     2000000, 4000000])
 
+# province = tf.feature_column.categorical_column_with_hash_bucket('province', hash_bucket_size=100)
+# city = tf.feature_column.categorical_column_with_hash_bucket('city', hash_bucket_size=100)
+# address = tf.feature_column.categorical_column_with_hash_bucket('address', hash_bucket_size=100)
+#
 
 def generate_longtitude_and_latitude_list(min,max,distance):
     list_len = (max -min)/distance
@@ -69,7 +93,6 @@ def generate_longtitude_and_latitude_list(min,max,distance):
     return list_boundaries
 
 
-# 生成经纬度分片
 longitude_boudaries = generate_longtitude_and_latitude_list(longitude_min, longitude_max, 0.005)
 latitude_boudaries = generate_longtitude_and_latitude_list(latitude_min, latitude_max, 0.005)
 
@@ -77,40 +100,57 @@ latitude_boudaries = generate_longtitude_and_latitude_list(latitude_min, latitud
 longitude_bucket = tf.feature_column.bucketized_column(longitude, sorted(longitude_boudaries))
 latitude_bucket = tf.feature_column.bucketized_column(latitude, sorted(latitude_boudaries))
 
-# 省份城市地址：
-province = tf.feature_column.categorical_column_with_hash_bucket('province', hash_bucket_size=100)
-city = tf.feature_column.categorical_column_with_hash_bucket('city', hash_bucket_size=100)
-address = tf.feature_column.categorical_column_with_hash_bucket('address', hash_bucket_size=100)
-
+#month and day
+month_bucket = tf.feature_column.categorical_column_with_vocabulary_list('month', [1,2,3,4,5,6,7,8,9,10,11,12])
+day_bucket = tf.feature_column.bucketized_column(day, [11, 21])
 
 # 定义基本特征和组合特征
+
 longitude_latitude = tf.feature_column.crossed_column(
         [longitude_bucket, latitude_bucket], 1000
     )
+
+base_columns = [
+    price_bucket,
+    # province, city, address,
+    buildingTypeId,
+    month_bucket, day_bucket,
+    latitude, longitude_bucket,
+    longitude, latitude_bucket,
+    longitude_latitude,
+    bedrooms
+]
 
 deep_columns = [
     price,
     latitude,
     longitude,
+    bedrooms,
+
+    day_bucket,
     price_bucket,
 
-    tf.feature_column.embedding_column(longitude_latitude, 10),
-    tf.feature_column.embedding_column(province, 10),
-    tf.feature_column.embedding_column(city, 10),
-    tf.feature_column.embedding_column(address, 10),
+    # tf.feature_column.embedding_column(province, 8),
+    # tf.feature_column.embedding_column(city, 8),
+    # tf.feature_column.embedding_column(address, 8),
+    tf.feature_column.embedding_column(longitude_latitude, 8),
 
     tf.feature_column.indicator_column(buildingTypeId),
+    tf.feature_column.indicator_column(month_bucket),
 ]
 
 # 定义模型（估计器）
-estimator_model = tf.estimator.DNNRegressor(
-    model_dir='./six/predict_model',
-    feature_columns=deep_columns,
-    hidden_units=[512, 256, 128, 64, 32],
+estimator_model = tf.estimator.DNNLinearCombinedRegressor(
+    model_dir='./nine/predict_model',
+    linear_feature_columns=base_columns,
+    dnn_feature_columns=deep_columns,
+    dnn_hidden_units=[512, 256, 128, 64, 32],
+    linear_optimizer=tf.train.AdadeltaOptimizer(),
+    # dnn_optimizer=tf.train.AdamOptimizer()
 )
 
 
-# 定义训练输入，测试输入，解决不同模型的输入对应问题
+
 train_input_fn = tf.estimator.inputs.numpy_input_fn(
     x={
         'province': np.array(example['province']),
@@ -120,7 +160,9 @@ train_input_fn = tf.estimator.inputs.numpy_input_fn(
         'latitude': np.array(example['latitude']),
         'price': np.array(example['price']),
         'buildingTypeId': np.array(example['buildingTypeId']).astype('int'),
-
+        'month': np.array(example_date_data['month']).astype('int'),
+        'day': np.array(example_date_data['day']),
+        'bedrooms': np.array(example['bedrooms'])
     },
     y=np.array(label),
     num_epochs=None,
@@ -136,6 +178,9 @@ test_input_fn = tf.estimator.inputs.numpy_input_fn(
         'latitude': np.array(example_test['latitude']),
         'price': np.array(example_test['price']),
         'buildingTypeId': np.array(example_test['buildingTypeId']).astype('int'),
+        'month': np.array(test_date_data['month']).astype('int'),
+        'day': np.array(test_date_data['day']),
+        'bedrooms': np.array(example_test['bedrooms'])
     },
     y=np.array(label_test),
     num_epochs=1,  # 此处注意，如果设置成为None了会无限读下去；
