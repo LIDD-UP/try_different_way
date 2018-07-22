@@ -1,8 +1,8 @@
 #-*- coding:utf-8 _*-  
 """ 
-@author:bluesli
-@file: test_a_1.py
-@time: 2018/07/22
+@author:bluesli 
+@file: test_a_1.py 
+@time: 2018/07/22 
 """
 import tensorflow as tf
 import pandas as pd
@@ -81,25 +81,25 @@ latitude_boudaries = generate_longtitude_and_latitude_list(latitude_min, latitud
 
 
 
-# province = tf.feature_column.categorical_column_with_hash_bucket('province', hash_bucket_size=100)
-# city = tf.feature_column.categorical_column_with_hash_bucket('city', hash_bucket_size=100)
-# address = tf.feature_column.categorical_column_with_hash_bucket('address', hash_bucket_size=100)
-#
-#
-# longitude = tf.feature_column.numeric_column('longitude')
-# latitude = tf.feature_column.numeric_column('latitude')
-# longitude_bucket = tf.feature_column.bucketized_column(longitude, sorted(longitude_boudaries))
-# latitude_bucket = tf.feature_column.bucketized_column(latitude, sorted(latitude_boudaries))
-# longitude_latitude = tf.feature_column.crossed_column(
-#         [longitude_bucket, latitude_bucket], 1000
-#     )
-#
-#
-# price = tf.feature_column.numeric_column('price')
-# price_bucket = tf.feature_column.bucketized_column(price,
-#                                                    [500000, 1000000, 1500000,
-#                                                     2000000, 4000000])
-# buildingTypeId = tf.feature_column.categorical_column_with_vocabulary_list('buildingTypeId', [1, 2])
+province = tf.feature_column.categorical_column_with_hash_bucket('province', hash_bucket_size=100)
+city = tf.feature_column.categorical_column_with_hash_bucket('city', hash_bucket_size=100)
+address = tf.feature_column.categorical_column_with_hash_bucket('address', hash_bucket_size=100)
+
+
+longitude = tf.feature_column.numeric_column('longitude')
+latitude = tf.feature_column.numeric_column('latitude')
+longitude_bucket = tf.feature_column.bucketized_column(longitude, sorted(longitude_boudaries))
+latitude_bucket = tf.feature_column.bucketized_column(latitude, sorted(latitude_boudaries))
+longitude_latitude = tf.feature_column.crossed_column(
+        [longitude_bucket, latitude_bucket], 1000
+    )
+
+
+price = tf.feature_column.numeric_column('price')
+price_bucket = tf.feature_column.bucketized_column(price,
+                                                   [500000, 1000000, 1500000,
+                                                    2000000, 4000000])
+buildingTypeId = tf.feature_column.categorical_column_with_vocabulary_list('buildingTypeId', [1, 2])
 
 month = tf.feature_column.numeric_column('month')
 day = tf.feature_column.numeric_column('day')
@@ -107,28 +107,28 @@ month_bucket = tf.feature_column.categorical_column_with_vocabulary_list('month'
 day_bucket = tf.feature_column.bucketized_column(day, [11, 21])
 
 
-# bedrooms = tf.feature_column.numeric_column('bedrooms')
+bedrooms = tf.feature_column.numeric_column('bedrooms')
 
 
 deep_columns = [
 
-    # tf.feature_column.embedding_column(province, 8),
-    # tf.feature_column.embedding_column(city, 8),
-    # tf.feature_column.embedding_column(address, 8),
-    #
-    # latitude,
-    # longitude,
-    # tf.feature_column.embedding_column(longitude_latitude, 8),
-    #
-    # price,
-    # price_bucket,
-    #
-    # tf.feature_column.indicator_column(buildingTypeId),
+    tf.feature_column.embedding_column(province, 8),
+    tf.feature_column.embedding_column(city, 8),
+    tf.feature_column.embedding_column(address, 8),
+
+    latitude,
+    longitude,
+    tf.feature_column.embedding_column(longitude_latitude, 8),
+
+    price,
+    price_bucket,
+
+    tf.feature_column.indicator_column(buildingTypeId),
 
     day_bucket,
     tf.feature_column.indicator_column(month_bucket),
 
-    # bedrooms,
+    bedrooms,
 ]
 
 
@@ -232,13 +232,13 @@ def last_process():
     label_mean = list(np.mean(label_test))[0]
     error = mean_absolute_error(label_test, list_value)
     with open('./log.txt','a+') as f:
-        f.write(prediction_filename)
-        f.write(',')
-        f.write(str(prediction_mean))
-        f.write(',')
-        f.write(str(label_mean))
-        f.write(',')
-        f.write(str(error))
+        f.write('filename:{}'.format(prediction_filename))
+        f.write('-------->>>   ')
+        f.write('prediction_mean:{}'.format(prediction_mean))
+        f.write(',  ')
+        f.write('label_mean:{}'.format(label_mean))
+        f.write(',  ')
+        f.write('error:{}'.format(error))
         f.write('\n')
 
 

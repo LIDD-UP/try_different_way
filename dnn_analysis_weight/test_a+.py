@@ -12,8 +12,6 @@ from sklearn.metrics import mean_absolute_error
 import os
 import sys
 model_save_file = os.path.basename(sys.argv[0]).split(".")[0]
-
-
 tf.logging.set_verbosity(tf.logging.INFO)
 
 dirname = os.path.dirname(os.getcwd())
@@ -56,22 +54,30 @@ def generate_longtitude_and_latitude_list(min,max,distance):
         middle += distance
         list_boundaries.append(middle)
     return list_boundaries
-
 # 生成经纬度实例范围
 longitude_boudaries = generate_longtitude_and_latitude_list(longitude_min, longitude_max, 0.005)
 latitude_boudaries = generate_longtitude_and_latitude_list(latitude_min, latitude_max, 0.005*(500/111))
 
 
+
+
+
+
+
 longitude = tf.feature_column.numeric_column('longitude')
 latitude = tf.feature_column.numeric_column('latitude')
 price = tf.feature_column.numeric_column('price')
-bedrooms = tf.feature_column.numeric_column('bedrooms')
-
-buildingTypeId = tf.feature_column.categorical_column_with_vocabulary_list('buildingTypeId', [1, 2])
-
 price_bucket = tf.feature_column.bucketized_column(price,
                                                    [500000, 1000000, 1500000,
                                                     2000000, 4000000])
+
+buildingTypeId = tf.feature_column.categorical_column_with_vocabulary_list('buildingTypeId', [1, 2])
+bedrooms = tf.feature_column.numeric_column('bedrooms')
+
+
+
+
+
 
 # 经纬度：
 longitude_bucket = tf.feature_column.bucketized_column(longitude, sorted(longitude_boudaries))
