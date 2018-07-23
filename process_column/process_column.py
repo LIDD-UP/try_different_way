@@ -1,7 +1,7 @@
 #-*- coding:utf-8 _*-  
 """ 
 @author:Administrator
-@file: process_column.py
+@file: process_column_tradetypeid_buildtypeid_eval.py
 @time: 2018/7/19
 """
 
