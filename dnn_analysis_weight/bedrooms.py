@@ -192,10 +192,13 @@ test_input_fn = tf.estimator.inputs.numpy_input_fn(
 # 训练
 # for j in range(30):
 #     estimator_model.train(input_fn=train_input_fn,steps=1000)ss
-estimator_model.train(input_fn=train_input_fn, steps=1000)
+steps_trains = int(len(example)/128)
+steps_test = int(len(example_test)/128)
+estimator_model.train(input_fn=train_input_fn, steps=steps_trains)
 
 # 测试
-ev = estimator_model.evaluate(input_fn=test_input_fn, steps=100)
+
+ev = estimator_model.evaluate(input_fn=test_input_fn, steps=steps_test)
 print('ev: {}'.format(ev))
 # 预测
 predict_iter = estimator_model.predict(input_fn=test_input_fn)

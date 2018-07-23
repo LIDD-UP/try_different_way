@@ -29,16 +29,16 @@ print(label_mean_list)
 print(error_list)
 
 
-plt.figure(figsize=(100,100))
+# plt.figure(figsize=(100,100))
 plt.title('Result Analysis')
-# plt.xticks(rotation=90)
+plt.xticks(rotation=45)
 plt.plot(column_list, prediction_mean_list, color='green', label='pre_mean')
 plt.plot(column_list, label_mean_list, color='blue', label='label_mean')
 plt.plot(column_list, error_list,  color='red', label='error')
 
 plt.legend() # 显示图例
-
-plt.xlabel('column')
-plt.ylabel('value')
+plt.tick_params(labelsize=5)
+plt.xlabel('Column')
+plt.ylabel('Value')
 
 plt.show()
