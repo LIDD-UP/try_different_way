@@ -1,7 +1,7 @@
 #-*- coding:utf-8 _*-  
 """ 
 @author:Administrator
-@file: first_step.py
+@file: prc_bid_lotd_latd_no_process.py
 @time: 2018/7/20
 """
 #-*- coding:utf-8 _*-
