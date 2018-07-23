@@ -149,7 +149,7 @@ deep_columns = [
 estimator_model = tf.estimator.DNNRegressor(
     model_dir='./{}'.format(model_save_file),
     feature_columns=deep_columns,
-    hidden_units=[16,32]
+    hidden_units=[512, 256, 128, 64, 32],
     # dnn_optimizer=tf.train.AdamOptimizer()
 )
 
@@ -168,7 +168,9 @@ train_input_fn = tf.estimator.inputs.numpy_input_fn(
     },
     y=np.array(label),
     num_epochs=None,
-    shuffle=False
+    shuffle=False,
+    batch_size=10
+
 )
 
 test_input_fn = tf.estimator.inputs.numpy_input_fn(
@@ -186,15 +188,18 @@ test_input_fn = tf.estimator.inputs.numpy_input_fn(
     },
     y=np.array(label_test),
     num_epochs=1,  # 此处注意，如果设置成为None了会无限读下去；
-    shuffle=False
+    shuffle=False,
+    batch_size=10
 )
 
 # 训练
 # for j in range(30):
 #     estimator_model.train(input_fn=train_input_fn,steps=1000)ss
-steps_trains = int(len(example)/128)
-steps_test = int(len(example_test)/128)
-estimator_model.train(input_fn=train_input_fn, steps=steps_trains)
+steps_trains = int(len(example)/10)
+print(steps_trains)
+steps_test = int(len(example_test)/10)
+for i in range(20):
+    estimator_model.train(input_fn=train_input_fn, steps=steps_trains)
 
 # 测试
 
