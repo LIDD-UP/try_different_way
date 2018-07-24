@@ -19,7 +19,7 @@ model_save_file = os.path.basename(sys.argv[0]).split(".")[0]
 tf.logging.set_verbosity(tf.logging.INFO)
 
 dirname = os.path.dirname(os.getcwd())
-train_filename = '\\month_4_1.csv'
+train_filename = '\\month_456_1.csv'
 test_filename = '\\test_data_6_1.csv'
 
 # 加载训练数据
@@ -197,7 +197,7 @@ test_input_fn = tf.estimator.inputs.numpy_input_fn(
 steps_trains = int(len(example)/10)
 print(steps_trains)
 steps_test = int(len(example_test)/10)
-for i in range(20):
+for i in range(1000):
     estimator_model.train(input_fn=train_input_fn, steps=steps_trains)
 
 # 测试
@@ -227,7 +227,7 @@ print('error:', error)
 def last_process():
     '''
     this function is to save prediction value as a csv file
-    and prediction_mean,label_mean,error to log.txt (each log in one line)
+    and prediction_mean,label_mean,error to log_backup.txt (each log in one line)
     :return:
     '''
     import os
@@ -238,7 +238,7 @@ def last_process():
     prediction_mean = np.mean(list_value)
     label_mean = list(np.mean(label_test))[0]
     error = mean_absolute_error(label_test, list_value)
-    with open('./log.txt','a+') as f:
+    with open('./log_backup.txt','a+') as f:
         f.write(prediction_filename)
         f.write(',')
         f.write(str(prediction_mean))

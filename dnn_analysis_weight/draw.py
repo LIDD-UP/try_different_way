@@ -12,7 +12,7 @@ prediction_mean_list = []
 label_mean_list = []
 error_list = []
 
-with open('./log.txt','r') as f:
+with open('./log_backup.txt','r') as f:
      for i in f.readlines():
           b = i.split(',')
           column_list.append(b[0])

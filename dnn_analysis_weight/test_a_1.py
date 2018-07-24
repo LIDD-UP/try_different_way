@@ -220,7 +220,7 @@ print('error:', error)
 def last_process():
     '''
     this function is to save prediction value as a csv file
-    and prediction_mean,label_mean,error to log.txt (each log in one line)
+    and prediction_mean,label_mean,error to log_backup.txt (each log in one line)
     :return:
     '''
     import os
@@ -231,7 +231,7 @@ def last_process():
     prediction_mean = np.mean(list_value)
     label_mean = list(np.mean(label_test))[0]
     error = mean_absolute_error(label_test, list_value)
-    with open('./log.txt','a+') as f:
+    with open('./log_backup.txt','a+') as f:
         f.write('filename:{}'.format(prediction_filename))
         f.write('-------->>>   ')
         f.write('prediction_mean:{}'.format(prediction_mean))
