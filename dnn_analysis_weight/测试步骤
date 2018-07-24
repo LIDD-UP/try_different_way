@@ -10,9 +10,31 @@
 9：buildingTypeId
 10：listData
 11:bedrooms
-12：价格和精度组合
-13:price_bucket
-14:
+12：价格和经纬度组合（经纬度经过处理含原来的数据）
+------->>>>新的一批
+  注：可能需要处理的包括：经纬度，价格，buildingtypeid (要不要分为两个桶）；其他的省份，城市，地址，listdata，bedrooms都不处理；
+13：经纬度组合（未处理）：no_handle_log_lat
+14:price和经纬度（未处理）no_handle_log_lat&no_handle_price
+15:price_bucket :price_bucket
+16:price_bucket和经纬度组合(处理） :price_bucket&handle_Log_Lat
+
+17:经纬度，价格，buildingtypeid （都未处理）：no_handle_log_lat_pri_bti
+18：经纬度，价格，buildingtypeid （都处理了）: all_handle_log_lat_pri_bti
+19：经纬度，价格，buildingtypeid 只处理经纬度 :only_handle_log_lat_no_pri_bti
+20：只处理价格：only_handle_pri_no_log_lat_bti
+21：只处理buildingtypeid :only_handle_bti_no_log_lat_pri
+22：不处理经纬度:no_handle_log_lat_yes_pri_bti
+23，不处理价格，:no_handle_pri_yes_log_lat_bti
+24，不处理buildingtypeid:no_handle_bti_yes_pri_log_lat
+
+25:buildingtypeid price 经纬度，bedrooms：
+
+
+
+
+---------------------------》》》》新的一批处理方式，考虑在进行之前进行数据的标准化或者是归一化：（之前要先清楚归一化，标准化的区别）
+
+
 
 
 首先先测试price，buildingtypeid，longitude latitude
