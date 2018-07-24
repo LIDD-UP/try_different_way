@@ -52,21 +52,21 @@
 
 
 --------------------------------》》》》》》》》第五批大混合：
-经纬度价格（处理）+buildingtypeid+bedrooms+省份城市地址  :base_pcd_1_1
-经纬度价格（处理） +buildingtypeid+bedrooms+日期:base_date_1_1
-经纬度价格（处理） +buildingtypeid+bedrooms+ +省份城市地址+日期:base_pcd_date_1_1
+41:经纬度价格（处理）+buildingtypeid+bedrooms+省份城市地址  :base_pcd_1_1
+42:经纬度价格（处理） +buildingtypeid+bedrooms+日期:base_date_1_1
+43:经纬度价格（处理） +buildingtypeid+bedrooms+ +省份城市地址+日期:base_pcd_date_1_1
 
-经纬度价格（不处理）+buildingtypeid+bedrooms+省份城市地址:base_pcd_0_0
-经纬度价格（不处理） +buildingtypeid+bedrooms+日期:base_date_0_0
-经纬度价格（不处理） +buildingtypeid+bedrooms+ +省份城市地址+日期:base_pcd_date_0_0
+44:经纬度价格（不处理）+buildingtypeid+bedrooms+省份城市地址:base_pcd_0_0
+45:经纬度价格（不处理） +buildingtypeid+bedrooms+日期:base_date_0_0
+46:经纬度价格（不处理） +buildingtypeid+bedrooms+ +省份城市地址+日期:base_pcd_date_0_0
 
-经纬度处理价格不处理+buildingtypeid+bedrooms+省份城市地址:base_pcd_1_0
-经纬度处理价格不处理+buildingtypeid+bedrooms+日期:base_date_1_0
-经纬度处理价格不处理+buildingtypeid+bedrooms+ +省份城市地址+日期:base_pcd_date_1_0
+47:经纬度处理价格不处理+buildingtypeid+bedrooms+省份城市地址:base_pcd_1_0
+48:经纬度处理价格不处理+buildingtypeid+bedrooms+日期:base_date_1_0
+49:经纬度处理价格不处理+buildingtypeid+bedrooms+ +省份城市地址+日期:base_pcd_date_1_0
 
-经纬度不处理价格处理+buildingtypeid+bedrooms+省份城市地址:base_pcd_0_1
-经纬度不处理价格处理+buildingtypeid+bedrooms+日期:base_date_0_1
-经纬度不处理价格处理+buildingtypeid+bedrooms+ +省份城市地址+日期:base_pcd_date_0_1
+50:经纬度不处理价格处理+buildingtypeid+bedrooms+省份城市地址:base_pcd_0_1
+51：经纬度不处理价格处理+buildingtypeid+bedrooms+日期:base_date_0_1
+52：经纬度不处理价格处理+buildingtypeid+bedrooms+ +省份城市地址+日期:base_pcd_date_0_1
 
 
 -----------------------------最后一批对比拿出比较好的方案后进行比对训练；
