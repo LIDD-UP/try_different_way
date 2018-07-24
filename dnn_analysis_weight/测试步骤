@@ -14,9 +14,9 @@
 ------->>>>新的一批
   注：可能需要处理的包括：经纬度，价格，buildingtypeid (要不要分为两个桶）；其他的省份，城市，地址，listdata，bedrooms都不处理；
 13：经纬度组合（未处理）：no_handle_log_lat
-14:price和经纬度（未处理）no_handle_log_lat&no_handle_price
+14:price和经纬度（未处理）:no_handle_log_lat&no_handle_price
 15:price_bucket :price_bucket
-16:price_bucket和经纬度组合(处理） :price_bucket&handle_Log_Lat
+16:price_bucket和经纬度组合(处理） :price_bucket&handle_log_lat
 
 17:经纬度，价格，buildingtypeid （都未处理）：no_handle_log_lat_pri_bti
 18：经纬度，价格，buildingtypeid （都处理了）: all_handle_log_lat_pri_bti
