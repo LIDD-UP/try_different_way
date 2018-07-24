@@ -11,13 +11,13 @@
 10：listData
 11:bedrooms
 12：价格和经纬度组合（经纬度经过处理含原来的数据）
-------->>>>新的一批
+-------——————————————————————————---->>>>新的一批，第二批
   注：可能需要处理的包括：经纬度，价格，buildingtypeid (要不要分为两个桶）；其他的省份，城市，地址，listdata，bedrooms都不处理；
+**********************************注:统一一下处理方式：也就是对于连续的特征，如果经过再次处理之后，之前的特征也要加上；*****************
 13：经纬度组合（未处理）：no_handle_log_lat
 14:price和经纬度（未处理）:no_handle_log_lat&no_handle_price
 15:price_bucket :price_bucket
 16:price_bucket和经纬度组合(处理） :price_bucket&handle_log_lat
-
 17:经纬度，价格，buildingtypeid （都未处理）：no_handle_log_lat_pri_bti
 18：经纬度，价格，buildingtypeid （都处理了）: all_handle_log_lat_pri_bti
 19：经纬度，价格，buildingtypeid 只处理经纬度 :only_handle_log_lat_no_pri_bti
@@ -27,15 +27,59 @@
 23，不处理价格，:no_handle_pri_yes_log_lat_bti
 24，不处理buildingtypeid:no_handle_bti_yes_pri_log_lat
 
-25:buildingtypeid price 经纬度，bedrooms：
+---------------------------------------------->>>>>>>>>>>第三批次基础的加上bedrooms,只做觉得重要的：
+    注：buildingtypeid 本身就是分类数据，所以用category处理比较合理；
+    其次存在问题的处理方式：经纬度处理和价格处理，这里只用这两组作为依托进行处理；也就是说有4组；
+25:经纬度处理价格不处理加上buildingtypeid，bedrooms ：log_lat_1_price_0_bti_br
+26:经纬度不处理价格处理加上buildingtypeid，bedrooms: log_lat_0_price_1_bti_br
+27:经纬度处理价格处理加上buildingtypeid，bedrooms :log_lat_1_price_1_bti_br
+28:经纬度不处理价格不处理加上buildingtypeid，bedrooms :log_lat_0_price_0_bti_br
+
+------------>>>>第4批次：加上省份，城市，地址： 分别一个个加入，再一起加入，看一下那种效果好，
+---------------->>>>>>>>>>所以就只去价格经纬度一起处理或者不处理的情况；还需要加上日期
+29：经纬度价格（处理）+省份 ：handle_ll_pro
+30:经纬度价格（不处理）+省份: no_handle_ll_pro
+31：经纬度价格（处理）+城市: handle_ll_city
+32:经纬度价格（不处理）+城市:no_handle_ll_city
+33：经纬度价格（处理）+地址:handle_ll_adrs
+34:经纬度价格（不处理）+地址:no_handle_ll_adrs
+35:经纬度价格（处理）+省份+城市:handle_ll_pc
+36:经纬度价格（处理）+省份+地址:handle_ll_pd
+37:经纬度价格（处理）+城市+地址:handle_ll_cd
+38:经纬度价格（处理）+省份+城市+地址:handle_ll_pcd
+39：经纬度价格（处理）+日期 :handle_ll_date
+40:经纬度价格（不处理）+日期:no_handle_ll_date
+
+
+--------------------------------》》》》》》》》第五批大混合：
+经纬度价格（处理）+buildingtypeid+bedrooms+省份城市地址  :base_pcd_1_1
+经纬度价格（处理） +buildingtypeid+bedrooms+日期:base_date_1_1
+经纬度价格（处理） +buildingtypeid+bedrooms+ +省份城市地址+日期:base_pcd_date_1_1
+
+经纬度价格（不处理）+buildingtypeid+bedrooms+省份城市地址:base_pcd_0_0
+经纬度价格（不处理） +buildingtypeid+bedrooms+日期:base_date_0_0
+经纬度价格（不处理） +buildingtypeid+bedrooms+ +省份城市地址+日期:base_pcd_date_0_0
+
+经纬度处理价格不处理+buildingtypeid+bedrooms+省份城市地址:base_pcd_1_0
+经纬度处理价格不处理+buildingtypeid+bedrooms+日期:base_date_1_0
+经纬度处理价格不处理+buildingtypeid+bedrooms+ +省份城市地址+日期:base_pcd_date_1_0
+
+经纬度不处理价格处理+buildingtypeid+bedrooms+省份城市地址:base_pcd_0_1
+经纬度不处理价格处理+buildingtypeid+bedrooms+日期:base_date_0_1
+经纬度不处理价格处理+buildingtypeid+bedrooms+ +省份城市地址+日期:base_pcd_date_0_1
+
+
+-----------------------------最后一批对比拿出比较好的方案后进行比对训练；
 
 
 
 
+
+
+
+
+考虑：
 ---------------------------》》》》新的一批处理方式，考虑在进行之前进行数据的标准化或者是归一化：（之前要先清楚归一化，标准化的区别）
-
-
-
 
 首先先测试price，buildingtypeid，longitude latitude
 1:对这几个不做任何处理

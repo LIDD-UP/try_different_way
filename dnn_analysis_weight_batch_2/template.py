@@ -1,7 +1,7 @@
 #-*- coding:utf-8 _*-  
 """ 
 @author:Administrator
-@file: no_handle_log_lat_yes_pri_bti.py
+@file: template.py
 @time: 2018/7/24
 """
 import tensorflow as tf
@@ -86,8 +86,8 @@ latitude_boudaries = generate_longtitude_and_latitude_list(latitude_min, latitud
 # address = tf.feature_column.categorical_column_with_hash_bucket('address', hash_bucket_size=100)
 #
 #
-longitude = tf.feature_column.numeric_column('longitude')
-latitude = tf.feature_column.numeric_column('latitude')
+# longitude = tf.feature_column.numeric_column('longitude')
+# latitude = tf.feature_column.numeric_column('latitude')
 # longitude_bucket = tf.feature_column.bucketized_column(longitude, sorted(longitude_boudaries))
 # latitude_bucket = tf.feature_column.bucketized_column(latitude, sorted(latitude_boudaries))
 # longitude_latitude = tf.feature_column.crossed_column(
@@ -95,11 +95,13 @@ latitude = tf.feature_column.numeric_column('latitude')
 #     )
 #
 #
-price = tf.feature_column.numeric_column('price')
-price_bucket = tf.feature_column.bucketized_column(price,
-                                                   [500000, 1000000, 1500000,
-                                                    2000000, 4000000])
-buildingTypeId = tf.feature_column.categorical_column_with_vocabulary_list('buildingTypeId', [1, 2])
+# price = tf.feature_column.numeric_column('price')
+# price_bucket = tf.feature_column.bucketized_column(price,
+#                                                    [500000, 1000000, 1500000,
+#                                                     2000000, 4000000])
+
+# buildingTypeId = tf.feature_column.numeric_column('buildingTypeId')
+# buildingTypeId = tf.feature_column.categorical_column_with_vocabulary_list('buildingTypeId', [1, 2])
 #
 # month = tf.feature_column.numeric_column('month')
 # day = tf.feature_column.numeric_column('day')
@@ -116,14 +118,15 @@ deep_columns = [
     # tf.feature_column.embedding_column(city, 8),
     # tf.feature_column.embedding_column(address, 8),
     #
-    latitude,
-    longitude,
+    # latitude,
+    # longitude,
     # tf.feature_column.embedding_column(longitude_latitude, 8),
     #
-    price,
-    price_bucket,
+    # price,
+    # price_bucket,
     #
-    tf.feature_column.indicator_column(buildingTypeId),
+    # buildingTypeId,
+    # tf.feature_column.indicator_column(buildingTypeId),
     #
     # day_bucket,
     # tf.feature_column.indicator_column(month_bucket),
