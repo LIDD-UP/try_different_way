@@ -168,7 +168,7 @@ train_input_fn = tf.estimator.inputs.numpy_input_fn(
     },
     y=np.array(label),
     num_epochs=None,
-    shuffle=False,
+    shuffle=True,
     batch_size= 10
 )
 
