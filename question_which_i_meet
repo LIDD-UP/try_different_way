@@ -1,1 +1,34 @@
 #=AttributeError: 'list' object has no attribute 'name'
+
+当loss值波动后不下降加上shuffle = True
+
+
+LSTM 波士顿房价预测：
+    crossent = softmax_loss_function(labels=target, logits=logit)
+TypeError: ms_error() got an unexpected keyword argument 'labels'
+官网查看，需要将我们传入的函数参数要是命名参数；
+softmax_loss_function：函数（标签，logits） - >使用损失批处理而不是标准softmax（默认情况下，如果这是None）。
+请注意，为避免混淆，函数需要接受命名参数。
+
+AttributeError: module 'tensorflow' has no attribute 'scalar_summary'
+tf.sub 改为了tf.subtract
+tf.nn.seq2seq.sequence_loss_by_example 改为了tf.contrib.legacy_seq2seq.sequence_loss_by_example
+此处再用pycharm的时候你先查看源代码看不了那是它做了限制，让你无法查看源代码；这时候需要查看官方文档；
+
+tf.train.SummaryWriter改为：tf.summary.FileWriter
+
+tf.merge_all_summaries()改为：summary_op = tf.summary.merge_all
+
+tf.histogram_summary(var.op.name, var)改为：  tf.summary.histogram
+
+KeyError: "The name 'input/xs' refers to an Operation not in the graph."
+在有 with tf.name_scope('inputs'): 下的placehold 定义的名字时需要用到inputs/name
+比如：        with tf.name_scope('inputs'):
+            self.xs = tf.placeholder(tf.float32, [None, n_steps, input_size], name='xs')  # xs 有三个维度
+            self.ys = tf.placeholder(tf.float32, [None, n_steps, output_size], name='ys')  # ys 有三个维度
+            这时候如果想要通过graph.get_operation_by_name()
+
+
+ValueError: Variable in_hidden/weights already exists, disallowed.
+Did you mean to set reuse=True or reuse=tf.AUTO_REUSE in VarScope? Originally defined at:
+定义了两次，

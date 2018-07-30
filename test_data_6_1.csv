@@ -1,6 +1,4 @@
 province,city,address,longitude,latitude,price,buildingTypeId,tradeTypeId,listingDate,daysOnMarket,bedrooms
-Alberta,Calgary,31 Cranarch Ld Se,-113.97219,50.872921999999996,589900.0,1,1,26/6/2018,17,4.0
-Ontario,Maple,82 Jazz Dr,-79.4947778,43.8542674,1420000.0,1,1,5/6/2018,15,4.0
 Ontario,New Dundee,123 Beverly Street,-80.527567,43.35285,520000.0,1,1,15/6/2018,5,3.0
 Ontario,Kanata,27 Wallsend Avenue,-75.940376,45.348757,389900.0,1,1,13/6/2018,13,3.0
 Manitoba,Winnipeg,1166 Warsaw Ave,-97.171472,49.8627,299900.0,1,1,7/6/2018,6,3.0
