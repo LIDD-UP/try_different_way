@@ -198,9 +198,9 @@ test_input_fn = tf.estimator.inputs.numpy_input_fn(
 steps_trains = int(len(example)/10)
 print(steps_trains)
 steps_test = int(len(example_test)/10)
-# for i in range(1000):
-#     estimator_model.train(input_fn=train_input_fn, steps=steps_trains)
-estimator_model.train(input_fn=train_input_fn, steps=steps_trains)
+for i in range(1000):
+    estimator_model.train(input_fn=train_input_fn, steps=steps_trains)
+# estimator_model.train(input_fn=train_input_fn, steps=steps_trains)
 
 # 测试
 

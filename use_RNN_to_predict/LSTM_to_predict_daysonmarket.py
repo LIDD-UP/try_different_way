@@ -227,7 +227,7 @@ class LSTMRNN(object):
 
 
 if __name__ == '__main__':
-    is_train = 0
+    is_train = 1
     # seq, res = get_batch_boston()
     model = LSTMRNN(TIME_STEPS, INPUT_SIZE, OUTPUT_SIZE, CELL_SIZE, BATCH_SIZE)
     sess = tf.Session()
@@ -241,7 +241,7 @@ if __name__ == '__main__':
     # relocate to the local dir and run this line to view it on Chrome (http://0.0.0.0:6006/):
     # $ tensorboard --logdir='logs'
     if is_train == 1:
-        for j in range(200):  # 训练200次
+        for j in range(1):  # 训练200次
             pred_res = None
             for i in range(12460):  # 把整个数据分为1246个时间段
                 seq, res = get_batch_boston()
@@ -272,8 +272,8 @@ if __name__ == '__main__':
             saver.save(sess, "predict_days/my-model", global_step=j)
     else:
         with tf.Session() as sess:
-            new_saver = tf.train.import_meta_graph('./predict_days/my-model-1.meta')
-            new_saver.restore(sess, './predict_days/my-model-1')
+            new_saver = tf.train.import_meta_graph('./predict_days/my-model-644.meta')
+            new_saver.restore(sess, './predict_days/my-model-644')
             # tf.get_collection() 返回一个list. 但是这里只要第一个参数即可
             y = tf.get_collection('pred_network')[0]
 
@@ -296,19 +296,19 @@ if __name__ == '__main__':
 
     #训练时的预测情况图：
     # 与最后一次训练所用的数据保持一致
-    # train_y = train_y[12450:13310]
-    # pred_res_true = ss_y.inverse_transform(pred_res)
-    # train_y_true = ss_y.inverse_transform(train_y)
-    # print(mean_absolute_error(train_y_true,pred_res_true))
-    # print('实际', train_y.flatten().shape)
-
-
-
-    # 测试时候的预测情况图：
+    train_y = train_y[12450:13310]
     pred_res_true = ss_y.inverse_transform(pred_res)
-    train_y_true = ss_y.inverse_transform(train_y_test)
+    train_y_true = ss_y.inverse_transform(train_y)
     print(mean_absolute_error(train_y_true,pred_res_true))
-    print('实际', train_y_true.flatten().shape)
+    print('实际', train_y.flatten().shape)
+
+
+
+    # # 测试时候的预测情况图：
+    # pred_res_true = ss_y.inverse_transform(pred_res)
+    # train_y_true = ss_y.inverse_transform(train_y_test)
+    # print(mean_absolute_error(train_y_true,pred_res_true))
+    # print('实际', train_y_true.flatten().shape)
 
 
 
@@ -322,7 +322,7 @@ if __name__ == '__main__':
     # 为了方便看，只显示了后100行数据
     line1, = axes.plot(range(100), pred.flatten()[-100:], 'b--', label='rnn计算结果')
     # line2,=axes.plot(range(len(gbr_pridict)), gbr_pridict, 'r--',label='优选参数')
-    line3, = axes.plot(range(100), train_y_test.flatten()[- 100:], 'r', label='实际')
+    line3, = axes.plot(range(100), train_y.flatten()[- 100:], 'r', label='实际')
 
     axes.grid()
     fig.tight_layout()

@@ -160,7 +160,7 @@ class LSTMRNN(object):
 
 
 if __name__ == '__main__':
-    is_train = 0
+    is_train = 1
     # seq, res = get_batch_boston()
     model = LSTMRNN(TIME_STEPS, INPUT_SIZE, OUTPUT_SIZE, CELL_SIZE, BATCH_SIZE)
     sess = tf.Session()
