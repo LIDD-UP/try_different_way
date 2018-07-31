@@ -1,0 +1,6 @@
+1：sklearn LinearRegression
+2:sklearn ridge
+3:sklearn LASSO
+4:RandomForestRegressor
+5:Xgboost
+6:keras
