@@ -32,3 +32,7 @@ KeyError: "The name 'input/xs' refers to an Operation not in the graph."
 ValueError: Variable in_hidden/weights already exists, disallowed.
 Did you mean to set reuse=True or reuse=tf.AUTO_REUSE in VarScope? Originally defined at:
 定义了两次，
+
+
+one_hot 编码 sklearn 和 pandas 都有one_hot 独热编码方式：
+但是推荐使用pandas 下的get_dummies
