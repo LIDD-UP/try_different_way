@@ -1,8 +1,8 @@
 #-*- coding:utf-8 _*-  
 """ 
 @author:Administrator
-@file: sklearn_linearRegression.py
-@time: 2018/7/31
+@file: RandomForest_1.py
+@time: 2018/8/1
 """
 import numpy as np
 
@@ -10,9 +10,6 @@ np.set_printoptions(suppress=False)
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib as mpl
-
-plt.rcParams['savefig.dpi'] = 300 #图片像素
-plt.rcParams['figure.dpi'] = 300 #分辨
 from scipy.stats import skew
 from sklearn.metrics import mean_absolute_error
 from sklearn.model_selection import cross_val_score
@@ -123,22 +120,29 @@ train, train_label, test = data_process(data_train_456, data_test_6, data_train_
 
 
 # 用 随机森林：
-from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import RandomForestRegressor
 
+max_features = [.1,.3,.5,.7,.9,.99]
+test_scores = []
+for max_feat in max_features:
+    clf = RandomForestRegressor(n_estimators=200,max_features=max_feat)
+    test_score = np.sqrt(-cross_val_score(clf,train,train_label,cv=5,scoring='neg_mean_squared_error'))
+    test_scores.append(np.mean(test_score))
+
+plt.plot(max_features,test_scores)
+plt.title('RandomForest alpha vs Error')
+plt.show()
 
 # 进行训练
-model_linearregression = LinearRegression()
-model_linearregression.fit(train,train_label)
-y_pr_forest = np.expm1(model_linearregression.predict(test))
+model_random_forest = RandomForestRegressor(n_estimators=500,max_features=.3)
+model_random_forest.fit(train,train_label)
+y_pr_forest = np.expm1(model_random_forest.predict(test))
 print(test.shape)
 print(mean_absolute_error(data_test_6_label,y_pr_forest))
 
 plt.plot(y_pr_forest[0:100],c='red',label="pre")
 plt.plot(data_test_6_label[0:100],c='black',label='true')
-plt.title("linearRegression pre and label distribute circumstance")
+plt.title("RandomForest pre and label distribute circumstance")
 plt.legend()
 plt.show()
-
-'''
-9.600849870443358
-'''
+# 2.5784470987831304e+19

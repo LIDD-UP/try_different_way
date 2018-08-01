@@ -152,24 +152,44 @@ def rmse_cv(model):
 # # 画图产看预测结果和实际结果的分布情况：
 # plt.plot(pre[0:100],c='red',label="pre")
 # plt.plot(data_test_6_label[0:100],c='black',label='true')
+# plt.title("lasso pre and label distribute circumstance")
+# plt.legend()
 # plt.show()
 # # 0.77679992833927
 # # 9.687457422736461
 ## 预测效果太差，几乎没有波动
 
+# 使用lasso来做
+from sklearn.linear_model import LassoCV
+model_lasso = LassoCV(alphas = [1, 0.1, 0.001, 0.0005]).fit(train, train_label)
+
+
+y_redge = np.expm1(model_lasso.predict(test))
+print(mean_absolute_error(data_test_6_label,y_redge))
+
+# 画图
+plt.plot(y_redge[0:100],c='red',label="pre")
+plt.plot(data_test_6_label[0:100],c='black',label='true')
+plt.title("lasso pre and label distribute circumstance")
+plt.legend()
+plt.show()
+
 '''
-# # 使用lasso来做
-# from sklearn.linear_model import LassoCV
-# model_lasso = LassoCV(alphas = [1, 0.1, 0.001, 0.0005]).fit(X_train_456, X_train_456_label)
-
-
-# model_lasso.fit(X_train_456,X_train_456_label)
-# y_redge = np.expm1(model_lasso.predict(X_test_6))
-# print(mean_absolute_error(data_test_6_label,y_redge)) 
-coef = pd.Series(model_lasso.coef_, index = X_train.columns)
+倾斜的好!套索的性能更好，
+我们就用这个来预测测试集。
+套索的另一个优点是它为你做了特性选择——
+设置它认为不重要的特性的系数为零。
+让我们来看看系数:数值特性
+'''
+coef = pd.Series(model_lasso.coef_, index = train.columns)
 print("Lasso picked " + str(sum(coef != 0)) + " variables and eliminated the other " +  str(sum(coef == 0)) + " variables")
 
 '''
+9.601419940419717
+Lasso picked 4 variables and eliminated the other 2 variables
+效果较好，但是有些值偏离的太离谱；
+'''
+
 
 
 

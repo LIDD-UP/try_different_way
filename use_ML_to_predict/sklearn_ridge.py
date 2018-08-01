@@ -150,6 +150,8 @@ print(mean_absolute_error(data_test_6_label,pre)) #预测误差9.600848392842362
 # 画图产看预测结果和实际结果的分布情况：
 plt.plot(pre[0:100],c='red',label="pre")
 plt.plot(data_test_6_label[0:100],c='black',label='true')
+plt.title("ridge pre and label distribute circumstance")
+plt.legend()
 plt.show()
 # 拟合效果较好，
 

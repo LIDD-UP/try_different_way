@@ -86,8 +86,8 @@ submission.to_csv(fileName, index=False)
 
 print(mean_absolute_error(Y_label,y_test_pred))
 
-plt.plot(y_test_pred,c='red',label='预测值')
-plt.plot(Y_label,c='green',label='真是值')
+plt.plot(y_test_pred[0:100],c='red',label='预测值')
+plt.plot(Y_label[0:100],c='green',label='真是值')
 
 plt.legend()
 plt.show()
