@@ -1,8 +1,8 @@
 #-*- coding:utf-8 _*-  
 """ 
 @author:Administrator
-@file: Keras.py
-@time: 2018/7/31
+@file: sklearn_lasso2_xgboost.py
+@time: 2018/8/2
 """
 import numpy as np
 
@@ -109,80 +109,79 @@ def data_process(train, test, train_label, start_column, stop_column):
 train, train_label, test = data_process(data_train_456, data_test_6, data_train_456_label, 'longitude', 'bedrooms')
 
 
-from keras.layers import Dense
-from keras.models import Sequential
-from keras.regularizers import l1
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LassoCV
+model_lasso = LassoCV(alphas = [1, 0.1, 0.001, 0.0005]).fit(train, train_label)
 
-# 这里把训练地列数据标准化了，并没有对label数据进行标准化
-# train = StandardScaler().fit_transform(train)
-# # X_tr ,X_val,y_tr,y_val = train_test_split(train,train_label,random_state=3)
-# # print(X_tr.shape)
-# model = Sequential()
-# model.add(Dense(256, activation="relu", input_dim = train.shape[1]))
-# # model.add(Dense(512, activation="relu", input_dim = train.shape[1]))
-# model.add(Dense(1,input_dim=train.shape[1],kernel_regularizer=l1(0.001)))
-# model.compile(loss="mse",optimizer="adam")
-# model.summary() # 用于总结用的，把每一层得输出形状以及参数（param）统计出来了；
-# # hist = model.fit(X_tr,y_tr,validation_data=(X_val,y_val))
-# model.fit(train,train_label)
-# pred1 = model.predict(test)
-# preds = np.expm1(model.predict(test))
-# print(mean_absolute_error(data_test_6_label,preds))
-# # draw = pd.DataFrame({"label":data_test_6_label,"preds":preds})
-# # draw.plot(x='label',y='preds',kind='scatter')
-# # pd.Series(model.predict(X_val)[:,0]).hist()
-# print('preds',pred1[0:10])
-# print(data_test_6_label)
-# plt.plot(preds,c='blue',label='preds')
-# plt.plot(data_test_6_label,c='green',label='true')
+coef = pd.Series(model_lasso.coef_, index = train.columns)
+print("Lasso picked " + str(sum(coef != 0)) + " variables and eliminated the other " +  str(sum(coef == 0)) + " variables")
+
+
+imp_coef = pd.concat([coef.sort_values().head(10),
+                     coef.sort_values().tail(10)])
+import matplotlib
+matplotlib.rcParams['figure.figsize'] = (8.0, 10.0)
+imp_coef.plot(kind = "barh")
+plt.title("Coefficients in the Lasso Model")
+plt.show()
+
+
+#let's look at the residuals as well:
+matplotlib.rcParams['figure.figsize'] = (6.0, 6.0)
+
+preds = pd.DataFrame({"preds":model_lasso.predict(train), "true":train_label})
+
+preds["residuals"] = preds["true"] - preds["preds"]
+print(preds.head())
+preds.plot(x = "preds", y = "true",kind = "scatter") # 直接用pandas得dataframe对象画图的时候给出下标就可以画了；
+plt.show()
+
+
+import xgboost as xgb
+
+dtrain = xgb.DMatrix(train,label=train_label)
+dtest = xgb.DMatrix(test)
+
+params = {"max_depath":2,"eta":0.1}
+model = xgb.cv(params,dtrain,num_boost_round=500,early_stopping_rounds=100)
+
+model.loc[30:,["test-rmse-mean","train-rmse-mean"]].plot()
+plt.show()
+
+# xgb训练，里面得参数是根据xgb.cv来获取得得
+model_xgb = xgb.XGBRegressor(n_estimators=360,max_depth=2,learning_rate=0.1) # the params were tuned using xgb.cv
+model_xgb.fit(train,train_label)
+
+# 获取两种方法得预测值
+xgb_preds = np.expm1(model_xgb.predict(test))
+lasso_preds = np.expm1(model_lasso.predict(test))
+
+# 画出xgb预测值和lasso预测值得散点图
+predictions = pd.DataFrame({"xgb":xgb_preds,"lasso":lasso_preds})
+predictions.plot(x="xgb",y="lasso",kind="scatter",title='xgb-lasso-comparision')
+plt.show()
+
+# 取一个加权值
+preds = 0.7*lasso_preds+0.3*xgb_preds
+print(mean_absolute_error(data_test_6_label,preds))
+# solution = pd.DataFrame({"id":test.index,"daysOnMarket":preds})
+# solution.to_csv("ridge_sol.csv",index=False)
+
+
+
+
+
+
+
+# # 预测
+# y_redge = np.expm1(model_lasso.predict(test))
+# print(mean_absolute_error(data_test_6_label,y_redge))
+#
+# # 画图
+# plt.plot(y_redge[0:100],c='red',label="pre")
+# plt.plot(data_test_6_label[0:100],c='black',label='true')
+# plt.title("lasso pre and label distribute circumstance")
 # plt.legend()
 # plt.show()
 
 
-X_train_data = data_train_456[['longitude', 'latitude', 'price', 'buildingTypeId', 'bedrooms']]
-X_test_data = data_test_6[['longitude', 'latitude', 'price', 'buildingTypeId', 'bedrooms']]
-# X_train_data = StandardScaler().fit_transform(X_train_data)
-# X_test_data = StandardScaler().fit_transform(X_test_data)
-
-# X_train_label = StandardScaler().fit_transform(np.array(data_train_456_label).reshape(-1,1))
-# X_train_label = X_train_label.reshape(-1,1)
-
-
-model = Sequential()
-
-model.add(Dense(16, activation="relu", input_dim = X_train_data.shape[1]))
-model.add(Dense(32, activation="relu", input_dim = X_train_data.shape[1]))
-model.add(Dense(64, activation="relu", input_dim = X_train_data.shape[1]))
-model.add(Dense(128, activation="relu", input_dim = X_train_data.shape[1]))
-model.add(Dense(256, activation="relu", input_dim = X_train_data.shape[1]))
-model.add(Dense(516, activation="relu", input_dim = X_train_data.shape[1]))
-model.add(Dense(1,input_dim=X_train_data.shape[1],kernel_regularizer=l1(0.0001)))
-model.compile(loss="mse",optimizer="adam")
-model.summary()
-model.fit(X_train_data,data_train_456_label,epochs=10,)
-
-pred1 = model.predict(X_test_data)
-# ss = StandardScaler()
-# pred1 = ss.inverse_transform(pred1)
-
-print(mean_absolute_error(data_test_6_label,pred1))
-
-print('preds',pred1[0:10])
-print(data_test_6_label)
-plt.plot(pred1[:20],c='blue',label='preds')
-plt.plot(data_test_6_label[:20],c='green',label='true')
-plt.legend()
-plt.show()
-
-
-
-
-
-
-
-
-
-
-
+# 9.4

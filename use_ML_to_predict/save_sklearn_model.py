@@ -1,9 +1,17 @@
 #-*- coding:utf-8 _*-  
 """ 
 @author:Administrator
-@file: Keras.py
-@time: 2018/7/31
+@file: save_sklearn_model.py
+@time: 2018/8/2
 """
+'''
+机器学习算法主要有两种方式：保存模型（sklearn下）
+第一种是通过sklearn下得externals joblib得方式；
+
+
+
+
+'''
 import numpy as np
 
 np.set_printoptions(suppress=False)
@@ -109,80 +117,31 @@ def data_process(train, test, train_label, start_column, stop_column):
 train, train_label, test = data_process(data_train_456, data_test_6, data_train_456_label, 'longitude', 'bedrooms')
 
 
-from keras.layers import Dense
-from keras.models import Sequential
-from keras.regularizers import l1
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split
 
-# 这里把训练地列数据标准化了，并没有对label数据进行标准化
-# train = StandardScaler().fit_transform(train)
-# # X_tr ,X_val,y_tr,y_val = train_test_split(train,train_label,random_state=3)
-# # print(X_tr.shape)
-# model = Sequential()
-# model.add(Dense(256, activation="relu", input_dim = train.shape[1]))
-# # model.add(Dense(512, activation="relu", input_dim = train.shape[1]))
-# model.add(Dense(1,input_dim=train.shape[1],kernel_regularizer=l1(0.001)))
-# model.compile(loss="mse",optimizer="adam")
-# model.summary() # 用于总结用的，把每一层得输出形状以及参数（param）统计出来了；
-# # hist = model.fit(X_tr,y_tr,validation_data=(X_val,y_val))
-# model.fit(train,train_label)
-# pred1 = model.predict(test)
-# preds = np.expm1(model.predict(test))
+from sklearn.externals import joblib
+from sklearn.ensemble import RandomForestRegressor
+
+# 交叉验证
+
+# 训练：及保存模型：joblib更适合大数据量得模型，且只能往硬盘存储，不能往字符串存储；
+random_forest = RandomForestRegressor(n_estimators=400,max_depth=6)
+random_forest.fit(train,train_label)
+# joblib.dump(random_forest,"train_model.m")
+
+# 导入模型预测：
+# model = joblib.load('train_model.m')
+# preds = model.predict(test)
 # print(mean_absolute_error(data_test_6_label,preds))
-# # draw = pd.DataFrame({"label":data_test_6_label,"preds":preds})
-# # draw.plot(x='label',y='preds',kind='scatter')
-# # pd.Series(model.predict(X_val)[:,0]).hist()
-# print('preds',pred1[0:10])
-# print(data_test_6_label)
-# plt.plot(preds,c='blue',label='preds')
-# plt.plot(data_test_6_label,c='green',label='true')
-# plt.legend()
-# plt.show()
+# 15.8135039127917
 
 
-X_train_data = data_train_456[['longitude', 'latitude', 'price', 'buildingTypeId', 'bedrooms']]
-X_test_data = data_test_6[['longitude', 'latitude', 'price', 'buildingTypeId', 'bedrooms']]
-# X_train_data = StandardScaler().fit_transform(X_train_data)
-# X_test_data = StandardScaler().fit_transform(X_test_data)
-
-# X_train_label = StandardScaler().fit_transform(np.array(data_train_456_label).reshape(-1,1))
-# X_train_label = X_train_label.reshape(-1,1)
+# 方法二 ，通过pickle 模块来保存sklearn 内部得joblib；
+# import pickle
+# with open('save/clf.pickle','wb') as f:
+#     pickle.dump(random_forest,f)
 
 
-model = Sequential()
-
-model.add(Dense(16, activation="relu", input_dim = X_train_data.shape[1]))
-model.add(Dense(32, activation="relu", input_dim = X_train_data.shape[1]))
-model.add(Dense(64, activation="relu", input_dim = X_train_data.shape[1]))
-model.add(Dense(128, activation="relu", input_dim = X_train_data.shape[1]))
-model.add(Dense(256, activation="relu", input_dim = X_train_data.shape[1]))
-model.add(Dense(516, activation="relu", input_dim = X_train_data.shape[1]))
-model.add(Dense(1,input_dim=X_train_data.shape[1],kernel_regularizer=l1(0.0001)))
-model.compile(loss="mse",optimizer="adam")
-model.summary()
-model.fit(X_train_data,data_train_456_label,epochs=10,)
-
-pred1 = model.predict(X_test_data)
-# ss = StandardScaler()
-# pred1 = ss.inverse_transform(pred1)
-
-print(mean_absolute_error(data_test_6_label,pred1))
-
-print('preds',pred1[0:10])
-print(data_test_6_label)
-plt.plot(pred1[:20],c='blue',label='preds')
-plt.plot(data_test_6_label[:20],c='green',label='true')
-plt.legend()
-plt.show()
-
-
-
-
-
-
-
-
-
-
-
+# with open('save/clf.pickle','rb') as f:
+#     model = pickle.load(f)
+#     preds = model.predict(test)
+#     print(mean_absolute_error(data_test_6_label,preds))

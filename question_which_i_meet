@@ -41,3 +41,11 @@ one_hot 编码 sklearn 和 pandas 都有one_hot 独热编码方式：
 pd.set_option('max_column',100) 就可一了；
 
 用 pandas的getdummies result memeryError 这个可以通过把降入sparse=True 或者时将特征一个个的进行处理；
+
+UserWarning: Update your `Dense` call to the Keras 2 API: `Dense(1, input_dim=6, kernel_regularizer=<keras.reg...)`
+  model.add(Dense(1,input_dim=train.shape[1],W_regularizer=l1(0.001)))
+  ：也就是把W_regularizer改为kernel_regularizer
+
+TypeError: Singleton array array(StandardScaler(copy=True, with_mean=True, with_std=True),
+      dtype=object) cannot be considered a valid collection.
+      :这是由于在训练期间应该使用fit_transform 不应该使用fit，fit和train有点类似但是不太相同；fit相当于是适合得意思；
