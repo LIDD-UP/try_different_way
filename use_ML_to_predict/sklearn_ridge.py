@@ -122,8 +122,8 @@ def rmse_cv(model):
 from sklearn.linear_model import Ridge
 
 
-# alphas = [x for x in np.arange(0,1,0.1)]
-alphas = np.logspace(1,100,50)
+alphas = [x for x in np.arange(0,1,0.000001)]
+# alphas = np.logspace(1,100,50)
 print(alphas)
 cv_ridge = [rmse_cv(Ridge(alpha = alpha)).mean()
             for alpha in alphas]

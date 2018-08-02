@@ -123,7 +123,7 @@ train, train_label, test = data_process(data_train_456, data_test_6, data_train_
 # 用 随机森林：
 from xgboost import XGBRegressor
 
-params= [x for x in range(50)]
+params= [x for x in range(200)]
 test_scores = []
 for param in params:
     clf = XGBRegressor(max_depth=param)

@@ -143,8 +143,8 @@ from sklearn.model_selection import train_test_split
 
 X_train_data = data_train_456[['longitude', 'latitude', 'price', 'buildingTypeId', 'bedrooms']]
 X_test_data = data_test_6[['longitude', 'latitude', 'price', 'buildingTypeId', 'bedrooms']]
-# X_train_data = StandardScaler().fit_transform(X_train_data)
-# X_test_data = StandardScaler().fit_transform(X_test_data)
+X_train_data = StandardScaler().fit_transform(X_train_data)
+X_test_data = StandardScaler().fit_transform(X_test_data)
 
 # X_train_label = StandardScaler().fit_transform(np.array(data_train_456_label).reshape(-1,1))
 # X_train_label = X_train_label.reshape(-1,1)
@@ -158,10 +158,10 @@ model.add(Dense(64, activation="relu", input_dim = X_train_data.shape[1]))
 model.add(Dense(128, activation="relu", input_dim = X_train_data.shape[1]))
 model.add(Dense(256, activation="relu", input_dim = X_train_data.shape[1]))
 model.add(Dense(516, activation="relu", input_dim = X_train_data.shape[1]))
-model.add(Dense(1,input_dim=X_train_data.shape[1],kernel_regularizer=l1(0.0001)))
+model.add(Dense(1,input_dim=X_train_data.shape[1],kernel_regularizer=l1(0.1)))
 model.compile(loss="mse",optimizer="adam")
 model.summary()
-model.fit(X_train_data,data_train_456_label,epochs=10,)
+model.fit(X_train_data,data_train_456_label,epochs=1000,)
 
 pred1 = model.predict(X_test_data)
 # ss = StandardScaler()
@@ -173,6 +173,7 @@ print('preds',pred1[0:10])
 print(data_test_6_label)
 plt.plot(pred1[:20],c='blue',label='preds')
 plt.plot(data_test_6_label[:20],c='green',label='true')
+plt.title("kears  pre and label distribute circumstance")
 plt.legend()
 plt.show()
 

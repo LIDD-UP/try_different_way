@@ -126,7 +126,7 @@ from sklearn.linear_model import Ridge
 
 ridge = Ridge()
 
-params = [x for x in range(1,50)]
+params = [x for x in np.arange(1,500,1)]
 test_scores = []
 for param in params:
     clf = BaggingRegressor(n_estimators=param,base_estimator=ridge)
@@ -138,7 +138,7 @@ plt.title('bagging alpha vs Error')
 plt.show()
 
 # 进行训练
-model_random_bagging = BaggingRegressor(n_estimators=2,base_estimator=ridge)
+model_random_bagging = BaggingRegressor(n_estimators=200,base_estimator=ridge)
 model_random_bagging.fit(train,train_label)
 y_pr_forest = np.expm1(model_random_bagging.predict(test))
 print(test.shape)

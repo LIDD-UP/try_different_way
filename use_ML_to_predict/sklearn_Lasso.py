@@ -161,7 +161,7 @@ def rmse_cv(model):
 
 # 使用lasso来做
 from sklearn.linear_model import LassoCV
-model_lasso = LassoCV(alphas = [1, 0.1, 0.001, 0.0005]).fit(train, train_label)
+model_lasso = LassoCV(alphas = [x for x in np.arange(0,2,0.000001) ]).fit(train, train_label)
 
 
 y_redge = np.expm1(model_lasso.predict(test))

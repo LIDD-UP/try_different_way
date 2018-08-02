@@ -25,20 +25,90 @@ from subprocess import check_output
 
 # Any results you write to the current directory are saved as output.
 
+import numpy as np
 
-df = pd.read_csv('./company_house_data/month_6_1_try.csv', sep='\s*,\s*', encoding="utf-8-sig", engine='python')
-tdf = pd.read_csv('./company_house_data/test_data_6_1_try.csv', sep='\s*,\s*', encoding="utf-8-sig", engine='python')
+np.set_printoptions(suppress=False)
+import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+from scipy.stats import skew
+from sklearn.metrics import mean_absolute_error
+from sklearn.model_selection import cross_val_score
+
+# pandas 的显示设置函数：
+mpl.rcParams['font.sans-serif'] = ['SimHei']  # 指定默认字体 SimHei为黑体
+mpl.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号
+
+pd.set_option('max_columns', 200)
+pd.set_option('display.width', 1000)
+
+data_train_456 = pd.read_csv('./company_house_data/month_456_1.csv')
+data_train_6 = pd.read_csv('./company_house_data/month_6_1.csv')
+data_test_6 = pd.read_csv('./company_house_data/test_data_6_1.csv')
+
+# 去掉buildingTypeId 为空的情况避免再编码的时候出现na这一类
+data_train_456 = data_train_456[pd.isna(data_train_456.buildingTypeId) != True]
+data_train_6 = data_train_6[pd.isna(data_train_6.buildingTypeId) != True]
+data_test_6 = data_test_6[pd.isna(data_test_6.buildingTypeId) != True]
+
+
+
+
+
+
+# 统计 count(不包括缺失值的情况）
+# print(data_train_456.describe())
+# print(data_train_6.describe())
+# print(data_test_6.describe())
+# 通过查看发现bedrooms 最大值和最小值差距有点大需要用value_counts查看一离群点；
+# 接下来要对所有列进行离群点，缺失值，查看；
+
+# data_train_456['price'].hist()
+# np.log1p(data_train_456['daysOnMarket']).hist()
+# plt.show()
+
+
+# 接下来处理步骤：
+# 1：去掉省份城市地址；
+# 2：将原始数据的列调整顺序；
+# 3：然后将训练数据和测试数据的标签数据和特征数据分开；
+# 4：把训练数据和测试数据组合起来cancat，一起进行处理，最后再通过index取出来；
+# 5: 将原本的数据中本身是类别的buildingtype转换成str，
+# 6: 将原本的数值数据进行log1p处理
+# 7：对buildingtypeid 进行one_hot 编码
+# 8：填充缺失值
+# 9：获取训练数据测试数据的最后数据；
+# 10 建模处理
+
+
+# 去掉省份城市地址，调整顺序
+data_train_456 = data_train_456[['longitude', 'latitude', 'price', 'buildingTypeId', 'bedrooms', 'daysOnMarket']]
+print('data_train_456 shape:', data_train_456.shape)
+data_train_6 = data_train_6[['longitude', 'latitude', 'price', 'buildingTypeId', 'bedrooms', 'daysOnMarket']]
+print('data_train_6 shape:', data_train_6.shape)
+data_test_6 = data_test_6[['longitude', 'latitude', 'price', 'buildingTypeId', 'bedrooms', 'daysOnMarket']]
+print('data_test_6 shape:', data_test_6.shape)
+
+# 取出label：
+data_train_456_label = data_train_456['daysOnMarket']
+data_train_6_label = data_train_6['daysOnMarket']
+data_test_6_label = data_test_6['daysOnMarket']
+
+
+
+# df = pd.read_csv('./company_house_data/month_6_1_try.csv', sep='\s*,\s*', encoding="utf-8-sig", engine='python')
+# tdf = pd.read_csv('./company_house_data/test_data_6_1_try.csv', sep='\s*,\s*', encoding="utf-8-sig", engine='python')
+
+#
+df = data_train_456
+tdf = data_test_6
 Y_label = tdf['daysOnMarket']
 
-daysOnMarket = df['daysOnMarket']
 
+daysOnMarket = df['daysOnMarket']
 df.fillna(df.mean(), inplace=True)
-# TotalBsmtSFMean = df['TotalBsmtSF'].mean()
-# df.loc[df['TotalBsmtSF'] == 0, 'TotalBsmtSF'] = np.round(TotalBsmtSFMean).astype(int)
 
 tdf.fillna(tdf.mean(), inplace=True)
-# TTotalBsmtSFMean = tdf['TotalBsmtSF'].mean()
-# tdf.loc[tdf['TotalBsmtSF'] == 0, 'TotalBsmtSF'] = np.round(TotalBsmtSFMean).astype(int)
 
 y = df['daysOnMarket']
 df = df.drop('daysOnMarket', axis=1)
@@ -88,6 +158,7 @@ print(mean_absolute_error(Y_label,y_test_pred))
 
 plt.plot(y_test_pred[0:100],c='red',label='预测值')
 plt.plot(Y_label[0:100],c='green',label='真是值')
+plt.title("RandomForestRegressor_days pre and label distribute circumstance")
 
 plt.legend()
 plt.show()

@@ -110,7 +110,7 @@ train, train_label, test = data_process(data_train_456, data_test_6, data_train_
 
 
 from sklearn.linear_model import LassoCV
-model_lasso = LassoCV(alphas = [1, 0.1, 0.001, 0.0005]).fit(train, train_label)
+model_lasso = LassoCV(alphas = [x for x in np.arange(0,2,0.000001)]).fit(train, train_label)
 
 coef = pd.Series(model_lasso.coef_, index = train.columns)
 print("Lasso picked " + str(sum(coef != 0)) + " variables and eliminated the other " +  str(sum(coef == 0)) + " variables")
@@ -132,7 +132,7 @@ preds = pd.DataFrame({"preds":model_lasso.predict(train), "true":train_label})
 
 preds["residuals"] = preds["true"] - preds["preds"]
 print(preds.head())
-preds.plot(x = "preds", y = "true",kind = "scatter") # 直接用pandas得dataframe对象画图的时候给出下标就可以画了；
+preds.plot(x = "preds", y = "true",kind = "scatter",title= "preds-true-distribute-lasso2,xgboost") # 直接用pandas得dataframe对象画图的时候给出下标就可以画了；
 plt.show()
 
 
@@ -163,6 +163,13 @@ plt.show()
 # 取一个加权值
 preds = 0.7*lasso_preds+0.3*xgb_preds
 print(mean_absolute_error(data_test_6_label,preds))
+
+plt.plot(preds[0:100],c='red',label="pre")
+plt.plot(data_test_6_label[0:100],c='black',label='true')
+plt.title("lasso_xgboost pre and label distribute circumstance")
+plt.legend()
+plt.show()
+
 # solution = pd.DataFrame({"id":test.index,"daysOnMarket":preds})
 # solution.to_csv("ridge_sol.csv",index=False)
 

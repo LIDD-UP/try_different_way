@@ -122,19 +122,20 @@ train, train_label, test = data_process(data_train_456, data_test_6, data_train_
 # 用 随机森林：
 from sklearn.ensemble import RandomForestRegressor
 
-max_features = [.1,.3,.5,.7,.9,.99]
-test_scores = []
-for max_feat in max_features:
-    clf = RandomForestRegressor(n_estimators=200,max_features=max_feat)
-    test_score = np.sqrt(-cross_val_score(clf,train,train_label,cv=5,scoring='neg_mean_squared_error'))
-    test_scores.append(np.mean(test_score))
-
-plt.plot(max_features,test_scores)
-plt.title('RandomForest alpha vs Error')
-plt.show()
+# 交叉验证
+# max_features = [.1,.3,.5,.7,.9,.99]
+# test_scores = []
+# for max_feat in max_features:
+#     clf = RandomForestRegressor(n_estimators=200,max_features=max_feat)
+#     test_score = np.sqrt(-cross_val_score(clf,train,train_label,cv=5,scoring='neg_mean_squared_error'))
+#     test_scores.append(np.mean(test_score))
+#
+# plt.plot(max_features,test_scores)
+# plt.title('RandomForest alpha vs Error')
+# plt.show()
 
 # 进行训练
-model_random_forest = RandomForestRegressor(n_estimators=500,max_features=.3)
+model_random_forest = RandomForestRegressor(n_estimators=200,max_depth=8)
 model_random_forest.fit(train,train_label)
 y_pr_forest = np.expm1(model_random_forest.predict(test))
 print(test.shape)
@@ -142,7 +143,7 @@ print(mean_absolute_error(data_test_6_label,y_pr_forest))
 
 plt.plot(y_pr_forest[0:100],c='red',label="pre")
 plt.plot(data_test_6_label[0:100],c='black',label='true')
-plt.title("RandomForest pre and label distribute circumstance")
+plt.title("RandomForest_1 pre and label distribute circumstance")
 plt.legend()
 plt.show()
 # 2.5784470987831304e+19
