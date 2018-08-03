@@ -49,3 +49,6 @@ UserWarning: Update your `Dense` call to the Keras 2 API: `Dense(1, input_dim=6,
 TypeError: Singleton array array(StandardScaler(copy=True, with_mean=True, with_std=True),
       dtype=object) cannot be considered a valid collection.
       :这是由于在训练期间应该使用fit_transform 不应该使用fit，fit和train有点类似但是不太相同；fit相当于是适合得意思；
+
+
+GridSearchCV和RandomizedSearchCV得区别是一个是暴力组合参数，选择最好得一个是给定一个范围选择最好得；

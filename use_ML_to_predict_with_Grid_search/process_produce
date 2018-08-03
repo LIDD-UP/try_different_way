@@ -1,0 +1,5 @@
+1:ridge
+2:Lasso
+3:RandomForest
+4:Bagging
+5:XGBoost
