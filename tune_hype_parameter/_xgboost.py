@@ -87,6 +87,7 @@ def data_process(train, test, train_label, start_column, stop_column):
     skewed_feats = train[numeric_feats].apply(lambda x: skew(x.dropna()))  # compute skewness
     skewed_feats = skewed_feats[skewed_feats > 0.75]
     skewed_feats = skewed_feats.index
+    print(skewed_feats)
 
     all_data[skewed_feats] = np.log1p(all_data[skewed_feats])
 
@@ -111,7 +112,7 @@ from sklearn.model_selection import GridSearchCV
 # 寻找超参数
 params = {
           # 'n_estimators': [100,300,500,1000,5000],# 300
-          # 'max_depth':[x for x in range(3,10,1)],#5
+          'max_depth':[x for x in range(3,10,1)],#5
           # 'learning_rate':[0.001,0.01,0.05,0.1,0.3,0.5,0.7,0.9], # 0.3
           # 'reg_alpha':[1e-5,1e-2,0.1,1,100],#1
           # 'gamma':[x for x in range(0,10,1)],#0
