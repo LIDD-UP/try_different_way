@@ -131,7 +131,7 @@ dtest = xgb.DMatrix(test)
 params = {"max_depath":2,"eta":0.1}
 model = xgb.cv(params,dtrain,num_boost_round=500,early_stopping_rounds=100)
 
-model.loc[30:,["xgboost2_test-rmse-mean","xgboost2_train-rmse-mean"]].plot()
+model.loc[30:,["test-rmse-mean","train-rmse-mean"]].plot()
 plt.show()
 
 # xgb训练，里面得参数是根据xgb.cv来获取得得

@@ -19,7 +19,7 @@ from sklearn.metrics import mean_absolute_error
 import pandas as pd
 
 
-month4_data = pd.read_csv('month_4_1.csv')
+month4_data = pd.read_csv('month_456_1.csv')
 month4_data = month4_data.dropna()
 x = month4_data[['longitude','latitude', 'price', 'buildingTypeId',]]
 y = month4_data['daysOnMarket']
@@ -132,7 +132,8 @@ prediction = tf.matmul(h_fc1_drop, W_fc2) + b_fc2
 # 计算 predition与y 差距 所用方法很简单就是用 suare()平方,sum()求和,mean()平均值
 cross_entropy = tf.reduce_mean(tf.reduce_sum(tf.square(ys - prediction), reduction_indices=[1]))
 # 0.01学习效率,minimize(loss)减小loss误差
-train_step = tf.train.AdamOptimizer(0.01).minimize(cross_entropy)
+train_step = tf.train.AdamOptimizer(0.001).minimize(cross_entropy)
+saver = tf.train.Saver()
 
 sess = tf.Session()
 # important step
@@ -140,10 +141,14 @@ sess = tf.Session()
 # 2017-03-02 if using tensorflow >= 0.12
 sess.run(tf.global_variables_initializer())
 # 训练500次
-for i in range(1500):
+for i in range(50000):
     sess.run(train_step, feed_dict={xs: train_x_disorder, ys: train_y_disorder, keep_prob: 0.7})
-    print(i, '误差=',
-          sess.run(cross_entropy, feed_dict={xs: train_x_disorder, ys: train_y_disorder, keep_prob: 1.0}))  # 输出loss值
+    cross = sess.run(cross_entropy, feed_dict={xs: train_x_disorder, ys: train_y_disorder, keep_prob: 1.0})
+    print(i, '误差=',cross)  # 输出loss值
+    if cross <0.9:
+        saver.save(sess,'./CNN9/my-model',global_step=i)
+    if cross<0.7:
+        saver.save(sess,'./CNN7/my-model',global_step=i)
 
 # 可视化
 prediction_value = sess.run(prediction, feed_dict={xs: test_x_disorder, ys: test_y_disorder, keep_prob: 1.0})

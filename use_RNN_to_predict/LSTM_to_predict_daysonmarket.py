@@ -241,7 +241,7 @@ if __name__ == '__main__':
     # relocate to the local dir and run this line to view it on Chrome (http://0.0.0.0:6006/):
     # $ tensorboard --logdir='logs'
     if is_train == 1:
-        for j in range(1):  # 训练200次
+        for j in range(50000):  # 训练200次
             pred_res = None
             for i in range(12460):  # 把整个数据分为1246个时间段
                 seq, res = get_batch_boston()
@@ -262,11 +262,17 @@ if __name__ == '__main__':
                 _, cost, state, pred = sess.run(
                     [model.train_op, model.cost, model.cell_final_state, model.pred],
                     feed_dict=feed_dict)
+
+
                 pred_res = pred
 
                 result = sess.run(merged, feed_dict)
                 writer.add_summary(result, i)
             print('{0} cost: '.format(j), round(cost, 4))
+            if cost<0.8:
+                saver.save(sess, "predict_days8/my-model", global_step=j)
+            if cost<0.6:
+                saver.save(sess, "predict_days6/my-model", global_step=j)
             BATCH_START = 0  # 从头再来一遍
 
             saver.save(sess, "predict_days/my-model", global_step=j)
@@ -292,7 +298,6 @@ if __name__ == '__main__':
 
     # 画图
     print("结果:", pred_res.shape)
-
 
     #训练时的预测情况图：
     # 与最后一次训练所用的数据保持一致

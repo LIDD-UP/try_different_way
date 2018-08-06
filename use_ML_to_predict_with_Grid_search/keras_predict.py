@@ -182,8 +182,8 @@ model = KerasRegressor(build_fn=create_model,verbose=0)
 
 
 if __name__ == '__main__':
-    batch_size = [ 80, 100]
-    epochs = [2, 5]
+    batch_size = [ 10,20,30,40,50,60,70,80, 100,120]
+    epochs = [1, 5,10,30,50,100]
     optimizer = ['SGD', 'RMSprop', 'Adagrad', 'Adadelta', 'Adam', 'Adamax', 'Nadam']
     # optimizer = ['SGD', 'RMSprop']
     param_grid = dict(batch_size=batch_size, nb_epoch=epochs,optimizer=optimizer)
