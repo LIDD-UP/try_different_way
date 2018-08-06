@@ -106,7 +106,7 @@ def data_process(train, test, train_label, start_column, stop_column):
 # 获取处理之后的数据
 
 # 获取train_456 的数据
-train, train_label, test = data_process(data_train_456, data_test_6, data_train_456_label, 'longitude', 'bedrooms')
+train, train_label, test = data_process(data_train_6, data_test_6, data_train_6_label, 'longitude', 'bedrooms')
 
 
 from sklearn.linear_model import LassoCV

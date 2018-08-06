@@ -107,7 +107,7 @@ def data_process(train, test, train_label, start_column, stop_column):
 # 获取处理之后的数据
 
 # 获取train_456 的数据
-train, train_label, test = data_process(data_train_456, data_test_6, data_train_456_label, 'longitude', 'bedrooms')
+train, train_label, test = data_process(data_train_6, data_test_6, data_train_6_label, 'longitude', 'bedrooms')
 
 
 from keras.layers import Dense
@@ -155,46 +155,62 @@ from sklearn.model_selection import GridSearchCV
 from keras.wrappers.scikit_learn import KerasRegressor
 
 
-def create_model():
+def create_model(optimizer='adam'):
     model = Sequential()
-    model.add(Dense(16, activation="relu", input_dim = X_train_data.shape[1]))
-    model.add(Dense(32, activation="relu", input_dim = X_train_data.shape[1]))
-    model.add(Dense(64, activation="relu", input_dim = X_train_data.shape[1]))
+    # model.add(Dense(16, activation="relu", input_dim = X_train_data.shape[1]))
+    # model.add(Dense(32, activation="relu", input_dim = X_train_data.shape[1]))
+    # model.add(Dense(64, activation="relu", input_dim = X_train_data.shape[1]))
     model.add(Dense(128, activation="relu", input_dim = X_train_data.shape[1]))
-    model.add(Dense(256, activation="relu", input_dim = X_train_data.shape[1]))
-    model.add(Dense(516, activation="relu", input_dim = X_train_data.shape[1]))
-    model.add(Dense(1,input_dim=X_train_data.shape[1],kernel_regularizer=l1(0.1)))
-    model.compile(loss="mse",optimizer='adam')
+    # model.add(Dense(256, activation="relu", input_dim = X_train_data.shape[1]))
+    # model.add(Dense(516, activation="relu", input_dim = X_train_data.shape[1]))
+    model.add(Dense(1,input_dim=X_train_data.shape[1],kernel_regularizer=l1(0.1),activation='sigmoid'))
+    model.compile(loss="mse",optimizer=optimizer)
     return model
 # model.summary()
 
-model = KerasRegressor(build_fn=create_model, nb_epoch=100, batch_size=10, verbose=0)
+model = KerasRegressor(build_fn=create_model,verbose=0)
 
 
-params = {"nb_epoch":[x for x in range(1,100)],
-          "batch_size":[x for x in range(1,1000,10)],
-            # 'optimizer':['SGD', 'RMSprop', 'Adagrad', 'Adadelta', 'Adam', 'Adamax', 'Nadam']
-          # 'shuffle':[True,False]
-          }
-model = GridSearchCV(model,param_grid=params,scoring='neg_mean_absolute_error')
-model.fit(X_train_data,data_train_456_label)
-model = model.best_estimator_
+# params = {"nb_epoch":[x for x in range(1,100)],
+#           "batch_size":[x for x in range(1,1000,10)],
+#             # 'optimizer':['SGD', 'RMSprop', 'Adagrad', 'Adadelta', 'Adam', 'Adamax', 'Nadam']
+#           # 'shuffle':[True,False]
+#           }
+# model = GridSearchCV(model,param_grid=params,scoring='neg_mean_absolute_error')
+# model.fit(X_train_data,data_train_456_label)
+# model = model.best_estimator_
 
 
-model.summary()
-# 训练预测画图
-model.fit(X_train_data,data_train_456_label,epochs=1000,)
-pred1 = model.predict(X_test_data)
-# ss = StandardScaler()
-# pred1 = ss.inverse_transform(pred1)
-print(mean_absolute_error(data_test_6_label,pred1))
-print('preds',pred1[0:10])
-print(data_test_6_label)
-plt.plot(pred1[:20],c='blue',label='preds')
-plt.plot(data_test_6_label[:20],c='green',label='true')
-plt.title("kears  pre and label distribute circumstance")
-plt.legend()
-plt.show()
+if __name__ == '__main__':
+    batch_size = [ 80, 100]
+    epochs = [2, 5]
+    optimizer = ['SGD', 'RMSprop', 'Adagrad', 'Adadelta', 'Adam', 'Adamax', 'Nadam']
+    # optimizer = ['SGD', 'RMSprop']
+    param_grid = dict(batch_size=batch_size, nb_epoch=epochs,optimizer=optimizer)
+    grid = GridSearchCV(estimator=model, param_grid=param_grid, n_jobs=-1)
+    grid_result = grid.fit(X_train_data, data_train_456_label)
+    # summarize results
+    print("Best: %f using %s" % (grid_result.best_score_, grid_result.best_params_))
+    for params, mean_score, scores in grid_result.grid_scores_:
+        print("%f (%f) with: %r" % (scores.mean(), scores.std(), params))
+
+
+
+    model = grid_result.best_estimator_
+    # model.summary()
+    # 训练预测画图
+    model.fit(X_train_data,data_train_456_label)
+    pred1 = model.predict(X_test_data)
+    # ss = StandardScaler()
+    # pred1 = ss.inverse_transform(pred1)
+    print(mean_absolute_error(data_test_6_label,pred1))
+    print('preds',pred1[0:10])
+    print(data_test_6_label)
+    plt.plot(pred1[:20],c='blue',label='preds')
+    plt.plot(data_test_6_label[:20],c='green',label='true')
+    plt.title("kears  pre and label distribute circumstance")
+    plt.legend()
+    plt.show()
 
 
 

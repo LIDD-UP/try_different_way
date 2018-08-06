@@ -102,7 +102,7 @@ def data_process(train, test, train_label, start_column, stop_column):
 # 获取处理之后的数据
 
 # 获取train_456 的数据
-train, train_label, test = data_process(data_train_456, data_test_6, data_train_456_label, 'longitude', 'bedrooms')
+train, train_label, test = data_process(data_train_6, data_test_6, data_train_6_label, 'longitude', 'bedrooms')
 
 # 获取trian_6的数据
 # train, train_label, test = data_process(data_train_6, data_test_6, data_train_6_label, 'longitude', 'bedrooms')
@@ -139,6 +139,8 @@ model_random_forest = RandomForestRegressor(n_estimators=200,max_depth=8)
 model_random_forest.fit(train,train_label)
 y_pr_forest = np.expm1(model_random_forest.predict(test))
 print(test.shape)
+print('预测平均值',y_pr_forest.mean())
+print('样本均值',data_test_6_label.mean())
 print(mean_absolute_error(data_test_6_label,y_pr_forest))
 
 plt.plot(y_pr_forest[0:100],c='red',label="pre")
@@ -147,3 +149,7 @@ plt.title("RandomForest_1 pre and label distribute circumstance")
 plt.legend()
 plt.show()
 # 2.5784470987831304e+19
+
+
+
+
