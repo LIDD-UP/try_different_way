@@ -23,7 +23,7 @@ pd.set_option('max_columns', 200)
 pd.set_option('display.width', 1000)
 
 data_train_456 = pd.read_csv('./company_house_data/month_456_1.csv')
-data_train_6 = pd.read_csv('./company_house_data/month_6_1.csv')
+data_train_6 = pd.read_csv('./company_house_data/month_6_processing.csv')
 data_test_6 = pd.read_csv('./company_house_data/test_data_6_1.csv')
 
 # 去掉buildingTypeId 为空的情况避免再编码的时候出现na这一类
@@ -117,7 +117,7 @@ params = {
           # 'reg_alpha':[1e-5,1e-2,0.1,1,100],#1
           # 'gamma':[x for x in range(0,10,1)],#0
           # 'min_child_weight':[x for x in range(1,10,1)],# 5
-          #   'subsample':[x for x in np.arange(0,1,0.01)], # 0.65
+            # 'subsample':[x for x in np.arange(0,1,0.01)], # 0.65
           }
 '''
    eta –> learning_rate
