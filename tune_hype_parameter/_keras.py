@@ -197,7 +197,7 @@ if __name__ == '__main__':
 
     model = grid_result.best_estimator_
     # model.summary()
-    # 训练预测画图
+    # 训练预测画图s
     model.fit(X_train_data,data_train_456_label)
     pred1 = model.predict(X_test_data)
     # ss = StandardScaler()
