@@ -10,6 +10,7 @@ import pandas as pd
 import os
 import numpy as np
 from sklearn.metrics import mean_absolute_error
+import matplotlib.pyplot as plt
 
 
 # 日志
@@ -49,11 +50,12 @@ deep_columns = [
 
 # 定义模型（估计器）
 estimator_model = tf.estimator.DNNRegressor(
-    model_dir='./DNN/predict_model',
+    model_dir='./DNN_back/predict_model',
     feature_columns=deep_columns,
     # hidden_units=[1024,512, 256, 128, 64, 32],
     hidden_units=[32,64],
-    dropout=0.01,
+    # hidden_units=[64,32],
+    dropout=0.1,
     optimizer=tf.train.AdamOptimizer(),
 )
 
@@ -97,8 +99,8 @@ steps_test = int(len(example_test)/batch_size)
 estimator_model.train(input_fn=train_input_fn, steps=steps_trains)
 
 # 测试
-ev = estimator_model.evaluate(input_fn=test_input_fn, steps=steps_test)
-print('ev: {}'.format(ev))
+# ev = estimator_model.evaluate(input_fn=test_input_fn, steps=steps_test)
+# print('ev: {}'.format(ev))
 # 预测
 predict_iter = estimator_model.predict(input_fn=test_input_fn)
 # 循环次数根据测试数据数决定
@@ -119,3 +121,6 @@ print('label_mean',np.mean(label_test))
 
 print(mean_absolute_error(label_test,list_value))
 
+plt.plot(list_value,label='preds',c='red')
+plt.plot(label_test,label='true',c='blue')
+plt.show()

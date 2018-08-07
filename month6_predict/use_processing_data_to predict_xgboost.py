@@ -21,9 +21,11 @@ mpl.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号
 pd.set_option('max_columns', 200)
 pd.set_option('display.width', 1000)
 
-train_data = pd.read_csv('./final_process_train_6.csv')
-test_data = pd.read_csv('./final_process_test_6.csv')
+# train_data = pd.read_csv('./final_process_train_6.csv')
+# test_data = pd.read_csv('./final_process_test_6.csv')
 
+train_data = pd.read_csv('./standard_longitude_latitude/standard_log_lat_train.csv')
+test_data = pd.read_csv('./standard_longitude_latitude/standard_log_lat_test.csv')
 
 train = train_data.drop(columns='daysOnMarket')
 test = test_data.drop(columns='daysOnMarket')
@@ -92,4 +94,13 @@ error 8.511474361749844
 pred_mean 15.454598
 true_mean 18.470039946737682
 '''
+
+'''
+standard_longitude_latitude 
+error 8.69978157023139
+pred_mean 15.880932
+true_mean 18.470039946737682
+'''
+
+
 
