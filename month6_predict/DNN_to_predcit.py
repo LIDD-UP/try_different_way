@@ -50,16 +50,18 @@ deep_columns = [
 
 # 定义模型（估计器）
 estimator_model = tf.estimator.DNNRegressor(
-    model_dir='./DNN_back/predict_model',
+    model_dir='./DNN_o/predict_model',
     feature_columns=deep_columns,
     # hidden_units=[1024,512, 256, 128, 64, 32],
-    hidden_units=[32,64],
+    hidden_units=[32,64,128,256, 512,1024,2048],
+
+    # hidden_units=[32,64],
     # hidden_units=[64,32],
-    dropout=0.1,
-    optimizer=tf.train.AdamOptimizer(),
+    dropout=0.01,
+    # optimizer=tf.train.AdamOptimizer(),
 )
 
-batch_size = 10
+batch_size = 50
 
 train_input_fn = tf.estimator.inputs.numpy_input_fn(
     x={
@@ -71,7 +73,7 @@ train_input_fn = tf.estimator.inputs.numpy_input_fn(
     },
     y=np.array(label),
     num_epochs=None,
-    shuffle=False,
+    shuffle=True,
     batch_size=batch_size,
 )
 
@@ -94,9 +96,9 @@ steps_trains = int(len(example)/batch_size)
 print(steps_trains)
 steps_test = int(len(example_test)/batch_size)
 
-# for i in range(50):
-#     estimator_model.train(input_fn=train_input_fn, steps=steps_trains)
-estimator_model.train(input_fn=train_input_fn, steps=steps_trains)
+for i in range(1000):
+    estimator_model.train(input_fn=train_input_fn, steps=steps_trains)
+# estimator_model.train(input_fn=train_input_fn, steps=steps_trains)
 
 # 测试
 # ev = estimator_model.evaluate(input_fn=test_input_fn, steps=steps_test)
