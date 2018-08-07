@@ -94,13 +94,14 @@ data_train_6_process = data_train_6_process[data_train_6_process.bedrooms>= 1]
 # print(data_train_6_process.dtypes)
 
 data_train_6_process['bedrooms'] = data_train_6_process['bedrooms'].astype(str)
+data_train_6_process['buildingTypeId'] = data_train_6_process['buildingTypeId'].astype(float)
 data_train_6_process['buildingTypeId'] = data_train_6_process['buildingTypeId'].astype(str)
 
 # print(len(data_train_6_process[data_train_6_process.longitude<-125]))
 data_train_6_process = data_train_6_process[data_train_6_process.longitude>-125]
-data_train_6_process = pd.get_dummies(data_train_6_process)
+# data_train_6_process = pd.get_dummies(data_train_6_process)
 print(data_train_6_process.head())
-data_train_6_process.to_csv('./final_process_train_6.csv',index=False)
+data_train_6_process.to_csv('./final_process_train_6_dnn.csv',index=False)
 # print(data_train_6_process.dtypes)
 # print(data_train_6_process.shape)
 # print(data_train_6_process.isna().sum())

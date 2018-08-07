@@ -1,4 +1,4 @@
-longitude,latitude,price,daysOnMarket,buildingTypeId_1,buildingTypeId_2,bedrooms_1.0,bedrooms_2.0,bedrooms_3.0,bedrooms_4.0,bedrooms_5.0
+longitude,latitude,price,daysOnMarket,buildingTypeId_1.0,buildingTypeId_2.0,bedrooms_1.0,bedrooms_2.0,bedrooms_3.0,bedrooms_4.0,bedrooms_5.0
 -80.527567,43.35285,13.161586013632684,1.791759469228055,1,0,0,0,1,0,0
 -75.940376,45.348757,12.873648139727594,2.6390573296152584,1,0,0,0,1,0,0
 -97.171472,49.8627,12.611207699176356,1.9459101490553132,1,0,0,0,1,0,0
