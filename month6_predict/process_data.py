@@ -25,7 +25,9 @@ pd.set_option('display.width', 1000)
 
 data_train_6 = pd.read_csv('../input/month_6_1.csv')
 data_test_6 = pd.read_csv('../input/test_data_6_1.csv')
-data_train_6_process = pd.read_csv('../input/test_data_6_processing.csv')
+# data_train_6_process = pd.read_csv('../input/test_data_6_processing.csv')
+data_train_6_process = pd.read_csv('../input/month_6_processing.csv')
+
 
 # 去掉buildingTypeId 为空的情况避免再编码的时候出现na这一类
 
@@ -98,7 +100,7 @@ data_train_6_process['buildingTypeId'] = data_train_6_process['buildingTypeId'].
 data_train_6_process = data_train_6_process[data_train_6_process.longitude>-125]
 data_train_6_process = pd.get_dummies(data_train_6_process)
 print(data_train_6_process.head())
-data_train_6_process.to_csv('./final_process_test_6.csv')
+data_train_6_process.to_csv('./final_process_train_6.csv',index=False)
 # print(data_train_6_process.dtypes)
 # print(data_train_6_process.shape)
 # print(data_train_6_process.isna().sum())
