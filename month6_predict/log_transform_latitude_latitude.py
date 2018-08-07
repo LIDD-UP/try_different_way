@@ -10,8 +10,12 @@ from sklearn.preprocessing import StandardScaler
 import numpy as np
 
 
+
 train_data = pd.read_csv('./final_process_train_6_dnn.csv')
 test_data = pd.read_csv('./final_process_test_6_dnn.csv')
+print(train_data.head())
+print(test_data.head())
+print(train_data.isna().sum())
 
 train_data['longitude'] = np.log1p(train_data['longitude'])
 train_data['latitude'] = np.log1p(train_data['latitude'])
@@ -27,5 +31,6 @@ print(test_data.head())
 #
 # train_data.to_csv('./standard_longitude_latitude/standard_log_lat_train.csv',index=False)
 # test_data.to_csv('./standard_longitude_latitude/standard_log_lat_test.csv',index=False)
+
 
 
