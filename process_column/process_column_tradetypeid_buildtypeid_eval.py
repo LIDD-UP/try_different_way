@@ -137,7 +137,7 @@ def divide_by_tradetypeid(data,filename1,filename2):
 
 data_path = 'test_data_6.csv'
 new_data = process_bedrooms(data_path=data_path)
-new_data = convert_buildingtypeid(new_data)
+# new_data = convert_buildingtypeid(new_data)
 new_data = new_data.drop(columns='id')
 
 file1 = 'test_data_6_1'
