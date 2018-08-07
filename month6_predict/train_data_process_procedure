@@ -1,0 +1,18 @@
+# month 6 处理方式：
+'''
+longitude:>-3
+latitude: <35  >58
+daysonmarket >50
+bedrooms >=8
+price :1199500.0
+23000000.0
+
+'''
+# 进行处理：把小于40纬度的剔除；
+# 把price 和daysonmarket，做log变换；
+# 对bedrooms只取12345 的数据，其余的不要，做one_hot 编码:这一步是针对机器学习的，深度学习没有这一步；
+
+以上是一个dnn模型和xgboost 模型；
+
+下面在对经纬度进行进一步的处理：
+
