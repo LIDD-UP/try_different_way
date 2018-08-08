@@ -63,4 +63,4 @@ GridSearchCV和RandomizedSearchCV得区别是一个是暴力组合参数，选�
     6：网格搜索：gridSearchCV
     7：get_dummies(one_hot 编码）
     8:label_encoding(标签编码）
-    9：
+    9：Shapiro-Wilk  正太分布检验法；

@@ -71,19 +71,43 @@ daysOnMarket:1.0986122886681098
 
 '''
 
-def get_outlier(x,y,init_point_count ,distance,least_point_count):
-    for i in range(len(x)):
-        for j in range(len(x)):
-             d =np.sqrt(np.square(x[i]-x[j])+np.square(y[i]-y[j]))
-             # print('距离',d)
-             if d <= distance:
-                init_point_count +=1
-        if init_point_count <least_point_count+1:
-            print(x[i],y[i])
-        init_point_count =0
+# def get_outlier(x,y,init_point_count ,distance,least_point_count):
+#     for i in range(len(x)):
+#         for j in range(len(x)):
+#              d =np.sqrt(np.square(x[i]-x[j])+np.square(y[i]-y[j]))
+#              # print('距离',d)
+#              if d <= distance:
+#                 init_point_count +=1
+#         if init_point_count <least_point_count+1:
+#             print(x[i],y[i])
+#         init_point_count =0
+#
+# get_outlier(test_data['longitude'],test_data['latitude'],0,0.3,1)
 
-get_outlier(test_data['longitude'],test_data['latitude'],0,0.3,1)
 
+# data = pd.read_csv('./final_process_train_6.csv')
+# data['price'] = np.log(data['price'])
+#
+# sns.pairplot(data)
+# plt.show()
+
+
+from matplotlib import pyplot as plt
+import numpy as np
+from mpl_toolkits.mplot3d import Axes3D
+
+fig = plt.figure()
+ax = Axes3D(fig)
+X = [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2]
+Y = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+X, Y = np.meshgrid(X, Y)
+# R = np.sqrt(X**2 + Y**2)
+Z = 0*X+0*Y
+
+# 具体函数方法可用 help(function) 查看，如：help(ax.plot_surface)
+ax.plot_surface(X, Y, Z ,rstride=1, cstride=1, cmap='Blues')
+
+plt.show()
 
 
 
