@@ -52,3 +52,15 @@ TypeError: Singleton array array(StandardScaler(copy=True, with_mean=True, with_
 
 
 GridSearchCV和RandomizedSearchCV得区别是一个是暴力组合参数，选择最好得一个是给定一个范围选择最好得；
+
+
+已经用到得数据处理技术：
+    1：数据转换：log变化法
+    2：boxplot箱图离群点处理
+    3：scatter坐标点数据处理；
+    4：标准化
+    5：归一化
+    6：网格搜索：gridSearchCV
+    7：get_dummies(one_hot 编码）
+    8:label_encoding(标签编码）
+    9：
