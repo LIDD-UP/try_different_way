@@ -87,7 +87,7 @@ deep_columns = [
 
 # 定义模型（估计器）
 estimator_model = tf.estimator.DNNRegressor(
-    model_dir='./DNN_o/predict_model',
+    model_dir='./DNN_combined_lat_long/predict_model',
     feature_columns=deep_columns,
     # hidden_units=[1024,512, 256, 128, 64, 32],
     hidden_units=[32,64,128,256, 512,1024,2048],
