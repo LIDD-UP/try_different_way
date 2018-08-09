@@ -112,6 +112,11 @@ print(train.shape)
 # 以上就不考虑longitude和latitude的问题了；应为房屋的类型以及房间个数和经纬度关系不大,但是也不一定，
 # 实践了一下加上longitude和latitude之后样本数据并没有减少；
 
+# sns.pairplot(train)
+# plt.show()
+
+# 先进一步做处理将纬度小于40的去掉
+train = train[train.latitude>40]
 
 # --------------------------------》》》
 # 对于数值类型得用均值填充，但是在填充之前注意一些原本就是分类型数据得列
@@ -159,7 +164,7 @@ def circulation_to_remove_outliers(data,list_columns=['longitude','latitude','pr
             if column_row != column_col:
                 x = list(data[column_row])
                 y = list(data[column_col])
-                x_outliers_list ,y_outliers_list = get_outlier(x,y,0,1,10)
+                x_outliers_list ,y_outliers_list = get_outlier(x,y,0,1,2)
                 for x_outlier in x_outliers_list:
                     data = data[data.loc[:, column_row] != x_outlier]
                 for y_outlier in y_outliers_list:
