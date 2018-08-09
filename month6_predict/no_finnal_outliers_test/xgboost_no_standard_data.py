@@ -13,6 +13,7 @@ import matplotlib as mpl
 from scipy.stats import skew
 from sklearn.metrics import mean_absolute_error
 from sklearn.model_selection import cross_val_score
+from sklearn.preprocessing import StandardScaler
 
 # pandas 的显示设置函数：
 mpl.rcParams['font.sans-serif'] = ['SimHei']  # 指定默认字体 SimHei为黑体
@@ -24,16 +25,46 @@ pd.set_option('display.width', 1000)
 # train_data = pd.read_csv('./final_process_train_6.csv')
 # test_data = pd.read_csv('./final_process_test_6.csv')
 
-train_data = pd.read_csv('./processing_data/no_standard_data/no_final_Outliers_no_Standard_train.csv')
+# train_data = pd.read_csv('./processing_data/no_standard_data/no_final_Outliers_no_Standard_train.csv')
+train_data = pd.read_csv('./processing_data/standard_data/no_final_Outliers_train.csv')
 
 test_data = pd.read_csv('./processing_data/no_standard_data/no_final_Outliers_no_Standard_test_1.csv')
+
+
+# 数据处理
+def data_processing(train_data):
+    train_data['longitude'] = StandardScaler().fit_transform(np.array(train_data['longitude']).reshape(-1,1))
+    train_data['latitude'] = StandardScaler().fit_transform(np.array(train_data['latitude']).reshape(-1,1))
+    train_data['price'] = StandardScaler().fit_transform(np.array(train_data['price']).reshape(-1,1))
+    train_data['buildingTypeId'] = train_data['buildingTypeId'].astype(int)
+    train_data['buildingTypeId'] = train_data['buildingTypeId'].astype(str)
+    train_data['bedrooms'] = train_data['bedrooms'].astype(int)
+    train_data['bedrooms'] = train_data['bedrooms'].astype(str)
+    train_data = pd.get_dummies(train_data)
+    return train_data
+
+
+# train_data = data_processing(train_data)
+train_data['buildingTypeId'] = train_data['buildingTypeId'].astype(int)
+train_data['buildingTypeId'] = train_data['buildingTypeId'].astype(str)
+train_data['bedrooms'] = train_data['bedrooms'].astype(int)
+train_data['bedrooms'] = train_data['bedrooms'].astype(str)
+train_data = pd.get_dummies(train_data)
+print(train_data.head())
+
+test_data = data_processing(test_data)
+
+
+
 
 train = train_data.drop(columns='daysOnMarket')
 test = test_data.drop(columns='daysOnMarket')
 
-
+ss_train = StandardScaler()
+# ss_test = StandardScaler()
+train_label = ss_train.fit_transform(np.array(train_data['daysOnMarket']).reshape(-1,1))
 train_label = train_data['daysOnMarket']
-test_label = np.expm1(test_data['daysOnMarket'])
+test_label = test_data['daysOnMarket']
 
 
 print(train.head())
@@ -77,7 +108,9 @@ print(model)
 
 
 # 预测
-preds = np.expm1(model.predict(test))
+preds = model.predict(test)
+preds = ss_train.inverse_transform(preds)
+# test_label = StandardScaler().inverse_transform(test_label)
 print('error',mean_absolute_error(test_label,preds))
 print('pred_mean',preds.mean())
 print('true_mean',test_label.mean())
@@ -91,16 +124,11 @@ plt.legend()
 plt.show()
 
 '''
-error 8.511474361749844
-pred_mean 15.454598
-true_mean 18.470039946737682
+
 '''
 
 '''
-standard_longitude_latitude 
-error 8.69978157023139
-pred_mean 15.880932
-true_mean 18.470039946737682
+
 '''
 
 

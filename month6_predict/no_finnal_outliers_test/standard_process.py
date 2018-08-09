@@ -117,6 +117,7 @@ print(train.shape)
 
 # 先进一步做处理将纬度小于40的去掉
 train = train[train.latitude>40]
+train = train[train.longitude>-125]
 
 # --------------------------------》》》
 # 对于数值类型得用均值填充，但是在填充之前注意一些原本就是分类型数据得列
@@ -179,8 +180,8 @@ train = train[train.latitude>40]
 # 标准化数据：
 train['longitude'] = StandardScaler().fit_transform(np.array(train['longitude']).reshape(-1,1))
 train['latitude'] = StandardScaler().fit_transform(np.array(train['latitude']).reshape(-1,1))
-train['price'] = StandardScaler().fit_transform(np.array(train['price']).reshape(-1,1))
-train['daysOnMarket'] = StandardScaler().fit_transform(np.array(train['daysOnMarket']).reshape(-1,1))
+# train['price'] = StandardScaler().fit_transform(np.array(train['price']).reshape(-1,1))
+# train['daysOnMarket'] = StandardScaler().fit_transform(np.array(train['daysOnMarket']).reshape(-1,1))
 
 print(train.shape)
 
@@ -216,7 +217,7 @@ sns.pairplot(train)
 plt.show()
 # train = train.dropna()
 # print(train.tail())
-train.to_csv('./no_final_Outliers_train.csv',index=False)
+train.to_csv('./no_final_Outliers_standard_train.csv',index=False)
 
 
 

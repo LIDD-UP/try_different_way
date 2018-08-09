@@ -15,8 +15,9 @@ import matplotlib.pyplot as plt
 # 日志
 tf.logging.set_verbosity(tf.logging.INFO)
 
-train_data = pd.read_csv('./final_process_train_6_dnn.csv')
-test_data = pd.read_csv('./final_process_test_6_dnn.csv')
+train_data = pd.read_csv('./processing_data/no_standard_data/no_final_Outliers_no_Standard_train.csv')
+
+test_data = pd.read_csv('./processing_data/no_standard_data/no_final_Outliers_no_Standard_test_1.csv')
 
 example = train_data[['longitude', 'latitude', 'price', 'buildingTypeId', 'bedrooms']]
 example_test = test_data[['longitude', 'latitude', 'price', 'buildingTypeId', 'bedrooms']]

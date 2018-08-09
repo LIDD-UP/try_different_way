@@ -1,0 +1,7 @@
+1：等标准化longitude，latitude 种的离群点运行出来之后，拿这个数据到xgboost跑一下，
+    在这之前需要对price和daysonmarket进行标准化或者是log变换（需要用到两种模型，
+        dnn也需要跑一下
+2：根据打印出来的点fan过去找到对应的原始数据中的点，然后把原始数据中的这些点删除；然后再做log变换，或者是标准化
+    再在xgboost或者是dnn中跑一下，dnn要分为longitude，latitude联合的和没有联合的，
+
+    但是发现数据再log变化下的情况要好一点，但是还需测试；
