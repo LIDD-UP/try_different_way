@@ -34,9 +34,9 @@ data_test = pd.read_csv(month_6_test_path)
 
 
 # 取出这些数据；
-# train = data_train[['longitude', 'latitude', 'price', 'buildingTypeId', 'bedrooms', 'daysOnMarket']]
+train = data_train[['longitude', 'latitude', 'price', 'buildingTypeId', 'bedrooms', 'daysOnMarket']]
 # train= train.dropna()
-train = data_test[['longitude', 'latitude', 'price', 'buildingTypeId', 'bedrooms', 'daysOnMarket']]
+# train = data_test[['longitude', 'latitude', 'price', 'buildingTypeId', 'bedrooms', 'daysOnMarket']]
 print(train.head())
 # print(test.head())
 # print(train.isna().sum())
@@ -105,7 +105,7 @@ def use_pivot_box_to_remove_fliers(data,pivot_columns_list,pivot_value_list):
     return data
 
 
-# train = use_pivot_box_to_remove_fliers(train,['buildingTypeId','bedrooms'],['price','daysOnMarket','longitude','latitude'])
+train = use_pivot_box_to_remove_fliers(train,['buildingTypeId','bedrooms'],['price','daysOnMarket','longitude','latitude'])
 print(train.shape)
 # print(train.isna().sum())
 
@@ -176,35 +176,47 @@ train = train[train.latitude>40]
 # print(train.shape)
 
 
+# 标准化数据：
+train['longitude'] = StandardScaler().fit_transform(np.array(train['longitude']).reshape(-1,1))
+train['latitude'] = StandardScaler().fit_transform(np.array(train['latitude']).reshape(-1,1))
+train['price'] = StandardScaler().fit_transform(np.array(train['price']).reshape(-1,1))
+train['daysOnMarket'] = StandardScaler().fit_transform(np.array(train['daysOnMarket']).reshape(-1,1))
+
+print(train.shape)
+
+def get_outlier(data,x,y,init_point_count ,distance,least_point_count,x_column,y_column):
+    x_outliers_list = []
+    y_outliers_list = []
+    x = list(x)
+    y = list(y)
+    for i in range(len(x)):
+        for j in range(len(x)):
+             d =np.sqrt(np.square(x[i]-x[j])+np.square(y[i]-y[j]))
+             # print('距离',d)
+             if d <= distance:
+                init_point_count +=1
+        if init_point_count <least_point_count+1:
+            x_outliers_list.append(x[i])
+            y_outliers_list.append(y[i])
+            print(x[i],y[i])
+            print(x[i],y[i])
+        init_point_count =0
+    for x_outlier in x_outliers_list:
+        data = data[data.loc[:, x_column] != x_outlier]
+    for y_outlier in y_outliers_list:
+        data = data[data.loc[:, y_column] != y_outlier]
+    return data
 
 
+train = get_outlier(train,train['longitude'],train['latitude'],0,0.3,3,'longitude','latitude')
+print(train.shape)
 
 
-# def get_outlier(x,y,init_point_count ,distance,least_point_count):
-#     for i in range(len(x)):
-#         for j in range(len(x)):
-#              d =np.sqrt(np.square(x[i]-x[j])+np.square(y[i]-y[j]))
-#              # print('距离',d)
-#              if d <= distance:
-#                 init_point_count +=1
-#         if init_point_count <least_point_count+1:
-#             print(x[i],y[i])
-#         init_point_count =0
-#
-# get_outlier(train['longitude'],train['latitude'],0,0.3,1)
-
-
-
-
-
-
-
-
-# sns.pairplot(train)
-# plt.show()
+sns.pairplot(train)
+plt.show()
 # train = train.dropna()
 # print(train.tail())
-# train.to_csv('./finnl_processing_train_data_6_no_remove_outliers_test.csv',index=False)
+train.to_csv('./no_final_Outliers_train.csv',index=False)
 
 
 

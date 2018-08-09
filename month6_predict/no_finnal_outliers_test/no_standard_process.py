@@ -1,7 +1,7 @@
-#-*- coding:utf-8 _*-  
-""" 
+#-*- coding:utf-8 _*-
+"""
 @author:Administrator
-@file: outliers_test.py
+@file: standard_process.py
 @time: 2018/8/9
 """
 import pandas as pd
@@ -105,7 +105,7 @@ def use_pivot_box_to_remove_fliers(data,pivot_columns_list,pivot_value_list):
     return data
 
 
-# train = use_pivot_box_to_remove_fliers(train,['buildingTypeId','bedrooms'],['price','daysOnMarket','longitude','latitude'])
+train = use_pivot_box_to_remove_fliers(train,['buildingTypeId','bedrooms'],['price','daysOnMarket','longitude','latitude'])
 print(train.shape)
 # print(train.isna().sum())
 
@@ -130,81 +130,11 @@ train = train[train.latitude>40]
 # 下面将根据catter图或者是hist图来处理数据
 
 
-# # 标准化数据
-# train = StandardScaler().fit_transform(train)
-# # 标准化之后画图发现数据分布并没有变
-#
-# sns.pairplot(pd.DataFrame(train))
-# plt.show()
-
-'''
-1:循环遍历整个散点图用刚才写好的算法去除点；
-'''
-
-# 获取
-# def get_outlier(x,y,init_point_count ,distance,least_point_count):
-#     x_outliers_list = []
-#     y_outliers_list = []
-#     for i in range(len(x)):
-#         for j in range(len(x)):
-#              d =np.sqrt(np.square(x[i]-x[j])+np.square(y[i]-y[j]))
-#              # print('距离',d)
-#              if d <= distance:
-#                 init_point_count +=1
-#         if init_point_count <least_point_count+1:
-#             x_outliers_list.append(x[i])
-#             y_outliers_list.append(y[i])
-#             print(x[i],y[i])
-#         init_point_count =0
-#     return x_outliers_list,y_outliers_list
-#
-# def circulation_to_remove_outliers(data,list_columns=['longitude','latitude','price','daysOnMarket',]):
-#     for column_row in list_columns:
-#         for column_col in list_columns:
-#             if column_row != column_col:
-#                 x = list(data[column_row])
-#                 y = list(data[column_col])
-#                 x_outliers_list ,y_outliers_list = get_outlier(x,y,0,0.01,2)
-#                 for x_outlier in x_outliers_list:
-#                     data = data[data.loc[:, column_row] != x_outlier]
-#                 for y_outlier in y_outliers_list:
-#                     data = data[data.loc[:, column_col] != y_outlier]
-#     return data
-#
-# train = circulation_to_remove_outliers(train)
-#
-# print(train.shape)
-
-
-
-
-
-
-# def get_outlier(x,y,init_point_count ,distance,least_point_count):
-#     for i in range(len(x)):
-#         for j in range(len(x)):
-#              d =np.sqrt(np.square(x[i]-x[j])+np.square(y[i]-y[j]))
-#              # print('距离',d)
-#              if d <= distance:
-#                 init_point_count +=1
-#         if init_point_count <least_point_count+1:
-#             print(x[i],y[i])
-#         init_point_count =0
-#
-# get_outlier(train['longitude'],train['latitude'],0,0.3,1)
-
-
-
-
-
-
-
-
-# sns.pairplot(train)
-# plt.show()
+sns.pairplot(train)
+plt.show()
 # train = train.dropna()
 # print(train.tail())
-# train.to_csv('./finnl_processing_train_data_6_no_remove_outliers_test.csv',index=False)
+train.to_csv('./no_final_Outliers_no_Standard_test_3.csv',index=False)
 
 
 
