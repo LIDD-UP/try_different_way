@@ -164,7 +164,7 @@ def circulation_to_remove_outliers(data,list_columns=['longitude','latitude','pr
             if column_row != column_col:
                 x = list(data[column_row])
                 y = list(data[column_col])
-                x_outliers_list ,y_outliers_list = get_outlier(x,y,0,0.1,3)
+                x_outliers_list ,y_outliers_list = get_outlier(x,y,0,5,3)
                 for x_outlier in x_outliers_list:
                     data = data[data.loc[:, column_row] != x_outlier]
                 for y_outlier in y_outliers_list:
@@ -178,7 +178,7 @@ print(train.shape)
 sns.pairplot(train)
 plt.show()
 
-train.to_csv('./finnl_processing_train_data_6_1',index=False)
+train.to_csv('./finnl_processing_train_data_6',index=False)
 
 
 
