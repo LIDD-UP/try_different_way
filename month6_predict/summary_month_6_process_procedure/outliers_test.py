@@ -1,8 +1,8 @@
 #-*- coding:utf-8 _*-  
 """ 
 @author:Administrator
-@file: finnal_proccessing.py
-@time: 2018/8/8
+@file: outliers_test.py
+@time: 2018/8/9
 """
 import pandas as pd
 import numpy as np
@@ -34,11 +34,11 @@ data_test = pd.read_csv(month_6_test_path)
 
 
 # 取出这些数据；
-train = data_train[['longitude', 'latitude', 'price', 'buildingTypeId', 'bedrooms', 'daysOnMarket']]
+# train = data_train[['longitude', 'latitude', 'price', 'buildingTypeId', 'bedrooms', 'daysOnMarket']]
 # train= train.dropna()
-test = data_test[['longitude', 'latitude', 'price', 'buildingTypeId', 'bedrooms', 'daysOnMarket']]
+train = data_test[['longitude', 'latitude', 'price', 'buildingTypeId', 'bedrooms', 'daysOnMarket']]
 print(train.head())
-print(test.head())
+# print(test.head())
 # print(train.isna().sum())
 # sns.pairplot(train)
 # # sns.pairplot(test)
@@ -105,7 +105,7 @@ def use_pivot_box_to_remove_fliers(data,pivot_columns_list,pivot_value_list):
     return data
 
 
-train = use_pivot_box_to_remove_fliers(train,['buildingTypeId','bedrooms'],['price','daysOnMarket','longitude','latitude'])
+# train = use_pivot_box_to_remove_fliers(train,['buildingTypeId','bedrooms'],['price','daysOnMarket','longitude','latitude'])
 print(train.shape)
 # print(train.isna().sum())
 
@@ -142,43 +142,69 @@ train = train[train.latitude>40]
 '''
 
 # 获取
-def get_outlier(x,y,init_point_count ,distance,least_point_count):
-    x_outliers_list = []
-    y_outliers_list = []
-    for i in range(len(x)):
-        for j in range(len(x)):
-             d =np.sqrt(np.square(x[i]-x[j])+np.square(y[i]-y[j]))
-             # print('距离',d)
-             if d <= distance:
-                init_point_count +=1
-        if init_point_count <least_point_count+1:
-            x_outliers_list.append(x[i])
-            y_outliers_list.append(y[i])
-            print(x[i],y[i])
-        init_point_count =0
-    return x_outliers_list,y_outliers_list
-
-def circulation_to_remove_outliers(data,list_columns=['longitude','latitude','price','daysOnMarket',]):
-    for column_row in list_columns:
-        for column_col in list_columns:
-            if column_row != column_col:
-                x = list(data[column_row])
-                y = list(data[column_col])
-                x_outliers_list ,y_outliers_list = get_outlier(x,y,0,0.01,2)
-                for x_outlier in x_outliers_list:
-                    data = data[data.loc[:, column_row] != x_outlier]
-                for y_outlier in y_outliers_list:
-                    data = data[data.loc[:, column_col] != y_outlier]
-    return data
-
+# def get_outlier(x,y,init_point_count ,distance,least_point_count):
+#     x_outliers_list = []
+#     y_outliers_list = []
+#     for i in range(len(x)):
+#         for j in range(len(x)):
+#              d =np.sqrt(np.square(x[i]-x[j])+np.square(y[i]-y[j]))
+#              # print('距离',d)
+#              if d <= distance:
+#                 init_point_count +=1
+#         if init_point_count <least_point_count+1:
+#             x_outliers_list.append(x[i])
+#             y_outliers_list.append(y[i])
+#             print(x[i],y[i])
+#         init_point_count =0
+#     return x_outliers_list,y_outliers_list
+#
+# def circulation_to_remove_outliers(data,list_columns=['longitude','latitude','price','daysOnMarket',]):
+#     for column_row in list_columns:
+#         for column_col in list_columns:
+#             if column_row != column_col:
+#                 x = list(data[column_row])
+#                 y = list(data[column_col])
+#                 x_outliers_list ,y_outliers_list = get_outlier(x,y,0,0.01,2)
+#                 for x_outlier in x_outliers_list:
+#                     data = data[data.loc[:, column_row] != x_outlier]
+#                 for y_outlier in y_outliers_list:
+#                     data = data[data.loc[:, column_col] != y_outlier]
+#     return data
+#
 # train = circulation_to_remove_outliers(train)
+#
+# print(train.shape)
 
-print(train.shape)
 
-sns.pairplot(train)
-plt.show()
 
-train.to_csv('./finnl_processing_train_data_6_1',index=False)
+
+
+
+# def get_outlier(x,y,init_point_count ,distance,least_point_count):
+#     for i in range(len(x)):
+#         for j in range(len(x)):
+#              d =np.sqrt(np.square(x[i]-x[j])+np.square(y[i]-y[j]))
+#              # print('距离',d)
+#              if d <= distance:
+#                 init_point_count +=1
+#         if init_point_count <least_point_count+1:
+#             print(x[i],y[i])
+#         init_point_count =0
+#
+# get_outlier(train['longitude'],train['latitude'],0,0.3,1)
+
+
+
+
+
+
+
+
+# sns.pairplot(train)
+# plt.show()
+# train = train.dropna()
+# print(train.tail())
+# train.to_csv('./finnl_processing_train_data_6_no_remove_outliers_test.csv',index=False)
 
 
 

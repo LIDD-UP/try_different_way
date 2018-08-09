@@ -15,16 +15,21 @@ import matplotlib.pyplot as plt
 
 # 日志
 tf.logging.set_verbosity(tf.logging.INFO)
-
+# summary_month_6_process_procedure/finnl_processing_train_data_6_no_remove_outliers
 train_data = pd.read_csv('./summary_month_6_process_procedure/finnl_processing_train_data_6_no_remove_outliers.csv')
-test_data = pd.read_csv('./final_process_test_6_dnn.csv')
-
+print(train_data.shape)
+print(train_data.head())
+# train_data = pd.read_csv('./final_process_train_6_dnn.csv')
+test_data = pd.read_csv('./summary_month_6_process_procedure/finnl_processing_train_data_6_no_remove_outliers_test.csv')
+train_data = train_data.dropna()
+print(train_data.shape)
+test_data = test_data.dropna()
 example = train_data[['longitude', 'latitude', 'price', 'buildingTypeId', 'bedrooms']]
 example_test = test_data[['longitude', 'latitude', 'price', 'buildingTypeId', 'bedrooms']]
 
 
 label = train_data['daysOnMarket']
-label_test = np.expm1(test_data['daysOnMarket'])
+label_test = test_data['daysOnMarket']
 
 
 
@@ -53,7 +58,7 @@ estimator_model = tf.estimator.DNNRegressor(
     model_dir='./DNN_no_finnal_outliers/predict_model',
     feature_columns=deep_columns,
     # hidden_units=[1024,512, 256, 128, 64, 32],
-    hidden_units=[32,64,128,256, 512,1024,2048],
+    hidden_units=[32,64,128,256, 512,256,128],
 
     # hidden_units=[32,64],
     # hidden_units=[64,32],
@@ -61,7 +66,7 @@ estimator_model = tf.estimator.DNNRegressor(
     # optimizer=tf.train.AdamOptimizer(),
 )
 
-batch_size = 50
+batch_size = 10
 
 train_input_fn = tf.estimator.inputs.numpy_input_fn(
     x={
@@ -96,7 +101,7 @@ steps_trains = int(len(example)/batch_size)
 print(steps_trains)
 steps_test = int(len(example_test)/batch_size)
 
-for i in range(1000):
+for i in range(10):
     estimator_model.train(input_fn=train_input_fn, steps=steps_trains)
 # estimator_model.train(input_fn=train_input_fn, steps=steps_trains)
 
@@ -116,7 +121,7 @@ for i in range(len(label_test)):
 
 print(list_value)
 list_value = np.array(list_value)
-list_value = np.expm1(list_value)
+# list_value = np.expm1(list_value)
 
 print('prediction_mean',np.mean(list_value))
 print('label_mean',np.mean(label_test))
