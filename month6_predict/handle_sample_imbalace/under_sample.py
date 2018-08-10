@@ -48,6 +48,8 @@ train_data_under_sample = train_data[train_data.buildingTypeId.index.isin(merge_
 print(train_data_under_sample.head())
 print(train_data_under_sample['buildingTypeId'].value_counts())
 
+train_data_under_sample.to_csv('under_sample_buildingTypeId.csv',index=False)
+
 # 对bedrooms进行下采样
 print(train_data_under_sample['bedrooms'].value_counts())
 
@@ -77,7 +79,7 @@ train_data_under_sample_bedromms = train_data_under_sample[train_data_under_samp
 
 print(train_data_under_sample_bedromms['bedrooms'].value_counts())
 
-train_data_under_sample_bedromms.to_csv('under_sample_train.csv',index=False)
+# train_data_under_sample_bedromms.to_csv('under_sample_train.csv',index=False)
 
 
 

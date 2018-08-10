@@ -27,21 +27,8 @@ pd.set_option('display.width', 1000)
 train_data = pd.read_csv('./under_sample_train.csv')
 test_data = pd.read_csv('../standard_longitude_latitude/standard_log_lat_test.csv')
 
-# 加上one_hot编码
-def dummies_process(data):
-    data['buildingTypeId'] = data['buildingTypeId'].astype(int)
-    data['buildingTypeId'] = data['buildingTypeId'].astype(str)
-    # data['bedrooms'] = data['bedrooms'].astype(int)
-    # data['bedrooms'] = data['bedrooms'].astype(str)
-    data = pd.get_dummies(data)
-    return data
-
-
-
 train = train_data.drop(columns='daysOnMarket')
 test = test_data.drop(columns='daysOnMarket')
-
-
 
 
 train_label = train_data['daysOnMarket']
@@ -57,8 +44,8 @@ from sklearn.model_selection import GridSearchCV
 
 # 寻找超参数
 params = {
-          'n_estimators': [100,300,500,1000,5000],# 300
-          # 'max_depth':[x for x in range(5,6,1)],#5
+          # 'n_estimators': [100,300,500,1000,5000],# 300
+          'max_depth':[x for x in range(5,6,1)],#5
           # 'learning_rate':[0.001,0.01,0.05,0.1,0.3,0.5,0.7,0.9], # 0.3
           # 'reg_alpha':[1e-5,1e-2,0.1,1,100],#1
           # 'gamma':[x for x in range(0,10,1)],#0
