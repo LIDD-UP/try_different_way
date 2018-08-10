@@ -59,8 +59,8 @@ estimator_model = tf.estimator.DNNRegressor(
 
     # hidden_units=[32,64],
     # hidden_units=[64,32],
-    dropout=0.1,
-    optimizer=tf.train.AdamOptimizer(learning_rate=0.00001),
+    # dropout=0.1,
+    # optimizer=tf.train.AdamOptimizer(learning_rate=0.00001),
 )
 
 batch_size = 10
