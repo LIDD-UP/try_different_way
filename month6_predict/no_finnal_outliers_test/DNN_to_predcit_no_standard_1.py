@@ -100,7 +100,7 @@ steps_trains = int(len(example)/batch_size)
 print(steps_trains)
 steps_test = int(len(example_test)/batch_size)
 
-# for i in range(100):
+# for i in range(10000):
 #     estimator_model.train(input_fn=train_input_fn, steps=steps_trains)
 estimator_model.train(input_fn=train_input_fn, steps=steps_trains)
 

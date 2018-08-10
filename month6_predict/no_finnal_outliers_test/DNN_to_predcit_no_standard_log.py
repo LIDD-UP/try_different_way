@@ -11,6 +11,7 @@ import os
 import numpy as np
 from sklearn.metrics import mean_absolute_error
 import matplotlib.pyplot as plt
+from sklearn.preprocessing import StandardScaler
 
 
 # 日志
@@ -19,15 +20,25 @@ train_data = pd.read_csv('./processing_data/no_standard_data/no_final_Outliers_n
 print(train_data.shape)
 print(train_data.head())
 
-test_data = pd.read_csv('./processing_data/no_standard_data/no_final_Outliers_no_Standard_test_2.csv')
+test_data = pd.read_csv('./processing_data/no_standard_data/no_final_Outliers_no_Standard_test_1.csv')
 train_data = train_data.dropna()
 print(train_data.shape)
 test_data = test_data.dropna()
+
+def data_processing(train_data):
+    train_data['price'] = np.log1p(train_data['price'])
+    # train_data['daysOnMarket'] = np.log1p(train_data['daysOnMarket'])
+    return train_data
+
+train_data = data_processing(train_data)
+test_data = data_processing(test_data)
+
+
 example = train_data[['longitude', 'latitude', 'price', 'buildingTypeId', 'bedrooms']]
 example_test = test_data[['longitude', 'latitude', 'price', 'buildingTypeId', 'bedrooms']]
 
 
-label = train_data['daysOnMarket']
+label = np.log1p(train_data['daysOnMarket'])
 label_test = test_data['daysOnMarket']
 
 
@@ -54,10 +65,10 @@ deep_columns = [
 
 # 定义模型（估计器）
 estimator_model = tf.estimator.DNNRegressor(
-    model_dir='./DNN_no_standard_2',
+    model_dir='./DNN_no_standard_log',
     feature_columns=deep_columns,
     # hidden_units=[1024,512, 256, 128, 64, 32],
-    hidden_units=[32,64,128,256, 512,256,128],
+    hidden_units=[16, 32, 64, 128, 256, 512, 256, 128, 64, 32, 16],
 
     # hidden_units=[32,64],
     # hidden_units=[64,32],
@@ -99,7 +110,7 @@ test_input_fn = tf.estimator.inputs.numpy_input_fn(
 steps_trains = int(len(example)/batch_size)
 print(steps_trains)
 steps_test = int(len(example_test)/batch_size)
-
+#
 # for i in range(10000):
 #     estimator_model.train(input_fn=train_input_fn, steps=steps_trains)
 estimator_model.train(input_fn=train_input_fn, steps=steps_trains)
@@ -120,7 +131,7 @@ for i in range(len(label_test)):
 
 print(list_value)
 list_value = np.array(list_value)
-# list_value = np.expm1(list_value)
+list_value = np.expm1(list_value)
 
 print('prediction_mean',np.mean(list_value))
 print('label_mean',np.mean(label_test))
@@ -130,12 +141,3 @@ print(mean_absolute_error(label_test,list_value))
 plt.plot(list_value,label='preds',c='red')
 plt.plot(label_test,label='true',c='blue')
 plt.show()
-
-'''
-prediction_mean 14.362395346608475
-label_mean 18.706166868198306
-8.867826089820664
-'''
-
-
-

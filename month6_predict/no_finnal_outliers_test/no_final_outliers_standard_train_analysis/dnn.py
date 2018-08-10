@@ -1,9 +1,10 @@
 #-*- coding:utf-8 _*-  
 """ 
 @author:Administrator
-@file: DNN_to_predcit.py
-@time: 2018/8/7
+@file: dnn.py
+@time: 2018/8/10
 """
+
 
 import tensorflow as tf
 import pandas as pd
@@ -11,24 +12,44 @@ import os
 import numpy as np
 from sklearn.metrics import mean_absolute_error
 import matplotlib.pyplot as plt
+from sklearn.preprocessing import StandardScaler
 
 
 # 日志
 tf.logging.set_verbosity(tf.logging.INFO)
-train_data = pd.read_csv('./processing_data/no_standard_data/no_final_Outliers_no_Standard_train.csv')
-print(train_data.shape)
-print(train_data.head())
+train_data = pd.read_csv('./no_final_Outliers_standard_train.csv')
+test_data = pd.read_csv('./no_final_Outliers_no_Standard_test_1.csv')
 
-test_data = pd.read_csv('./processing_data/no_standard_data/no_final_Outliers_no_Standard_test_2.csv')
-train_data = train_data.dropna()
-print(train_data.shape)
-test_data = test_data.dropna()
+# train_data = train_data.dropna()
+# test_data = test_data.dropna()
+
+# 数据处理log变换
+def data_processing(data):
+    data['price'] = np.log1p(data['price'])
+    data['daysOnMarket'] = np.log1p(data['daysOnMarket'])
+    return data
+
+
+train_data = data_processing(train_data)
+test_data = data_processing(test_data)
+
+
+# 将test数据中的longitude 和latitude标准化，这是由于训练数据已经标准化了；
+test_data['longitude'] = StandardScaler().fit_transform(np.array(test_data['longitude']).reshape(-1,1))
+test_data['latitude'] = StandardScaler().fit_transform(np.array(test_data['latitude']).reshape(-1,1))
+
+print(train_data.head())
+print(test_data.head())
+
+
+
 example = train_data[['longitude', 'latitude', 'price', 'buildingTypeId', 'bedrooms']]
 example_test = test_data[['longitude', 'latitude', 'price', 'buildingTypeId', 'bedrooms']]
 
 
 label = train_data['daysOnMarket']
-label_test = test_data['daysOnMarket']
+label_test = np.expm1(test_data['daysOnMarket'])
+
 
 
 
@@ -36,6 +57,7 @@ label_test = test_data['daysOnMarket']
 longitude = tf.feature_column.numeric_column('longitude')
 latitude = tf.feature_column.numeric_column('latitude')
 price = tf.feature_column.numeric_column('price')
+
 
 # 交易类型和房间数
 buildingTypeId = tf.feature_column.categorical_column_with_vocabulary_list('buildingTypeId', [1, 2])
@@ -54,14 +76,14 @@ deep_columns = [
 
 # 定义模型（估计器）
 estimator_model = tf.estimator.DNNRegressor(
-    model_dir='./DNN_no_standard_2',
+    # model_dir='./DNN_no_standard_log1/predict_model',
     feature_columns=deep_columns,
     # hidden_units=[1024,512, 256, 128, 64, 32],
-    hidden_units=[32,64,128,256, 512,256,128],
+    hidden_units=[16, 32, 64, 128, 256],
 
     # hidden_units=[32,64],
     # hidden_units=[64,32],
-    dropout=0.01,
+    # dropout=0.1,
     # optimizer=tf.train.AdamOptimizer(),
 )
 
@@ -99,7 +121,7 @@ test_input_fn = tf.estimator.inputs.numpy_input_fn(
 steps_trains = int(len(example)/batch_size)
 print(steps_trains)
 steps_test = int(len(example_test)/batch_size)
-
+#
 # for i in range(10000):
 #     estimator_model.train(input_fn=train_input_fn, steps=steps_trains)
 estimator_model.train(input_fn=train_input_fn, steps=steps_trains)
@@ -120,7 +142,7 @@ for i in range(len(label_test)):
 
 print(list_value)
 list_value = np.array(list_value)
-# list_value = np.expm1(list_value)
+list_value = np.expm1(list_value)
 
 print('prediction_mean',np.mean(list_value))
 print('label_mean',np.mean(label_test))
@@ -130,12 +152,3 @@ print(mean_absolute_error(label_test,list_value))
 plt.plot(list_value,label='preds',c='red')
 plt.plot(label_test,label='true',c='blue')
 plt.show()
-
-'''
-prediction_mean 14.362395346608475
-label_mean 18.706166868198306
-8.867826089820664
-'''
-
-
-

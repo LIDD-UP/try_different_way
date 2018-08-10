@@ -59,7 +59,7 @@ def remove_filers_with_boxplot(data):
     return data
 
 print(train.shape)
-train = remove_filers_with_boxplot(train)
+# train = remove_filers_with_boxplot(train)
 print(train.shape)
 
 '''
@@ -105,7 +105,7 @@ def use_pivot_box_to_remove_fliers(data,pivot_columns_list,pivot_value_list):
     return data
 
 
-train = use_pivot_box_to_remove_fliers(train,['buildingTypeId','bedrooms'],['price','daysOnMarket','longitude','latitude'])
+# train = use_pivot_box_to_remove_fliers(train,['buildingTypeId','bedrooms'],['price','daysOnMarket','longitude','latitude'])
 print(train.shape)
 # print(train.isna().sum())
 
@@ -115,8 +115,9 @@ print(train.shape)
 # sns.pairplot(train)
 # plt.show()
 
-# 先进一步做处理将纬度小于40的去掉
+# 先进一步做处理将纬度小于40的去掉,将精度大于-125 也去掉
 train = train[train.latitude>40]
+train = train[train.longitude>-125]
 
 # --------------------------------》》》
 # 对于数值类型得用均值填充，但是在填充之前注意一些原本就是分类型数据得列
@@ -134,7 +135,7 @@ sns.pairplot(train)
 plt.show()
 # train = train.dropna()
 # print(train.tail())
-train.to_csv('./no_final_Outliers_no_Standard_test_3.csv',index=False)
+train.to_csv('./no_final_Outliers_no_Standard_test_1.csv',index=False)
 
 
 
