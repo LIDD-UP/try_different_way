@@ -64,3 +64,7 @@ GridSearchCV和RandomizedSearchCV得区别是一个是暴力组合参数，选�
     7：get_dummies(one_hot 编码）
     8:label_encoding(标签编码）
     9：Shapiro-Wilk  正太分布检验法；
+
+
+random 模块下的sample才是在一个列表里面返回若干个数
+chocie是在一个list中返回一个数，随机的；
