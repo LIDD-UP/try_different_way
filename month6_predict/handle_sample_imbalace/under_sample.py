@@ -10,14 +10,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 from random import sample
 
-train_data = pd.read_csv('../standard_longitude_latitude/standard_log_lat_train.csv')
+train_data_under_sample = pd.read_csv('../standard_longitude_latitude/standard_log_lat_train.csv')
 test_data = pd.read_csv('../standard_longitude_latitude/standard_log_lat_train.csv')
 
-print(train_data.head())
-print(test_data.head())
+# print(train_data.head())
+# print(test_data.head())
 
 #采用下采样策略 对buildingtypeid进行处理：
-print(train_data['buildingTypeId'].value_counts())
+# print(train_data['buildingTypeId'].value_counts())
 
 '''
  1:获取少样本的个数
@@ -27,28 +27,29 @@ print(train_data['buildingTypeId'].value_counts())
  5：最后将这些样本组合起来；
  '''
 # 获取少样本的个数
-less_sample_len = len(train_data[train_data.buildingTypeId==2])
-print(less_sample_len)
+# less_sample_len = len(train_data[train_data.buildingTypeId==2])
+# print(less_sample_len)
+#
+# # 获取少样本的下标
+# less_sample_index_list = list(train_data[train_data.buildingTypeId==2].index)
+#
+# multi_sample_index_list = list(train_data[train_data.buildingTypeId==1].index)
+# print(multi_sample_index_list)
+#
+# random_multi_sample_index_list = sample(multi_sample_index_list,less_sample_len)
+# print(len(random_multi_sample_index_list))
+#
+# # 合并下标
+# merge_index = less_sample_index_list + random_multi_sample_index_list
+# print(merge_index)
+#
+# train_data_under_sample = train_data[train_data.buildingTypeId.index.isin(merge_index)]
+#
+# print(train_data_under_sample.head())
+# print(train_data_under_sample['buildingTypeId'].value_counts())
+#
+# train_data_under_sample.to_csv('under_sample_buildingTypeId.csv',index=False)
 
-# 获取少样本的下标
-less_sample_index_list = list(train_data[train_data.buildingTypeId==2].index)
-
-multi_sample_index_list = list(train_data[train_data.buildingTypeId==1].index)
-print(multi_sample_index_list)
-
-random_multi_sample_index_list = sample(multi_sample_index_list,less_sample_len)
-print(len(random_multi_sample_index_list))
-
-# 合并下标
-merge_index = less_sample_index_list + random_multi_sample_index_list
-print(merge_index)
-
-train_data_under_sample = train_data[train_data.buildingTypeId.index.isin(merge_index)]
-
-print(train_data_under_sample.head())
-print(train_data_under_sample['buildingTypeId'].value_counts())
-
-train_data_under_sample.to_csv('under_sample_buildingTypeId.csv',index=False)
 
 # 对bedrooms进行下采样
 print(train_data_under_sample['bedrooms'].value_counts())
@@ -79,7 +80,7 @@ train_data_under_sample_bedromms = train_data_under_sample[train_data_under_samp
 
 print(train_data_under_sample_bedromms['bedrooms'].value_counts())
 
-# train_data_under_sample_bedromms.to_csv('under_sample_train.csv',index=False)
+train_data_under_sample_bedromms.to_csv('under_sample_bedrooms.csv',index=False)
 
 
 

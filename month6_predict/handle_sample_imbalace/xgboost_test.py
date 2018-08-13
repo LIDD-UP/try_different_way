@@ -85,6 +85,7 @@ print('true_mean',test_label.mean())
 
 # 画图
 plt.figure(figsize=(100,100))
+
 plt.plot(preds[0:100],c='blue',label='pred')
 plt.plot(test_label,c='red',label='true')
 plt.title("RandomForest preds and true daysOnMarket distribution circumstance")
