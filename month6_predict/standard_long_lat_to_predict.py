@@ -59,7 +59,7 @@ estimator_model = tf.estimator.DNNRegressor(
     # hidden_units=[32,64],
     # hidden_units=[64,32],
     dropout=0.1,
-    optimizer=tf.train.AdamOptimizer(),
+    optimizer=tf.train.AdamOptimizer(learning_rate=0.000001),
 )
 
 batch_size = 10
@@ -116,8 +116,11 @@ for i in range(len(label_test)):
     list_value.append(x)
 
 print(list_value)
+
 list_value = np.array(list_value)
 list_value = np.expm1(list_value)
+list_value_series = pd.Series(list_value)
+print(list_value_series.describe())
 
 print('prediction_mean',np.mean(list_value))
 print('label_mean',np.mean(label_test))

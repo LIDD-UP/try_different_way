@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 # 日志
 tf.logging.set_verbosity(tf.logging.INFO)
 
-train_data = pd.read_csv('./summary_month_6_process_procedure/finnl_processing_train_data_6_no_remove_outliers.csv')
+train_data = pd.read_csv('./final_process_train_6_dnn.csv')
 test_data = pd.read_csv('./final_process_test_6_dnn.csv')
 
 example = train_data[['longitude', 'latitude', 'price', 'buildingTypeId', 'bedrooms']]
@@ -96,9 +96,9 @@ steps_trains = int(len(example)/batch_size)
 print(steps_trains)
 steps_test = int(len(example_test)/batch_size)
 
-for i in range(1000):
-    estimator_model.train(input_fn=train_input_fn, steps=steps_trains)
-# estimator_model.train(input_fn=train_input_fn, steps=steps_trains)
+# for i in range(10000):
+#     estimator_model.train(input_fn=train_input_fn, steps=steps_trains)
+estimator_model.train(input_fn=train_input_fn, steps=steps_trains)
 
 # 测试
 # ev = estimator_model.evaluate(input_fn=test_input_fn, steps=steps_test)
