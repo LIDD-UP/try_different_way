@@ -1,7 +1,7 @@
 #-*- coding:utf-8 _*-  
 """ 
 @author:Administrator
-@file: dnn_under_sample.py
+@file: dnn_under_sample_bedrooms.py
 @time: 2018/8/10
 """
 
@@ -57,7 +57,7 @@ estimator_model = tf.estimator.DNNRegressor(
     model_dir='./DNN_standard/predict_model',
     feature_columns=deep_columns,
     # hidden_units=[1024,512, 256, 128, 64, 32],
-    hidden_units=[32,64,128,256, 512,1024,2048],
+    hidden_units=[32,64,128,256,512,1024],
 
     # hidden_units=[32,64],
     # hidden_units=[64,32],
@@ -100,7 +100,7 @@ steps_trains = int(len(example)/batch_size)
 print(steps_trains)
 steps_test = int(len(example_test)/batch_size)
 
-for i in range(1000):
+for i in range(60000):
     estimator_model.train(input_fn=train_input_fn, steps=steps_trains)
 # estimator_model.train(input_fn=train_input_fn, steps=steps_trains)
 

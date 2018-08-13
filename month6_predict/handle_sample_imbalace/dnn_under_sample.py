@@ -1,7 +1,7 @@
 #-*- coding:utf-8 _*-  
 """ 
 @author:Administrator
-@file: dnn_under_sample.py
+@file: dnn_under_sample_bedrooms.py
 @time: 2018/8/10
 """
 

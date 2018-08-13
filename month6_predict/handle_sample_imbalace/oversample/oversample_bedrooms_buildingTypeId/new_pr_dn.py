@@ -1,9 +1,5 @@
-#-*- coding:utf-8 _*-  
-""" 
-@author:Administrator
-@file: dnn_under_sample.py
-@time: 2018/8/10
-"""
+
+
 
 
 
@@ -20,7 +16,7 @@ tf.logging.set_verbosity(tf.logging.INFO)
 
 
 test_data_path = os.path.dirname(os.path.dirname(os.path.dirname(os.getcwd())))
-train_data = pd.read_csv('./under_sample_buildingTypeId.csv')
+train_data = pd.read_csv('./over_sample_bedrooms_buildingTypeId.csv')
 test_data = pd.read_csv(test_data_path +'/standard_longitude_latitude/standard_log_lat_test.csv')
 
 example = train_data[['longitude', 'latitude', 'price', 'buildingTypeId', 'bedrooms']]
@@ -54,10 +50,10 @@ deep_columns = [
 
 # 定义模型（估计器）
 estimator_model = tf.estimator.DNNRegressor(
-    model_dir='./DNN_standard/predict_model',
+    model_dir='./DNN_standard/predict_model_1',
     feature_columns=deep_columns,
     # hidden_units=[1024,512, 256, 128, 64, 32],
-    hidden_units=[32,64,128,256, 512,1024,2048],
+    hidden_units=[32, 64, 128, 256, 512, 1024],
 
     # hidden_units=[32,64],
     # hidden_units=[64,32],
@@ -100,7 +96,7 @@ steps_trains = int(len(example)/batch_size)
 print(steps_trains)
 steps_test = int(len(example_test)/batch_size)
 
-for i in range(1000):
+for i in range(60000):
     estimator_model.train(input_fn=train_input_fn, steps=steps_trains)
 # estimator_model.train(input_fn=train_input_fn, steps=steps_trains)
 
