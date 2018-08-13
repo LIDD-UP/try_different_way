@@ -77,6 +77,8 @@ print(model)
 
 # 预测
 preds = np.expm1(model.predict(test))
+preds_series = pd.Series(preds)
+print(preds_series.describe())
 print('error',mean_absolute_error(test_label,preds))
 print('pred_mean',preds.mean())
 print('true_mean',test_label.mean())
