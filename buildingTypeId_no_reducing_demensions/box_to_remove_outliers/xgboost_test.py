@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 from sklearn.metrics import mean_absolute_error
 from sklearn.preprocessing import StandardScaler
+from scipy.stats import boxcox
 
 
 # pandas 的显示设置函数：
@@ -52,6 +53,14 @@ test_data['price'] = np.log1p(test_data['price'])
 # test_data = pd.get_dummies(test_data)
 
 
+# 将longitude latitude转化成正态分布
+train_data['longitude'] = abs(train_data['longitude'])
+
+train_data['longitude'] = boxcox(train_data['longitude'])
+
+print(train_data.head())
+
+
 
 
 
@@ -73,10 +82,10 @@ from sklearn.model_selection import GridSearchCV
 
 # 寻找超参数
 params = {
-          'n_estimators': [100,300,500,1000,5000],# 300
+          # 'n_estimators': [100,300,500,1000,5000],# 300
           # 'max_depth':[x for x in range(5,6,1)],#5
-          'max_depth':[x for x in range(3,10,1)],#5
-          'learning_rate':[0.001,0.01,0.05,0.1,0.3,0.5,0.7,0.9], # 0.3
+          # 'max_depth':[x for x in range(3,10,1)],#5
+          # 'learning_rate':[0.001,0.01,0.05,0.1,0.3,0.5,0.7,0.9], # 0.3
           # 'reg_alpha':[1e-5,1e-2,0.1,1,100],#1
           # 'gamma':[x for x in range(0,10,1)],#0
           # 'min_child_weight':[x for x in range(1,10,1)],# 5
@@ -116,13 +125,13 @@ print('pred_mean',preds.mean())
 print('true_mean',test_label.mean())
 
 # 画图
-plt.figure(figsize=(100,100))
-
-plt.plot(preds[0:100],c='blue',label='pred')
-plt.plot(test_label,c='red',label='true')
-plt.title("RandomForest preds and true daysOnMarket distribution circumstance")
-plt.legend()
-plt.show()
+# plt.figure(figsize=(100,100))
+#
+# plt.plot(preds[0:100],c='blue',label='pred')
+# plt.plot(test_label,c='red',label='true')
+# plt.title("RandomForest preds and true daysOnMarket distribution circumstance")
+# plt.legend()
+# plt.show()
 
 '''
 不对daysOnmarket进行log变化

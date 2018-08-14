@@ -8,9 +8,10 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+from scipy.stats import boxcox
 
-train_data = pd.read_csv('./input/month_6_1.csv')
-test_data = pd.read_csv('./input/test_6_1.csv')
+train_data = pd.read_csv('../input/month_6_1.csv')
+test_data = pd.read_csv('../input/test_6_1.csv')
 
 
 # dropna
@@ -103,8 +104,14 @@ print(test_data['bedrooms'].value_counts())
 trian_data = use_pivot_box_to_remove_fliers(train_data,['buildingTypeId','bedrooms'],['longitude','latitude','price','daysOnMarket'])
 print(train_data.shape)
 
-train_data.to_csv('./month_6_train_1.csv',index=False)
-test_data.to_csv('./test_data_1.csv',index=False)
+# train_data.to_csv('./month_6_train_1.csv',index=False)
+# test_data.to_csv('./test_data_1.csv',index=False)
+train_data = train_data.dropna()
+
+train_data['longitude'] = abs(train_data['longitude'])
+train_data['longitude'] = np.log1p(np.log1p(train_data['longitude']))
+
+print(train_data.shape)
 
 
 
@@ -126,9 +133,9 @@ test_data.to_csv('./test_data_1.csv',index=False)
 
 
 
-# sns.pairplot(train_data)
+sns.pairplot(train_data)
 # # sns.pairplot(test_data)
-# plt.show()
+plt.show()
 
 #
 

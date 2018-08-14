@@ -1,0 +1,51 @@
+1：把dataframe存储为csv文件时多了一列，需要把index=False
+2：dataframe存储为csv文件时原本有的双引号没有了：但是类型还是那样的；为解决；
+
+iloc 和loc 的区别；
+
+# 查看object类型数据的平均值是什么：object类型的数是无法用mean来求的的；可以考虑用众数来取代，但是对于省份，城市，地址这些具有相关性的
+# 的数据怎样解决，如果某个样本省份缺失，但是城市和地址已知就可以得到，如果用众数去填充就不合理；（可以考虑先groupby之后再求众数；）怎样处理，groupby之后的意义，但是感觉应该可以；
+#还有就是数据不合理的情况：城市和省份或者地址不符合，也就是说，地址的处理还要更加复杂一些（用一个set来解决这个问题）；这里先不处理，
+# 价格异常：
+#各种异常情况，如果全部考虑就发杂了，先不考虑；
+# # 也就是说对于每一种数据都要都要有相应的数据异常处理方式；
+
+#去除缺失值后取均值和直接用mean结果是不是一样的:结果是一样的，也就是说他是在把缺失值去掉之后求的结果；
+
+
+#pandas 求众数的函数可求字符数据和非字符数据；
+
+pandas 的DateFrame结构如果里面是bool类型的数，如果用True去判断它是不是在里面，他都返回False，但是用False去判断的时候都是True
+也就是说不能用True判断是否在pandas的DataFrmae中；还是只能用长度去判断；
+
+
+巨坑：用众数去填充的时候不会完全填充；
+再看看用平均值去填充会不会有问题：平均值不是，他是完全填充；
+column_mode_str = column_mode.values[0] 是string类型的；
+series.mode()返回的还是series
+
+若想判断某一处是不是nan值就可以用pd.isna来进行判断
+
+
+
+i = i.strip()
+    i = i.replace('\n','')
+    # print(i)
+    if i == 'price':
+        print('find')
+# 注意在对一个对象进行处理的时候他是对原来的对象进行处理，还是对生成的一个副本或者是对
+#从里面取出的数据进行处理，并没有对里面进行改变；
+
+
+
+
+
+ValueError: cannot set a frame with no defined columns
+这是在给新建的pd.DataFrame赋值的时候出现的问题，原因就是没有在定义的时候指定columns,所以一定要指定；
+
+# df = pd.DataFrame(columns=('lib', 'qty1', 'qty2'))
+# print(df)
+# for i in range(5):
+#     df.loc[i] = [random.randint(-1, 1) for n in range(3)]
+# print(df)
+
