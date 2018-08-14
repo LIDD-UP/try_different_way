@@ -108,8 +108,8 @@ print(train_data.shape)
 # test_data.to_csv('./test_data_1.csv',index=False)
 train_data = train_data.dropna()
 
-train_data['longitude'] = abs(train_data['longitude'])
-train_data['longitude'] = np.log1p(np.log1p(train_data['longitude']))
+# train_data['longitude'] = abs(train_data['longitude'])
+# train_data['longitude'] = np.log1p(np.log1p(train_data['longitude']))
 
 print(train_data.shape)
 
@@ -133,9 +133,9 @@ print(train_data.shape)
 
 
 
-sns.pairplot(train_data)
+# sns.pairplot(train_data)
 # # sns.pairplot(test_data)
-plt.show()
+# plt.show()
 
 #
 

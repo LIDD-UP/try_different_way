@@ -54,11 +54,11 @@ test_data['price'] = np.log1p(test_data['price'])
 
 
 # 将longitude latitude转化成正态分布
-train_data['longitude'] = abs(train_data['longitude'])
+# train_data['longitude'] = abs(train_data['longitude'])
+#
+# train_data['longitude'] = boxcox(train_data['longitude'])[1]
 
-train_data['longitude'] = boxcox(train_data['longitude'])
-
-print(train_data.head())
+# print(train_data.head())
 
 
 
@@ -83,7 +83,7 @@ from sklearn.model_selection import GridSearchCV
 # 寻找超参数
 params = {
           # 'n_estimators': [100,300,500,1000,5000],# 300
-          # 'max_depth':[x for x in range(5,6,1)],#5
+          'max_depth':[x for x in range(5,6,1)],#5
           # 'max_depth':[x for x in range(3,10,1)],#5
           # 'learning_rate':[0.001,0.01,0.05,0.1,0.3,0.5,0.7,0.9], # 0.3
           # 'reg_alpha':[1e-5,1e-2,0.1,1,100],#1
