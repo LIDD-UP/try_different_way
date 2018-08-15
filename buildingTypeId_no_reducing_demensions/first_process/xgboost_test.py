@@ -47,15 +47,15 @@ print(train.head())
 print(test.head())
 
 from xgboost import XGBRegressor
-from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import GridSearchCV,KFold
 # print(help(XGBRegressor))
 
 # 寻找超参数
 params = {
-          'n_estimators': [100,300,500,1000,5000],# 300
-          # 'max_depth':[x for x in range(5,6,1)],#5
-          'max_depth':[x for x in range(3,10,1)],#5
-          'learning_rate':[0.001,0.01,0.05,0.1,0.3,0.5,0.7,0.9], # 0.3
+          # 'n_estimators': [100,300,500,1000,5000],# 300
+          'max_depth':[x for x in range(5,6,1)],#5
+          # 'max_depth':[x for x in range(3,10,1)],#5
+          # 'learning_rate':[0.001,0.01,0.05,0.1,0.3,0.5,0.7,0.9], # 0.3
           # 'reg_alpha':[1e-5,1e-2,0.1,1,100],#1
           # 'gamma':[x for x in range(0,10,1)],#0
           # 'min_child_weight':[x for x in range(1,10,1)],# 5
@@ -66,8 +66,8 @@ params = {
    lambda –> reg_lambda
    alpha –> reg_alpha
 '''
-
-grid = GridSearchCV(estimator=XGBRegressor(),param_grid=params,scoring='neg_mean_absolute_error')
+kfold = KFold(n_splits=10)
+grid = GridSearchCV(estimator=XGBRegressor(),param_grid=params,scoring='neg_mean_absolute_error',cv=kfold)
 
 # 训练
 grid.fit(train,train_label)

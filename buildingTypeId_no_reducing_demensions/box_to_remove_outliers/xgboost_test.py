@@ -13,6 +13,7 @@ import matplotlib as mpl
 from sklearn.metrics import mean_absolute_error
 from sklearn.preprocessing import StandardScaler
 from scipy.stats import boxcox
+from IPython.display import display
 
 
 # pandas 的显示设置函数：
@@ -77,7 +78,7 @@ print(train.head())
 print(test.head())
 
 from xgboost import XGBRegressor
-from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import GridSearchCV,KFold
 # print(help(XGBRegressor))
 
 # 寻找超参数
@@ -96,11 +97,13 @@ params = {
    lambda –> reg_lambda
    alpha –> reg_alpha
 '''
-
-grid = GridSearchCV(estimator=XGBRegressor(),param_grid=params,scoring='neg_mean_absolute_error')
+# kfold = KFold(n_splits=10)
+grid = GridSearchCV(estimator=XGBRegressor(),param_grid=params,scoring='neg_mean_absolute_error',cv=10)
 
 # 训练
 grid.fit(train,train_label)
+
+display(pd.DataFrame(grid.cv_results_))
 # print(len(grid.cv_results_.values()))
 # print(help(grid.))
 # 打印最好参数和最好的得分值
