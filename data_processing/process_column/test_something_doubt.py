@@ -16,3 +16,4 @@ data_new = data.loc[data['bedrooms']==data['bedrooms']]
 
 print(data_new.shape[0])
 print(data.shape[0])
+
