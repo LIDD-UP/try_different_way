@@ -1,7 +1,7 @@
 #-*- coding:utf-8 _*-  
 """ 
 @author:Administrator
-@file: xgboost.py
+@file: xgboost_predict.py
 @time: 2018/8/20
 """
 import numpy as np
@@ -13,6 +13,7 @@ import matplotlib as mpl
 from scipy.stats import skew
 from sklearn.metrics import mean_absolute_error
 from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import train_test_split
 
 # pandas 的显示设置函数：
 mpl.rcParams['font.sans-serif'] = ['SimHei']  # 指定默认字体 SimHei为黑体
@@ -21,11 +22,18 @@ mpl.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号
 pd.set_option('max_columns', 200)
 pd.set_option('display.width', 1000)
 
-data = pd.read_csv('./data_16000.csv')
-data = data[[ 'longitude', 'latitude', 'price','daysOnMarket']]
+data = pd.read_csv('./little_columns.csv')
+# data = data[[ 'longitude', 'latitude', 'price','daysOnMarket']]
+# columns = [column for column in data.columns if data[column].dtype !='object']
+data = data.drop(columns='tradeTypeId')
+# data = data[columns]
+data = data.dropna()
 
-train_data = data.head(63456)
-test_data = data.tail(1000)
+train_data ,test_data  = train_test_split(data,test_size=0.05)
+
+
+print(train_data.shape)
+print(test_data.shape)
 
 # log 变换
 train_data['price'] = np.log1p(train_data['price'])
@@ -46,9 +54,10 @@ test_label = np.expm1(test_data['daysOnMarket'])
 print(train.head())
 print(test.head())
 
+
 from xgboost import XGBRegressor
 from sklearn.model_selection import GridSearchCV,KFold
-print(help(XGBRegressor))
+# print(help(XGBRegressor))
 
 # 寻找超参数
 params = {
@@ -94,13 +103,13 @@ print('pred_mean',preds.mean())
 print('true_mean',test_label.mean())
 
 # 画图
-plt.figure(figsize=(100,100))
-
-plt.plot(preds[0:100],c='blue',label='pred')
-plt.plot(test_label,c='red',label='true')
-plt.title("RandomForest preds and true daysOnMarket distribution circumstance")
-plt.legend()
-plt.show()
+# plt.figure(figsize=(100,100))
+#
+# plt.plot(preds[0:100],c='blue',label='pred')
+# plt.plot(test_label,c='red',label='true')
+# plt.title("RandomForest preds and true daysOnMarket distribution circumstance")
+# plt.legend()
+# plt.show()
 
 '''
 

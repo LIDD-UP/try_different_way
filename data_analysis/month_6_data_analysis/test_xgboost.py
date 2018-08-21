@@ -7,6 +7,7 @@
 from xgboost import XGBRegressor
 
 x = 11
-if __name__ == '__main__':
-    model = XGBRegressor()
-    print(x)
+print(x)
+# if __name__ == '__main__':
+#     model = XGBRegressor()
+#     print(x)

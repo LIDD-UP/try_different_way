@@ -15,6 +15,9 @@ import matplotlib.pyplot as plt
 # 日志
 tf.logging.set_verbosity(tf.logging.INFO)
 
+
+data = pd.read_csv
+
 train_data = pd.read_csv('./month_6_train_1.csv')
 test_data = pd.read_csv('./test_data_1.csv')
 

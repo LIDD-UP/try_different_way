@@ -53,6 +53,12 @@ def process_bedrooms(data):
 data = process_bedrooms(data)
 # print(data['bedrooms'].dtype)
 
+
+
+
+
+
+
 data = data.drop(columns='id')
 data.to_csv('./data_16000.csv',index=False)
 
