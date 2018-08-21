@@ -22,14 +22,14 @@ mpl.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号
 pd.set_option('max_columns', 200)
 pd.set_option('display.width', 1000)
 
-data = pd.read_csv('./little_columns.csv')
+data = pd.read_csv('./process_data_16000_add_column.csv')
 # data = data[[ 'longitude', 'latitude', 'price','daysOnMarket']]
 # columns = [column for column in data.columns if data[column].dtype !='object']
-data = data.drop(columns='tradeTypeId')
+# data = data.drop(columns='tradeTypeId')
 # data = data[columns]
 data = data.dropna()
 
-train_data ,test_data  = train_test_split(data,test_size=0.05)
+train_data ,test_data  = train_test_split(data,test_size=0.5)
 
 
 print(train_data.shape)
