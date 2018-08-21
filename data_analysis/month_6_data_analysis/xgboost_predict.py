@@ -29,7 +29,7 @@ data = pd.read_csv('./process_data_16000_add_column.csv')
 # data = data[columns]
 data = data.dropna()
 
-train_data ,test_data  = train_test_split(data,test_size=0.5)
+train_data ,test_data  = train_test_split(data,test_size=0.1)
 
 
 print(train_data.shape)

@@ -59,8 +59,8 @@ data = process_bedrooms(data)
 
 
 
-data = data.drop(columns='id')
-data.to_csv('./data_16000.csv',index=False)
+# data = data.drop(columns='id')
+# data.to_csv('./data_16000.csv',index=False)
 
 
 

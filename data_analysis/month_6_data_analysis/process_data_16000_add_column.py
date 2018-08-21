@@ -46,15 +46,19 @@ def same_processing_way(data):
 data = data.dropna()
 print(data.shape)
 
-data = data.drop(columns=['province','city','address','postalCode','listingDate'])
-# data_class = data[[column for column in data.columns if data[column].dtype =='object']]
+data = data.drop(columns=['province','city','address','postalCode',
+                          'listingDate','community','basement1','cableTVIncluded',
+                          'heatType', 'room5','streetDirection','room5Length','room5Width',
+                          'cacIncluded'
+                          ])
+data_class = data[[column for column in data.columns if data[column].dtype =='object']]
 # data_numeric = data[[column for column in data.columns if data[column].dtype !='object']]
 # data_class = data_class.drop(columns=['province','city','address','postalCode','listingDate'])
 #
 # print(data_class.head())
 # print(data_class.shape)
-# for column in data_class.columns:
-#     print(data_class[column].value_counts())
+for column in data_class.columns:
+    print(data_class[column].value_counts())
 
 
 # 对所有的类别进行labelencoding；
@@ -108,10 +112,10 @@ for column in data.columns:
     data_encode = pd.concat((data_encode,dataencode_column_dataframe),axis=1)
     print(column,data[column].dtype,data_encode.shape)
 
-data_encode = data_encode.drop(columns='community')
+data_encode = data_encode.drop(columns=['tradeTypeId'])
 
 print(data_encode.shape)
 
-data_encode.to_csv('./process_data_16000_add_column.csv',index=False)
+data_encode.to_csv('./process_data_16000_add_column_dnn.csv',index=False)
 
 
