@@ -74,18 +74,10 @@ def generate_columns(data):
 
 # 定义模型（估计器）
 estimator_model = tf.estimator.DNNRegressor(
-    model_dir='./DNN_kk',
+    model_dir='./DNN_drop',
     feature_columns=generate_columns(data.drop(columns='daysOnMarket')),
-    # hidden_units=[1024,512, 256, 128, 64, 32],
     hidden_units=[32,64,128,256,512],
-
-    # hidden_units=[32,64],
-    # hidden_units=[64,32],
     dropout=0.1,
-    optimizer=tf.train.ProximalAdagradOptimizer(
-        learning_rate=0.0001,
-        l1_regularization_strength=0.001
-    )
 )
 
 # 获取预测输入：
