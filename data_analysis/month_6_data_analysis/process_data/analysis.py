@@ -51,6 +51,7 @@ def process_bedrooms(data):
     data['bedrooms'] = data['bedrooms'].astype('float')
     return data
 data = process_bedrooms(data)
+print(data.head())
 # print(data['bedrooms'].dtype)
 
 

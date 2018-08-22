@@ -54,28 +54,28 @@ example_test = generate_input_data_dict(example_test)
 
 
 # 定义连续型连续
-# longitude = tf.feature_column.numeric_column('longitude')
-# latitude = tf.feature_column.numeric_column('latitude')
+longitude = tf.feature_column.numeric_column('longitude')
+latitude = tf.feature_column.numeric_column('latitude')
 price = tf.feature_column.numeric_column('price')
-# buildingTypeId = tf.feature_column.numeric_column('buildingTypeId')
-# bedrooms = tf.feature_column.numeric_column('bedrooms')
+buildingTypeId = tf.feature_column.numeric_column('buildingTypeId')
+bedrooms = tf.feature_column.numeric_column('bedrooms')
 
 
 # 交易类型和房间数
-# buildingTypeId = tf.feature_column.categorical_column_with_vocabulary_list('buildingTypeId',[3,1,6,19,12,17,13,7,16,14])
-# bedrooms = tf.feature_column.categorical_column_with_vocabulary_list('bedrooms',[0,1,2,3,4,5,6,7])
+buildingTypeId = tf.feature_column.categorical_column_with_vocabulary_list('buildingTypeId',[3,1,6,19,12,17,13,7,16,14])
+bedrooms = tf.feature_column.categorical_column_with_vocabulary_list('bedrooms',[0,1,2,3,4,5,6,7])
 
 
 
 deep_columns = [
     price,
-    # latitude,
-    # longitude,
+    latitude,
+    longitude,
     # # buildingTypeId,
     # # bedrooms,
     # # tf.feature_column.embedding_column(buildingTypeId,10),
-    # tf.feature_column.indicator_column(buildingTypeId),
-    # tf.feature_column.indicator_column(bedrooms),
+    tf.feature_column.indicator_column(buildingTypeId),
+    tf.feature_column.indicator_column(bedrooms),
 
 ]
 
@@ -96,17 +96,18 @@ batch_size = 10
 
 train_input_fn = tf.estimator.inputs.numpy_input_fn(
     x={
-    k:v for (k,v) in example.items()
+    k:np.array(v) for (k,v) in example.items()
     },
     y=np.array(label),
-    num_epochs=None,
+    num_epochs=1,
     shuffle=True,
     batch_size=batch_size,
 )
 
 test_input_fn = tf.estimator.inputs.numpy_input_fn(
     x={
-    k: v for (k, v) in example_test.items()
+    k: np.array(v) for (k, v) in example_test.items()
+
     },
     y=np.array(label_test),
     num_epochs=1,  # 此处注意，如果设置成为None了会无限读下去；
@@ -119,9 +120,9 @@ steps_trains = int(len(example)/batch_size)
 print(steps_trains)
 steps_test = int(len(example_test)/batch_size)
 
-for i in range(10):
-    estimator_model.train(input_fn=train_input_fn, steps=steps_trains)
-# estimator_model.train(input_fn=train_input_fn, steps=steps_trains)
+# for i in range(10):
+#     estimator_model.train(input_fn=train_input_fn, steps=steps_trains)
+estimator_model.train(input_fn=train_input_fn, steps=steps_trains)
 #
 # 测试
 # ev = estimator_model.evaluate(input_fn=test_input_fn, steps=steps_test)

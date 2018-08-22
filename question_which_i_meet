@@ -68,3 +68,14 @@ GridSearchCV和RandomizedSearchCV得区别是一个是暴力组合参数，选�
 
 random 模块下的sample才是在一个列表里面返回若干个数
 chocie是在一个list中返回一个数，随机的；
+
+
+输入函数有问题，或者是输入的数据未去除nan值；，需要加上np.array(data[column])
+tensorflow.python.training.basic_session_run_hooks.NanLossDuringTrainingError: NaN loss during training.
+
+
+出现长尾分布的原因很大程度式由于数据有离群点或者是异常值需要去除；
+
+
+
+

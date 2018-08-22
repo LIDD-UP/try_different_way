@@ -51,6 +51,7 @@ data = data.drop(columns=['province','city','address','postalCode',
                           'heatType', 'room5','streetDirection','room5Length','room5Width',
                           'cacIncluded'
                           ])
+# 社区这个特征在机器学习不太好处理，但是dnn中有hash比较好处理一点；
 data_class = data[[column for column in data.columns if data[column].dtype =='object']]
 # data_numeric = data[[column for column in data.columns if data[column].dtype !='object']]
 # data_class = data_class.drop(columns=['province','city','address','postalCode','listingDate'])
