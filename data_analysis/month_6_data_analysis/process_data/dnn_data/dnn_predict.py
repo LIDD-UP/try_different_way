@@ -94,7 +94,7 @@ def get_predict_input(example_predict):
         },
         y=np.array(label_predict),
         num_epochs=1,  # 此处注意，如果设置成为None了会无限读下去；
-        shuffle=False,
+        shuffle=True,
         batch_size=len(example_predict)
     )
     return predict_input_fn
@@ -114,7 +114,7 @@ def get_input_to_train_and_test(example,label,estimator_model,batch_size,train_n
             },
             y=np.array(label_train),
             num_epochs=1,
-            shuffle=True,
+            shuffle=False,
             batch_size=batch_size,
         )
 
@@ -126,23 +126,20 @@ def get_input_to_train_and_test(example,label,estimator_model,batch_size,train_n
             y=np.array(label_test),
             num_epochs=1,  # 此处注意，如果设置成为None了会无限读下去；
             shuffle=False,
-            batch_size=batch_size,
+            batch_size=len(label_test),
         )
 
         # 训练
         steps_trains = int(len(example)/batch_size)+1
-        print(steps_trains)
-        steps_test = int(len(example_test)/batch_size) +1
-
         estimator_model.train(input_fn=train_input_fn, steps=steps_trains)
 
         # 测试
-        ev = estimator_model.evaluate(input_fn=test_input_fn, steps=steps_test)
+        ev = estimator_model.evaluate(input_fn=test_input_fn)
         print('ev: {}'.format(ev))
     return estimator_model
 
 
-estimator_model = get_input_to_train_and_test(example,label,estimator_model,1,1)
+estimator_model = get_input_to_train_and_test(example,label,estimator_model,1,1000000)
 
 
 # 预测

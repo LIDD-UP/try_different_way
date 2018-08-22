@@ -73,16 +73,15 @@ def check_dropna_before_after(data):
 
 
 # 第一步：拿以前的来测试，[['price','buildingTypeId']]
-data = data[['price','buildingTypeId','address','daysOnMarket']]
+data = data[['province','city','address','postalCode','longitude','latitude','price','buildingTypeId','bedrooms','daysOnMarket']]
 data['buildingTypeId'] = data['buildingTypeId'].astype(str)
 print(data.shape)
 print(data.dtypes)
 def same_processing_way(data):
-    # data = data[data.longitude < -79]
-    # data = data[data.longitude > -80]
+    data = data[data.longitude < -10]
+    data = data[data.longitude > -140]
     #
-    # data = data[data.latitude > 43]
-    #
+    data = data[data.latitude > 43]
     # data = data[data.tradeTypeId == 1]
     #
     data = data[data.price > 50000]
