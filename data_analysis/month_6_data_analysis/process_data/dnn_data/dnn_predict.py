@@ -81,9 +81,9 @@ estimator_model = tf.estimator.DNNRegressor(
 
     # hidden_units=[32,64],
     # hidden_units=[64,32],
-    dropout=0.1,
+    # dropout=0.1,
     optimizer=tf.train.ProximalAdagradOptimizer(
-        learning_rate=0.0001,
+        learning_rate=0.1,
         l1_regularization_strength=0.001
     )
 )
@@ -142,7 +142,7 @@ def get_input_to_train_and_test(example,label,estimator_model,batch_size,train_n
     return estimator_model
 
 
-estimator_model = get_input_to_train_and_test(example,label,estimator_model,1,1000000)
+estimator_model = get_input_to_train_and_test(example,label,estimator_model,1,1)
 
 
 # 预测
