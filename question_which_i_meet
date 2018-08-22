@@ -76,6 +76,8 @@ tensorflow.python.training.basic_session_run_hooks.NanLossDuringTrainingError: N
 
 出现长尾分布的原因很大程度式由于数据有离群点或者是异常值需要去除；
 
+data = data.apply(lambda x: (x - np.min(x)) / (np.max(x) - np.min(x)) if x.dtype!= 'object' else x):数据标准化和还原
+
 
 
 

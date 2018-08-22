@@ -1,15 +1,10 @@
 #-*- coding:utf-8 _*-  
 """ 
 @author:Administrator
-@file: wide_and_deep.py
+@file: standard_data_predict_wid_deep.py
 @time: 2018/8/22
 """
-#-*- coding:utf-8 _*-
-""" 
-@author:Administrator
-@file: dnn_predict.py
-@time: 2018/8/22
-"""
+
 import tensorflow as tf
 import pandas as pd
 pd.set_option('display.column',100)
@@ -21,16 +16,39 @@ import numpy as np
 from sklearn.metrics import mean_absolute_error
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import StandardScaler
+
 
 
 # 日志
 tf.logging.set_verbosity(tf.logging.INFO)
 data = pd.read_csv('./first.csv')
 print(data.head())
-
 data = data.dropna()
+
+
+
+ss = MinMaxScaler()
+ss_standard_daysOnmarket = MinMaxScaler()
+data['daysOnMarket'] = ss_standard_daysOnmarket.fit_transform(np.array(data['daysOnMarket']).reshape(-1,1))
+
+for column in data.columns:
+    if column!='daysOnmarket':
+        if data[column].dtypes != 'object':
+            data[column] = ss.fit_transform(np.array(data[column]).reshape(-1,1))
+    else:
+        continue
+
+
+
+
+
+
+
 _x = data.drop(columns=['daysOnMarket'])
 _y = data['daysOnMarket']
+
 
 example, example_predict, label, label_predict = train_test_split(_x, _y, test_size=0.02)
 
@@ -82,7 +100,7 @@ def generate_columns(data):
 
 # 定义模型（估计器）
 estimator_model = tf.estimator.DNNLinearCombinedRegressor(
-    model_dir='./wide_and_deep',
+    model_dir='./wide_and_deep_standard',
     dnn_feature_columns=generate_columns(data.drop(columns='daysOnMarket'))[0],
     linear_feature_columns=generate_columns(data.drop(columns='daysOnMarket'))[0] +generate_columns(data.drop(columns='daysOnMarket'))[2],
     dnn_hidden_units=[32,64,128,256,512],
@@ -142,7 +160,7 @@ def get_input_to_train_and_test(example,label,estimator_model,batch_size,train_n
     return estimator_model
 
 
-estimator_model = get_input_to_train_and_test(example,label,estimator_model,1,1)
+estimator_model = get_input_to_train_and_test(example,label,estimator_model,1,1000000)
 
 
 # 预测
@@ -158,9 +176,14 @@ for i in range(len(label_predict)):
 
 print(list_value)
 list_value = np.array(list_value)
+list_value = ss_standard_daysOnmarket.inverse_transform(list_value.reshape(-1,1))
+print(list_value)
+label_predict = ss_standard_daysOnmarket.inverse_transform(np.array(label_predict).reshape(-1,1))
+print(label_predict)
 
-list_value_series = pd.Series(list_value)
+list_value_series = pd.Series(np.array(list_value).reshape(-1))
 print(list_value_series.describe())
+
 
 print('prediction_mean',np.mean(list_value))
 print('label_mean',np.mean(label_predict))

@@ -1,15 +1,10 @@
 #-*- coding:utf-8 _*-  
 """ 
 @author:Administrator
-@file: wide_and_deep.py
+@file: standard_data_predict_dnn.py
 @time: 2018/8/22
 """
-#-*- coding:utf-8 _*-
-""" 
-@author:Administrator
-@file: dnn_predict.py
-@time: 2018/8/22
-"""
+
 import tensorflow as tf
 import pandas as pd
 pd.set_option('display.column',100)
@@ -21,14 +16,29 @@ import numpy as np
 from sklearn.metrics import mean_absolute_error
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
-
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import StandardScaler
 
 # 日志
 tf.logging.set_verbosity(tf.logging.INFO)
 data = pd.read_csv('./first.csv')
 print(data.head())
-
 data = data.dropna()
+
+ss = MinMaxScaler()
+ss_standard_daysOnmarket = MinMaxScaler()
+data['daysOnMarket'] = ss_standard_daysOnmarket.fit_transform(np.array(data['daysOnMarket']).reshape(-1,1))
+
+for column in data.columns:
+    if column!='daysOnmarket':
+        if data[column].dtypes != 'object':
+            data[column] = ss.fit_transform(np.array(data[column]).reshape(-1,1))
+    else:
+        continue
+
+
+
+
 _x = data.drop(columns=['daysOnMarket'])
 _y = data['daysOnMarket']
 
@@ -56,7 +66,6 @@ def generate_columns(data):
     # 拿到数据集里面的numeric变量
     numeric_columns = []
     class_columns =[]
-    linear_columns=[]
     for column in data.columns:
         if data[column].dtype != 'object':
             numeric_column_real = tf.feature_column.numeric_column(column)
@@ -66,14 +75,13 @@ def generate_columns(data):
             len_class_category_set = len(class_category_set)
             if len_class_category_set<100:
                 class_column_real = tf.feature_column.categorical_column_with_vocabulary_list(column,class_category_set)
-                linear_columns.append(class_column_real)
+
                 class_columns.append(tf.feature_column.indicator_column(class_column_real))
             else:
                 class_column_real = tf.feature_column.categorical_column_with_hash_bucket(column,100)
                 class_columns.append(tf.feature_column.embedding_column(class_column_real,int(len_class_category_set**0.25)))
-                linear_columns.append(class_column_real)
     columns =numeric_columns +class_columns
-    return numeric_columns,class_columns,linear_columns
+    return columns
 
 
 
@@ -81,11 +89,11 @@ def generate_columns(data):
 
 
 # 定义模型（估计器）
-estimator_model = tf.estimator.DNNLinearCombinedRegressor(
-    model_dir='./wide_and_deep',
-    dnn_feature_columns=generate_columns(data.drop(columns='daysOnMarket'))[0],
-    linear_feature_columns=generate_columns(data.drop(columns='daysOnMarket'))[0] +generate_columns(data.drop(columns='daysOnMarket'))[2],
-    dnn_hidden_units=[32,64,128,256,512],
+estimator_model = tf.estimator.DNNRegressor(
+    model_dir='./DNN_standard',
+    feature_columns=generate_columns(data.drop(columns='daysOnMarket')),
+    hidden_units=[32,64,128,256,512],
+
 )
 
 # 获取预测输入：
@@ -142,7 +150,7 @@ def get_input_to_train_and_test(example,label,estimator_model,batch_size,train_n
     return estimator_model
 
 
-estimator_model = get_input_to_train_and_test(example,label,estimator_model,1,1)
+estimator_model = get_input_to_train_and_test(example,label,estimator_model,1,1000000)
 
 
 # 预测
@@ -158,8 +166,12 @@ for i in range(len(label_predict)):
 
 print(list_value)
 list_value = np.array(list_value)
+list_value = ss_standard_daysOnmarket.inverse_transform(list_value.reshape(-1,1))
+print(list_value)
+label_predict = ss_standard_daysOnmarket.inverse_transform(np.array(label_predict).reshape(-1,1))
+print(label_predict)
 
-list_value_series = pd.Series(list_value)
+list_value_series = pd.Series(np.array(list_value).reshape(-1))
 print(list_value_series.describe())
 
 print('prediction_mean',np.mean(list_value))
