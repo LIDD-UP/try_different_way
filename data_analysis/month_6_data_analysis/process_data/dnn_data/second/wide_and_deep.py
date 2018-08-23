@@ -136,7 +136,7 @@ def get_input_to_train_and_test(example,label,estimator_model,batch_size,train_n
     return estimator_model
 
 
-estimator_model = get_input_to_train_and_test(example,label,estimator_model,1,1)
+estimator_model = get_input_to_train_and_test(example,label,estimator_model,1,1000000)
 
 
 # 预测
