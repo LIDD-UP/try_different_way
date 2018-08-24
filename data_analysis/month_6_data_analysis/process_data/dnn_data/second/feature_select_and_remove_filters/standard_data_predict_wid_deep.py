@@ -1,9 +1,10 @@
-#-*- coding:utf-8 _*-  
+# -*- coding:utf-8 _*-  
 """ 
 @author:Administrator
 @file: standard_data_predict_wid_deep.py
-@time: 2018/8/23
+@time: 2018/8/24
 """
+
 
 
 import tensorflow as tf

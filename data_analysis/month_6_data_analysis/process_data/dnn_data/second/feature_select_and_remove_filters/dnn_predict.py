@@ -1,9 +1,10 @@
-#-*- coding:utf-8 _*-  
+# -*- coding:utf-8 _*-  
 """ 
 @author:Administrator
 @file: dnn_predict.py
-@time: 2018/8/23
+@time: 2018/8/24
 """
+
 import tensorflow as tf
 import pandas as pd
 pd.set_option('display.column',100)

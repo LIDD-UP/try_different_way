@@ -1,4 +1,10 @@
-#-*- coding:utf-8 _*-  
+# -*- coding:utf-8 _*-  
+""" 
+@author:Administrator
+@file: standard_data_predict_dnn.py
+@time: 2018/8/24
+"""
+#-*- coding:utf-8 _*-
 """ 
 @author:Administrator
 @file: standard_data_predict_dnn.py
