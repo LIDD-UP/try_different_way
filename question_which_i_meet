@@ -79,5 +79,7 @@ tensorflow.python.training.basic_session_run_hooks.NanLossDuringTrainingError: N
 data = data.apply(lambda x: (x - np.min(x)) / (np.max(x) - np.min(x)) if x.dtype!= 'object' else x):数据标准化和还原
 
 
+pd.factorize,与pd.get_dummies 有类似的作用，都是编码，但是factorize类似玉标签编码，get_dummies类似于one_hot编码；
 
 
+pandas .
