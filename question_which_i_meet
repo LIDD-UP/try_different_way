@@ -83,3 +83,8 @@ pd.factorize,与pd.get_dummies 有类似的作用，都是编码，但是factori
 
 
 pandas .
+
+
+UserWarning: The 'normed' kwarg is deprecated, and has been replaced by the 'density' kwarg.
+  warnings.warn("The 'normed' kwarg is deprecated, and has been "
+
