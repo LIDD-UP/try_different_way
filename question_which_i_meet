@@ -96,3 +96,6 @@ UserWarning: The 'normed' kwarg is deprecated, and has been replaced by the 'den
     data_feature = data_feature.reindex([x for x in range(len(data_feature))])
 
 
+
+# 又遇到一个莫名其妙的bug当用dnn的模型的时候老是会遇到NaN的错误问题；
+
