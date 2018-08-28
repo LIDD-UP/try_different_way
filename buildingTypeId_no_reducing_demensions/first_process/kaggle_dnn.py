@@ -23,10 +23,10 @@ tf.logging.set_verbosity(tf.logging.ERROR)
 
 train_data = pd.read_csv('./month_6_train_1.csv')
 test_data = pd.read_csv('./test_data_1.csv')
-# train_data['daysOnMarket'] = np.log1p(train_data['daysOnMarket'])
-
 train_data = train_data.dropna()
 test_data = test_data.dropna()
+train_data['daysOnMarket'] = np.log1p(train_data['daysOnMarket'])
+# test_data['daysOnMarket'] = np.log1p(test_data['daysOnMarket'])
 print(train_data.head())
 print(test_data.head())
 
@@ -435,11 +435,12 @@ def train_dnn_regressor_model(
     else:
         do_validation = False
 
-    periods = 10
+    periods = 1000
     steps_per_period = steps / periods
 
     # Create a linear regressor object.
     dnn_regressor = tf.estimator.DNNRegressor(
+        model_dir='./dnn_kaggle',
         feature_columns=construct_feature_columns(training_examples),
         hidden_units=hidden_units,
         optimizer=optimizer
@@ -623,7 +624,9 @@ def predict_test(dnn_regressor):
     test_predictions = dnn_regressor.predict(input_fn=predict_test_input_fn)
     df_submit = pd.DataFrame()
     df_submit['daysOnMarket'] = np.array([item['predictions'][0] for item in test_predictions])
-    print(mean_absolute_error(label_true,df_submit['daysOnMarket']))
+    list_df = list(df_submit['daysOnMarket'])
+    list_df =np.expm1(list_df)
+    print(mean_absolute_error(label_true,list_df))
 
 predict_test(DNN_model)
 
