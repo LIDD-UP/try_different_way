@@ -34,7 +34,7 @@ def process_bedrooms(data):
     data['bedrooms'] = data['bedrooms'].astype('float')
     return data
 
-
+# 处理bedrooms(eval)
 data = process_bedrooms(data)
 
 # 处理approxSquareFootage
@@ -54,12 +54,12 @@ def process_approxSquareFootage(data):
     data['approxSquareFootage'] = data['approxSquareFootage'].astype('float')
     return data
 
-
+# 处理square；取最大值；
 data = process_approxSquareFootage(data)
 # print(data['approxSquareFootage'])
 
 
-# 处理approxAge
+# 处理approxAge，取最大值
 def process_approxAge(data):
     data['approxAge'] = data['approxAge'].astype('str')
     list_approxAge = []
@@ -102,9 +102,10 @@ def get_square(data=data,num_room_number=7):
                     print(rooms_square_list_k)
                     rooms_square_list.append(rooms_square_list_k)
                 data[name] = rooms_square_list
-                data = data.drop(columns=[_len,wid])
+                # data = data.drop(columns=[_len,wid]) # 这里先不drop掉，特征组合和衍生是对特征扩充，不应该直接删除，
+                # 先保留，调试之后看结果；
     return data
-# data = get_square(data,10)
+data = get_square(data,10)
 # print('square',data.shape)
 # print(data.head())
 
@@ -135,12 +136,13 @@ def same_processing_way(data):
     # data['bedrooms'] = list_bedrooms_new
     #
     # data = data[data.daysOnMarket < 60]
+    data = data.reindex()
     return data
 
 
 data = same_processing_way(data)
 
-print(data.head())
+print(data.head(50))
 print(data.shape)
 
 # data_feature = data.drop(columns='daysOnMarket')
@@ -157,6 +159,7 @@ def remove_fliers(data):
 
 # 处理target variable,观察daysonMarket 的 mu和sigma值：
 def get_targetVariable_mu_sigma_QQ_plt(data):
+    daysOnMarket_skew = data['daysOnMarket'].skew()
     sns.distplot(data['daysOnMarket'] , fit=norm)
 
     # Get the fitted parameters used by the function
@@ -164,7 +167,7 @@ def get_targetVariable_mu_sigma_QQ_plt(data):
     print( '\n mu = {:.2f} and sigma = {:.2f}\n'.format(mu, sigma))
 
     #Now plot the distribution
-    plt.legend(['Normal dist. ($\mu=$ {:.2f} and $\sigma=$ {:.2f} )'.format(mu, sigma)],
+    plt.legend(['Normal dist. ($\mu=$ {:.2f} and $\sigma=$ {:.2f} ,{})'.format(mu, sigma,daysOnMarket_skew)],
                 loc='best')
     plt.ylabel('Frequency')
     plt.title('daysOnMarket distribution')
@@ -177,9 +180,12 @@ def get_targetVariable_mu_sigma_QQ_plt(data):
 # get_targetVariable_mu_sigma_QQ_plt(data)
 
 # log transform the target_variable
-def log_transform_target_variable():
-    data["daysOnMarket"] = np.log1p(data["daysOnMarket"])
-
+def log_transform_target_variable(data):
+    # log 和 sqrt 这两种方法还是要看实际效果来决定；
+    daysOnMarket_skew_before = data['daysOnMarket'].skew()
+    # data["daysOnMarket"] = np.log1p(data["daysOnMarket"])
+    data['daysOnMarket'] = np.sqrt(data['daysOnMarket'])
+    daysOnMarket_skew_after = data['daysOnMarket'].skew()
     # Check the new distribution 
     sns.distplot(data['daysOnMarket'], fit=norm)
 
@@ -188,7 +194,7 @@ def log_transform_target_variable():
     print('\n mu = {:.2f} and sigma = {:.2f}\n'.format(mu, sigma))
 
     # Now plot the distribution
-    plt.legend(['Normal dist. ($\mu=$ {:.2f} and $\sigma=$ {:.2f} )'.format(mu, sigma)],
+    plt.legend(['Normal dist. ($\mu=$ {:.2f} and $\sigma=$ {:.2f} {}{})'.format(mu, sigma,daysOnMarket_skew_before,daysOnMarket_skew_after)],
                loc='best')
     plt.ylabel('Frequency')
     plt.title('daysOnMarket distribution')
@@ -201,14 +207,18 @@ def log_transform_target_variable():
 # log_transform_target_variable(data)
 
 
-data['daysOnMarket'] = np.log1p(data['daysOnMarket'])
+# data['daysOnMarket'] = np.log1p(data['daysOnMarket'])
+# data['daysOnMarket'] = np.sqrt(data['daysOnMarket'])
 data = data[data.tradeTypeId ==1]
+# sns.distplot(data['daysOnMarket'])
+# plt.show()
 
 
 
-data.to_csv('./process_to_log.csv',index=False)
+# data.to_csv('./process_to_log.csv',index=False)
 # 分开训练和测试数据
-data_feature = data.drop(columns='daysOnMarket')
+# data_feature = data.drop(columns='daysOnMarket')
+data_feature = data
 data_target = data['daysOnMarket']
 
 
@@ -283,8 +293,6 @@ data_feature['kitchens'] = data_feature['kitchens'].fillna(0)
 data_feature['kitchensPlus'] = data_feature['kitchensPlus'].fillna("None")
 data_feature['parkingSpaces'] = data_feature['parkingSpaces'].fillna(0)
 data_feature['pool'] = data_feature['pool'].fillna("None")
-
-
 # 对rooms进行填充缺失值
 for i in range(9):
     name = 'room'+'{}'.format(str(i+1))
@@ -305,11 +313,90 @@ data_feature['waterfront'] = data_feature['waterfront'].fillna("None")
 data_feature['totalParkingSpaces'] = data_feature['totalParkingSpaces'].fillna(0)
 data_feature['bedrooms'] = data_feature['bedrooms'].fillna(data_feature['bedrooms'].mode())
 data_feature['ownershiptype'] = data_feature['ownershiptype'].fillna(data_feature['ownershiptype'].mode())
-
-
 print(data_feature.dtypes)
-print(data_feature['ownershiptype'].value_counts())
+# 对room进行缺失值填充，并将roomi为none的面积设置为0
+
+print(data_feature.head(50))
+data_feature = data_feature.reindex([x for x in range(len(data_feature))])
+print(data_feature.head(50))
+print(data_feature['room1'].loc[9])
+
+def fill_roomi_na(data,room_num):
+    for i in range(len(data)):
+        for j in range(room_num):
+            room_name = 'room' + '{}'.format(str(j + 1))
+            room_len_name = 'room' + '{}'.format(str(j + 1)) + 'Length'
+            room_wid_name = 'room' + '{}'.format(str(j + 1)) + 'Length'
+            # room_square_name = 'rooms' + '{}'.format(str(j + 1)) + 'square'
+            if data[room_name].loc[i] == 'None':
+                print(i,j)
+                # print(data[room_len_name].loc[i])
+                # print(data[room_wid_name].loc[i])
+                data[room_len_name].loc[i] = 0
+                data[room_wid_name].loc[i] = 0
+                # print(data[room_len_name].loc[i])
+                # print(data[room_wid_name].loc[i])
+                # data[room_square_name].loc[i] = 0
+    return data
 
 
+data_feature = fill_roomi_na(data_feature,9)
+print(data_feature.shape)
 
+
+# more feature engineering : transform the numeric class feature to  str ;
+data_feature['buildingTypeId'] = data_feature['buildingTypeId'].astype('str')
+
+def label_encode(data):
+    for column in data.columns:
+        if data[column].dtypes=='object':
+            data[column] = pd.factorize(data[column].values, sort=True)[0] + 1
+            data[column] = data[column].astype('str')
+    return data
+
+
+data_feature = label_encode(data_feature)
+
+# 合并数据：
+# data_merge_feature_target = pd.concat((data_feature,data_target))
+# data_feature.to_csv('./processing_missing.csv', index=False)
+
+
+# 倾斜的skew>0.75的连续型特征进行box-cox变换；
+
+# 查看倾斜的特征
+def get_process_skew_numeric_feature(data):
+    numeric_feats = data.dtypes[data.dtypes != "object"].index
+
+    # Check the skew of all numerical features
+    skewed_feats = data[numeric_feats].apply(lambda x: skew(x.dropna())).sort_values(ascending=False)
+    print("\nSkew in numerical features: \n")
+    skewness = pd.DataFrame({'Skew' :skewed_feats})
+    skewness.head(10)
+
+    # 将处理skew的特征
+    skewness = skewness[abs(skewness) > 0.75]
+    print("There are {} skewed numerical features to Box Cox transform".format(skewness.shape[0]))
+
+    from scipy.special import boxcox1p
+
+    skewed_features = skewness.index
+    lam = 0.15
+    for feat in skewed_features:
+        # data[feat] += 1
+        data[feat] = boxcox1p(data[feat], lam)
+
+    # data[skewed_features] = np.log1p(data[skewed_features])
+
+
+# data_feature = get_skew_numeric_feature(data_feature)
+
+
+# get_dummies class variable
+def dummies_class_variable(data):
+    data = pd.get_dummies(data)
+    print(data.shape)
+
+
+data_feature = dummies_class_variable(data_feature)
 

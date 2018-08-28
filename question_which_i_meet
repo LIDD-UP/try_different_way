@@ -88,3 +88,11 @@ pandas .
 UserWarning: The 'normed' kwarg is deprecated, and has been replaced by the 'density' kwarg.
   warnings.warn("The 'normed' kwarg is deprecated, and has been "
 
+
+  KeyError: 'the label [9] is not in the [index]'
+  这是由于我在做数据处理过程中，有些数据被去除掉了，但是索引没有重置，所以需要重置索引，：
+    方法：reindex，但是在适用这个方法的时候需要参数，新的索引的列表，所有应该为：
+
+    data_feature = data_feature.reindex([x for x in range(len(data_feature))])
+
+
