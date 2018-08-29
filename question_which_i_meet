@@ -99,3 +99,16 @@ UserWarning: The 'normed' kwarg is deprecated, and has been replaced by the 'den
 
 # 又遇到一个莫名其妙的bug当用dnn的模型的时候老是会遇到NaN的错误问题；
 
+
+关于autoML的使用问题：包括特征自动化等等；
+
+特征备份：
+    # 'longitude','latitude','bedrooms','price','washrooms','bedroomsPlus','lotDepth','lotFront',
+    # 'kitchens','kitchensPlus','parkingSpaces','room1Length','room1Width','room2Length',
+    # 'room3Length', 'room3Width', 'room4Length', 'room4Width', 'room5Length', 'room5Width',
+    # 'room6Length','room6Width',   'room7Length',    'room7Width',  'room8Length',
+    # 'room8Width',  'room9Length',   'room9Width',         'rooms',
+    # 'taxes',  'garageSpaces',  'totalParkingSpaces'
+
+
+ValueError: 'airConditioning_Central Air' is not a valid scope name:column的命名的错误，还是需要先labelencode之后再get_dummies;

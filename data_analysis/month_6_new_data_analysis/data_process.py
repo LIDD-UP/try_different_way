@@ -327,7 +327,7 @@ def fill_roomi_na(data,room_num):
             room_name = 'room' + '{}'.format(str(j + 1))
             room_len_name = 'room' + '{}'.format(str(j + 1)) + 'Length'
             room_wid_name = 'room' + '{}'.format(str(j + 1)) + 'Length'
-            # room_square_name = 'rooms' + '{}'.format(str(j + 1)) + 'square'
+            room_square_name = 'rooms' + '{}'.format(str(j + 1)) + 'square'
             if data[room_name].loc[i] == 'None':
                 print(i,j)
                 # print(data[room_len_name].loc[i])
@@ -336,12 +336,12 @@ def fill_roomi_na(data,room_num):
                 data[room_wid_name].loc[i] = 0
                 # print(data[room_len_name].loc[i])
                 # print(data[room_wid_name].loc[i])
-                # data[room_square_name].loc[i] = 0
+                data[room_square_name].loc[i] = 0
     return data
 
 
 data_feature = fill_roomi_na(data_feature,9)
-print(data_feature.shape)
+# print(data_feature.shape)
 
 
 # more feature engineering : transform the numeric class feature to  str ;
@@ -355,7 +355,7 @@ def label_encode(data):
     return data
 
 
-data_feature = label_encode(data_feature)
+# data_feature = label_encode(data_feature)
 
 # 合并数据：
 # data_merge_feature_target = pd.concat((data_feature,data_target))
@@ -387,9 +387,10 @@ def get_process_skew_numeric_feature(data):
         data[feat] = boxcox1p(data[feat], lam)
 
     # data[skewed_features] = np.log1p(data[skewed_features])
+    return data
 
 
-# data_feature = get_skew_numeric_feature(data_feature)
+# data_feature = get_process_skew_numeric_feature(data_feature)
 
 
 # get_dummies class variable
@@ -398,5 +399,9 @@ def dummies_class_variable(data):
     print(data.shape)
 
 
-data_feature = dummies_class_variable(data_feature)
+# data_feature = dummies_class_variable(data_feature)
 
+data_feature.to_csv('./processing_missing_base_base.csv', index=False)
+
+
+# label_encode 和getdummies()是非必要的步骤，先将数据运行完了之后再结合模型考虑哟啊不要进行get_dummies或者是labelencode；

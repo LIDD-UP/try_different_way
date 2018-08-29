@@ -16,193 +16,78 @@ from sklearn import metrics
 import math
 import tensorflow as tf
 from tensorflow.python.data import Dataset
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_absolute_error
 
 tf.logging.set_verbosity(tf.logging.ERROR)
 
 
+'''
+原本的程序：
+    1：他用的特征工程只有numeric_column :至于类别型的变量它全部都进行了one_hot 编码；
+    2：没有对连续变量进行分箱，只有变换操作：包括log和scale
+    3：原始数据的处理都再convert_feature 里面，全部转化为数值，最后经过特征工程（numeric_column )传入dnn模型
+        的feature_columns里面
+    4：对模型的处理分成了若干步，首先是不处理，值对类别型的特征做one_hot编码处理
+    5：scale
+    6：log变换，增加类别型的变量；
+    
+对程序可改进的部分：
+    1：对于特征工程部分可以采用tensorflow自带的api进行；这样便于特征的组合；如longitude，latitude
+    2：还有评测方法的改变，mean_squared_error 
+    3：在输入特征的时候是一个个输入的可以采用循环的方式进行输入；
+    ...
+1:需要不同的方式分装成函数进行测试；
+2：这里还有一个问题就是如果采用one_hot编码可能导致预测和训练的特征数不同
+    ，所以如果像采用one_hot编码需要将数据组合处理后在拆分，
+    
+
+'''
+
 data = pd.read_csv('./second.csv')
-# data = data.drop(columns=['id', 'elevator', 'propertytypeid'])
+data = data.drop(columns=['province','city','address'])
+def label_encode(data):
+    for column in data.columns:
+        if data[column].dtypes=='object':
+            data[column] = pd.factorize(data[column].values, sort=True)[0] + 1
+            data[column] = data[column].astype('str')
+    return data
+
+
+data = label_encode(data)
+print('label_encode seccessful')
+
+# 对类别型变量进行one_hot 编码,这里是可选项，具体看测试结果是否保留；
+# 需要将原本是类别型变量的数据转化
+data['buildingTypeId'] = data['buildingTypeId'].astype('str')
+data = pd.get_dummies(data)
+print('dummies_seccessful')
 
 
 print(data.shape)
-df = data.iloc[:,0:50000]
-df_test = data.iloc[:,50000:51000]
-
-print(data.describe())
 
 
-# draw diagram
-def min2(l, default=0.0):
-    if len(l) == 0:
-        return default
-    else:
-        return min(l)
-
-
-def max2(l, default=0.0):
-    if len(l) == 0:
-        return default
-    else:
-        return max(l)
-
-
-def avg2(l, default=0.0):
-    if len(l) == 0:
-        return default
-    else:
-        return float(sum(l)) / float(len(l))
-
-
-def std2(l, default=0.0):
-    if len(l) == 0:
-        return default
-    else:
-        return np.std(l)
-
-
-def histogram_for_non_numerical_series(s):
-    d = {}
-    for v in s:
-        d[v] = d.get(v, 0) + 1
-    bin_s_label = list(d.keys())
-    bin_s_label.sort()
-    bin_s = list(range(0, len(bin_s_label)))
-    hist_s = [d[v] for v in bin_s_label]
-    bin_s.append(len(bin_s))
-    bin_s_label.insert(0, '_')
-    return (hist_s, bin_s, bin_s_label)
-
-
-def plot_hist_with_target3(plt, df, feature, target, histogram_bins=10):
-    # reference:
-    #    https://stackoverflow.com/questions/33328774/box-plot-with-min-max-average-and-standard-deviation
-    #    https://matplotlib.org/gallery/api/two_scales.html
-    #    https://matplotlib.org/1.2.1/examples/pylab_examples/errorbar_demo.html
-    #    https://matplotlib.org/2.0.0/examples/color/named_colors.html
-    #    https://matplotlib.org/api/_as_gen/matplotlib.pyplot.xticks.html
-    title = feature
-    plt.title(title)
-    s = df[feature]
-    t = df[target]
-    t_max = max(t)
-    # get histogram of the feature
-    bin_s_label = None
-    # fillna with 0.0 or '_N/A_'
-    na_cnt = sum(s.isna())
-    if na_cnt > 0:
-        if True in [type(_) == str for _ in s]:
-            print('found %d na in string field %s' % (na_cnt, feature))
-            s = s.fillna('_N/A_')
-        else:
-            print('found %d na in numerical field %s' % (na_cnt, feature))
-            s = s.fillna(-1.0)
-    try:
-        hist_s, bin_s = np.histogram(s, bins=histogram_bins)
-    except Exception as e:
-        # print('ERROR: failed to draw histogram for %s: %s: %s' % (name, type(e).__name__, str(e)))
-        hist_s, bin_s, bin_s_label = histogram_for_non_numerical_series(s)
-        # return
-    # histogram of target by distribution of feature
-    hist_t_by_s_cnt = [0] * (len(bin_s) - 1)
-    hist_t_by_s = []
-    for i in range(0, (len(bin_s) - 1)):
-        hist_t_by_s.append([])
-    # get target histogram for numerical feature
-    if bin_s_label is None:
-        for (sv, tv) in zip(s, t):
-            pos = 0
-            for i in range(0, len(bin_s) - 1):
-                if sv >= bin_s[i]:
-                    pos = i
-            hist_t_by_s_cnt[pos] += 1
-            hist_t_by_s[pos].append(tv)
-    else:
-        for (sv, tv) in zip(s, t):
-            pos = bin_s_label.index(sv) - 1
-            hist_t_by_s_cnt[pos] += 1
-            hist_t_by_s[pos].append(tv)
-        # count avg, to re-sort bin_s and bin_s_label by avg
-        hist_t_by_s_avg = [float(avg2(n)) for n in hist_t_by_s]
-        # hist_t_by_s_std = [float(std2(n)) for n in hist_t_by_s]
-        # hist_t_by_s_adj = list(np.array(hist_t_by_s_avg) + np.array(hist_t_by_s_std))
-        hist_t_by_s_adj = hist_t_by_s_avg
-        # print('before sort:\n%s\n%s\n%s' % (bin_s, bin_s_label, hist_t_by_s_adj))
-        bin_hist_label = list(zip(bin_s[1:], hist_t_by_s_adj, bin_s_label[1:]))
-        bin_hist_label.sort(key=cmp_to_key(lambda x, y: x[1] - y[1]))
-        (bin_s, hist_t_by_s_adj, bin_s_label) = zip(*bin_hist_label)
-        bin_s = list(bin_s)
-        hist_t_by_s_adj = list(hist_t_by_s_adj)
-        bin_s_label = list(bin_s_label)
-        bin_s.insert(0, 0)
-        bin_s_label.insert(0, '_')
-        # re-arrange hist_s and hist_t_by_s
-        hist_s_new = []
-        hist_t_by_s_new = []
-        for i in bin_s[1:]:
-            hist_s_new.append(hist_s[i - 1])
-            hist_t_by_s_new.append(hist_t_by_s[i - 1])
-        hist_s = hist_s_new
-        hist_t_by_s = hist_t_by_s_new
-        # print('after sort:\n%s\n%s\n%s' % (bin_s, bin_s_label, hist_t_by_s_adj))
-        # reset bin_s's ordering
-        bin_s.sort()
-    hist_s = list(hist_s)
-    if len(hist_s) < len(bin_s):
-        hist_s.insert(0, 0.0)
-    hist_s_max = max(hist_s)
-    plt.fill_between(bin_s, hist_s, step='mid', alpha=0.5, label=feature)
-    if bin_s_label is not None:
-        plt.xticks(bin_s, bin_s_label)
-    plt.xticks(rotation=90)
-    # just to show legend for ax2
-    # plt.errorbar([], [], yerr = [], fmt = 'ok', lw = 3, ecolor = 'sienna', mfc = 'sienna', label = target)
-    plt.legend(loc='upper right')
-    hist_t_by_s = list(hist_t_by_s)
-    if len(hist_t_by_s) < len(bin_s):
-        hist_t_by_s.insert(0, [0.0])
-    hist_t_by_s_min = [float(min2(n)) for n in hist_t_by_s]
-    hist_t_by_s_max = [float(max2(n)) for n in hist_t_by_s]
-    hist_t_by_s_avg = [float(avg2(n)) for n in hist_t_by_s]
-    hist_t_by_s_std = [float(std2(n)) for n in hist_t_by_s]
-    hist_t_by_s_err = [np.array(hist_t_by_s_avg) - np.array(hist_t_by_s_min),
-                       np.array(hist_t_by_s_max) - np.array(hist_t_by_s_avg)]
-    plt.xlabel(feature)
-    plt.ylabel('Count')
-    ax2 = plt.twinx()
-    ax2.grid(False)
-    ax2.errorbar(bin_s, hist_t_by_s_avg, yerr=hist_t_by_s_err, fmt='.k', lw=1, ecolor='sienna')
-    ax2.errorbar(bin_s, hist_t_by_s_avg, yerr=hist_t_by_s_std, fmt='ok', lw=3, ecolor='sienna', mfc='sienna',
-                 label=target)
-    ax2.set_ylabel(target)
-    plt.legend(loc='upper left')
-    plt.tight_layout()
+# 将数据拆分为训练和测试数据用train_test_split,用它存在每次的数据都会有变化，会将训练的数据拿来测试
+    # 所以还是直接分成测试数据1000，其余的都是训练数据
+df_test = data.iloc[0:1000,:].drop(columns='daysOnMarket')
+df_test_label = data.iloc[0:1000,:]['daysOnMarket']
+df = data.iloc[1000:,:]
+print(df_test.shape,df.shape)
+print(df.head())
 
 
 # check thess vareables
 numerical_fields = [
-    'longitude','latitude','bedrooms','price','washrooms','bedroomsPlus','lotDepth','lotFront',
-    'kitchens','kitchensPlus','parkingSpaces','room1Length','room1Width','room2Length',
-    'room3Length', 'room3Width', 'room4Length', 'room4Width', 'room5Length', 'room5Width',
-    'room6Length','room6Width',   'room7Length',    'room7Width',  'room8Length',
-    'room8Width',  'room9Length',   'room9Width',         'rooms',
-    'taxes',  'garageSpaces',  'totalParkingSpaces'
 
+    numeric_column for numeric_column in df_test.columns if df_test[numeric_column].dtype !='object'
 ]
 
 categorical_fields = [
-
+    categorical_column for categorical_column in df_test.columns if df_test[categorical_column].dtype =='object'
 ]
-
 
 fields = numerical_fields + categorical_fields
 
-# plt.figure(figsize = (20, 90))
-# i = 1
-# for name in fields:
-#     plt.subplot(21, 4, i)
-#     plot_hist_with_target3(plt, df, name, 'daysOnMarket', histogram_bins = 'rice')
-#     i += 1
-# plt.tight_layout()
 
 
 
@@ -263,6 +148,7 @@ def get_dummies(dummy_na=False):
     return wrapper_get_dummies
 
 
+# 其实就是数据处理的过程，分成分类型数据和连续性数据
 def convert_features(df, num_fields, cat_fields, num_fields_proc=None, cat_fields_proc=None, label_name=None,
                      train_validate_ratio=None):
     if num_fields_proc is None:
@@ -293,6 +179,7 @@ def convert_features(df, num_fields, cat_fields, num_fields_proc=None, cat_field
     return (train_features, train_labels, validate_features, validate_labels)
 
 
+# 特征工程
 def construct_feature_columns(input_features):
     """Construct the TensorFlow Feature Columns.
 
@@ -305,6 +192,7 @@ def construct_feature_columns(input_features):
                 for my_feature in input_features])
 
 
+# 构建输入
 def my_input_fn(features, targets, batch_size=1, shuffle=True, num_epochs=None):
     """Trains a linear regression model.
 
@@ -338,7 +226,7 @@ def my_input_fn(features, targets, batch_size=1, shuffle=True, num_epochs=None):
     features, labels = ds.make_one_shot_iterator().get_next()
     return features, labels
 
-
+# 预测的输入
 def my_input_fn_pred(features, batch_size=1, shuffle=True, num_epochs=None):
     """Trains a linear regression model.
 
@@ -373,6 +261,7 @@ def my_input_fn_pred(features, batch_size=1, shuffle=True, num_epochs=None):
     return features
 
 
+# 构建模型
 def train_dnn_regressor_model(
         optimizer,
         steps,
@@ -411,7 +300,8 @@ def train_dnn_regressor_model(
         do_validation = True
     else:
         do_validation = False
-
+    
+    # 训练多少次；
     periods = 10
     steps_per_period = steps / periods
 
@@ -423,6 +313,7 @@ def train_dnn_regressor_model(
     )
 
     # Create input functions.
+    # 分成三份数据，训练，验证和测试
     training_input_fn = lambda: my_input_fn(training_examples,
                                             training_targets,
                                             batch_size=batch_size)
@@ -452,6 +343,7 @@ def train_dnn_regressor_model(
         )
 
         # Take a break and compute predictions.
+        # 用相同的数据做预测计算loss值
         training_predictions = dnn_regressor.predict(input_fn=predict_training_input_fn)
         training_predictions = np.array([item['predictions'][0] for item in training_predictions])
 
@@ -463,6 +355,7 @@ def train_dnn_regressor_model(
         training_root_mean_squared_log_error = math.sqrt(
             metrics.mean_squared_log_error(training_targets, training_predictions))
 
+        # 当把数据集切分的时候，就做验证；
         if do_validation == True:
             validation_predictions = dnn_regressor.predict(input_fn=predict_validation_input_fn)
             validation_predictions = np.array([item['predictions'][0] for item in validation_predictions])
@@ -523,6 +416,7 @@ def train_dnn_regressor_model(
         plt.scatter(validation_predictions, validation_targets, alpha=0.5, label="validation")
     plt.legend()
     plt.tight_layout()
+    # plt.show()
 
     return dnn_regressor
 
@@ -530,26 +424,19 @@ def train_dnn_regressor_model(
 def no_process_train_raw_data():
     # no process raw data
     numerical_fields = [
-        'longitude','latitude','bedrooms','price','washrooms',
-        # 'bedroomsPlus','kitchensPlus','room1Length',
-        'lotDepth','lotFront',
-        'kitchens','parkingSpaces',
-        # 'room1Width','room2Length',
-        # 'room3Length', 'room3Width', 'room4Length', 'room4Width', 'room5Length', 'room5Width',
-        # 'room6Length','room6Width',   'room7Length',    'room7Width',  'room8Length',
-        # 'room8Width',  'room9Length',   'room9Width',
-        'rooms',
-        'taxes',  'garageSpaces',  'totalParkingSpaces'
+        numeric_column for numeric_column in df_test.columns if df_test[numeric_column].dtype != 'object'
     ]
 
-    categorical_fields = []
+    categorical_fields = [
+        categorical_column for categorical_column in df_test.columns if df_test[categorical_column].dtype == 'object'
+    ]
 
 
     ret = convert_features(df,
                            numerical_fields,
                            categorical_fields,
                            num_fields_proc = None,
-                           cat_fields_proc = get_dummies(dummy_na = True),
+                           cat_fields_proc = None,
                            label_name = 'daysOnMarket',
                            train_validate_ratio = 0.7)
 
@@ -575,27 +462,23 @@ def no_process_train_raw_data():
 # Training model...
 
 
-no_process_train_raw_data()
+DNN_model = no_process_train_raw_data()
 
 
 def scale_to_1000():
     numerical_fields = [
-        'longitude','latitude','bedrooms','price','washrooms','bedroomsPlus','lotDepth','lotFront',
-        'kitchens','kitchensPlus','parkingSpaces','room1Length','room1Width','room2Length',
-        'room3Length', 'room3Width', 'room4Length', 'room4Width', 'room5Length', 'room5Width',
-        'room6Length','room6Width',   'room7Length',    'room7Width',  'room8Length',
-        'room8Width',  'room9Length',   'room9Width',         'rooms',
-        'taxes',  'garageSpaces',  'totalParkingSpaces'
+        numeric_column for numeric_column in df_test.columns if df_test[numeric_column].dtype != 'object'
     ]
 
-    categorical_fields = []
-
+    categorical_fields = [
+        categorical_column for categorical_column in df_test.columns if df_test[categorical_column].dtype == 'object'
+    ]
 
     ret = convert_features(df,
                            numerical_fields,
                            categorical_fields,
                            num_fields_proc = get_scaled_series(base = 1000.0),
-                           cat_fields_proc = get_dummies(dummy_na = True),
+                           cat_fields_proc = None,
                            label_name = 'daysOnMarket',
                            train_validate_ratio = 0.7)
 
@@ -620,42 +503,28 @@ def scale_to_1000():
         validation_examples=validation_features,
         validation_targets=validation_targets)
     # Training model...
+    return dnn_regressor
 
-
-    # optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.03)
-    # optimizer = tf.contrib.estimator.clip_gradients_by_norm(optimizer, 5.0)
-    # dnn_regressor = train_dnn_regressor_model(
-    #     optimizer,
-    #     steps=400000,
-    #     batch_size=2,
-    #     hidden_units=[11,12,13,12,11,3],
-    #     training_examples= training_features,
-    #     training_targets=training_targets,
-    #     validation_examples=validation_features,
-    #     validation_targets=validation_targets)
+# DNN_model_scale = scale_to_1000()
 
 
 
 def log_transform():
     # Try scale features with log
-
     numerical_fields = [
-        'longitude','latitude','bedrooms','price','washrooms','bedroomsPlus','lotDepth','lotFront',
-        'kitchens','kitchensPlus','parkingSpaces','room1Length','room1Width','room2Length',
-        'room3Length', 'room3Width', 'room4Length', 'room4Width', 'room5Length', 'room5Width',
-        'room6Length','room6Width',   'room7Length',    'room7Width',  'room8Length',
-        'room8Width',  'room9Length',   'room9Width',         'rooms',
-        'taxes',  'garageSpaces',  'totalParkingSpaces'
+        numeric_column for numeric_column in df_test.columns if df_test[numeric_column].dtype != 'object'
     ]
 
-    categorical_fields = []
+    categorical_fields = [
+        categorical_column for categorical_column in df_test.columns if df_test[categorical_column].dtype == 'object'
+    ]
 
 
     ret = convert_features(df,
                            numerical_fields,
                            categorical_fields,
                            num_fields_proc = get_logged_series,
-                           cat_fields_proc = get_dummies(dummy_na = True),
+                           cat_fields_proc = None,
                            label_name = 'SalePrice',
                            train_validate_ratio = 0.7)
 
@@ -677,10 +546,33 @@ def log_transform():
         training_targets=training_targets,
         validation_examples=validation_features,
         validation_targets=validation_targets)
+    return dnn_regressor
+
+# DNN_model_log = log_transform()
 
 
 def change_hidden_layer_setting():
     # Change hidden layer settings
+    numerical_fields = [
+        numeric_column for numeric_column in df_test.columns if df_test[numeric_column].dtype != 'object'
+    ]
+
+    categorical_fields = [
+        categorical_column for categorical_column in df_test.columns if df_test[categorical_column].dtype == 'object'
+    ]
+
+    ret = convert_features(df,
+                           numerical_fields,
+                           categorical_fields,
+                           num_fields_proc=get_logged_series,
+                           cat_fields_proc=None,
+                           label_name='SalePrice',
+                           train_validate_ratio=0.7)
+
+    training_features = ret[0]
+    training_targets = ret[1]
+    validation_features = ret[2]
+    validation_targets = ret[3]
 
     optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.03)
     optimizer = tf.contrib.estimator.clip_gradients_by_norm(optimizer, 5.0)
@@ -693,9 +585,33 @@ def change_hidden_layer_setting():
         training_targets=training_targets,
         validation_examples=validation_features,
         validation_targets=validation_targets)
+    return dnn_regressor
+
+# DNN_model_change_hidden_layer = change_hidden_layer_setting()
 
 
 def use_adagradoptimaizer():
+    # Use AdagradOptimizer with more iterations, change batch to 10
+    numerical_fields = [
+        numeric_column for numeric_column in df_test.columns if df_test[numeric_column].dtype != 'object'
+    ]
+
+    categorical_fields = [
+        categorical_column for categorical_column in df_test.columns if df_test[categorical_column].dtype == 'object'
+    ]
+
+    ret = convert_features(df,
+                           numerical_fields,
+                           categorical_fields,
+                           num_fields_proc=get_logged_series,
+                           cat_fields_proc=None,
+                           label_name='SalePrice',
+                           train_validate_ratio=0.7)
+
+    training_features = ret[0]
+    training_targets = ret[1]
+    validation_features = ret[2]
+    validation_targets = ret[3]
     # Use AdagradOptimizer with more iterations, change batch to 10
 
     optimizer = tf.train.AdagradOptimizer(learning_rate=1.0)
@@ -709,17 +625,18 @@ def use_adagradoptimaizer():
         training_targets=training_targets,
         validation_examples=validation_features,
         validation_targets=validation_targets)
+    return dnn_regressor
 
-
+# DNN_model_use_adagradoptimaizer = use_adagradoptimaizer()
+# ------------------------------------------------------------------------------->>>>>>
 def add_category_feature():
     # add category feature
     numerical_fields = [
-        'OverallQual', 'BsmtFinSF1', 'BsmtUnfSF', 'TotalBsmtSF', '1stFlrSF',
-        '2ndFlrSF', 'GrLivArea', 'FullBath', 'GarageCars', 'GarageArea', 'MSSubClass'
+        numeric_column for numeric_column in df_test.columns if df_test[numeric_column].dtype != 'object'
     ]
 
     categorical_fields = [
-        'Neighborhood','MSZoning','KitchenQual','CentralAir','MasVnrType'
+        categorical_column for categorical_column in df_test.columns if df_test[categorical_column].dtype == 'object'
     ]
 
 
@@ -727,7 +644,7 @@ def add_category_feature():
                            numerical_fields,
                            categorical_fields,
                            num_fields_proc = get_logged_series,
-                           cat_fields_proc = get_dummies(dummy_na = True),
+                           cat_fields_proc = None,
                            label_name = 'SalePrice',
                            train_validate_ratio = 0.7)
 
@@ -749,23 +666,24 @@ def add_category_feature():
         training_targets=training_targets,
         validation_examples=validation_features,
         validation_targets=validation_targets)
+    return dnn_regressor
 
+# DNN_model_add_category = add_category_feature()
 
 def new1():
     numerical_fields = [
-        'OverallQual', 'BsmtFinSF1', 'BsmtUnfSF', 'TotalBsmtSF', '1stFlrSF',
-        '2ndFlrSF', 'GrLivArea', 'FullBath', 'GarageCars', 'GarageArea', 'MSSubClass'
+        numeric_column for numeric_column in df_test.columns if df_test[numeric_column].dtype != 'object'
     ]
 
     categorical_fields = [
-        'Neighborhood','MSZoning','KitchenQual','CentralAir','MasVnrType'
+        categorical_column for categorical_column in df_test.columns if df_test[categorical_column].dtype == 'object'
     ]
 
     ret = convert_features(df,
                            numerical_fields,
                            categorical_fields,
                            num_fields_proc = get_logged_series,
-                           cat_fields_proc = get_dummies(dummy_na = True),
+                           cat_fields_proc = None,
                            label_name = 'SalePrice',
                            train_validate_ratio = 1.0)
 
@@ -784,118 +702,52 @@ def new1():
         training_targets=training_targets_all,
         validation_examples=None,
         validation_targets=None)
-# Training model...
+    return dnn_regressor
 
 
+# DNN_model_new = new1()
 
-# 预测：
 
 
 
+# 预测；
+def predict_test(dnn_regressor):
+    numerical_fields = [
+        numeric_column for numeric_column in df_test.columns if df_test[numeric_column].dtype != 'object'
+    ]
 
+    categorical_fields = [
+        categorical_column for categorical_column in df_test.columns if df_test[categorical_column].dtype == 'object'
+    ]
+    ret = convert_features(df_test,
+                           numerical_fields,
+                           categorical_fields,
+                           num_fields_proc=get_logged_series,
+                           cat_fields_proc=None,
+                           label_name=None,
+                           train_validate_ratio=1.0)
 
+    test_features = ret[0]
 
+    # haneld nan fields
+    for k in test_features.keys():
+        s = test_features[k]
+        na_cnt = sum(s.isna())
+        if na_cnt > 0:
+            test_features[k] = s.fillna(0.0)
 
+    predict_test_input_fn = lambda: my_input_fn_pred(test_features,
+                                                     num_epochs=1,
+                                                     shuffle=False)
 
+    test_predictions = dnn_regressor.predict(input_fn=predict_test_input_fn)
+    df_submit = pd.DataFrame()
+    df_submit['daysOnMarket'] = np.array([item['predictions'][0] for item in test_predictions])
+    list_df = list(df_submit['daysOnMarket'])
+    # list_df =np.expm1(list_df)
+    print(mean_absolute_error(df_test_label,list_df))
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+predict_test(DNN_model)
 
 
 
