@@ -311,11 +311,12 @@ def train_dnn_regressor_model(
         do_validation = False
 
     # 训练多少次；
-    periods = 10
+    periods = 200
     steps_per_period = steps / periods
 
     # Create a linear regressor object.
     dnn_regressor = tf.estimator.DNNRegressor(
+        model_dir='./file_dnn',
         feature_columns=construct_feature_columns(training_examples),
         hidden_units=hidden_units,
         optimizer=optimizer
