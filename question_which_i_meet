@@ -112,3 +112,18 @@ UserWarning: The 'normed' kwarg is deprecated, and has been replaced by the 'den
 
 
 ValueError: 'airConditioning_Central Air' is not a valid scope name:column的命名的错误，还是需要先labelencode之后再get_dummies;
+
+
+在使用panda的一些函数的时候，很多时候都需要将他看作是一个数组，应为他会加上该字段或者是该列的类型等一些信息：
+如：data[column].mode() 输出的时候会有一个类型的问题：所以需要用到下标获取才能获取真正的值；
+
+            if __name__ == '__main__':
+                freeze_support()
+                ...
+
+        The "freeze_support()" line can be omitted if the program
+        is not going to be frozen to produce an executable.
+        需要将程序写到main函数里面
+
+当遇到出现import error的时候
+

@@ -16,6 +16,22 @@ from scipy.stats import norm, skew
 import numpy as np
 from random import choice
 
+
+'''
+process 的处理步骤：
+ 1：将bedrooms eval
+ 2：# 处理approxSquareFootage，# 处理approxAge，取最大值由于这两个数是一个范围，我这里只取了这两个数的最大值；但是看来，两个数的均值更加的可取；
+ 3：特征衍生，合并room的面积
+ 4：drop掉一些无用的特征
+ 5：处理一些连续特征得离群点
+ 6：再drop掉一些无用特征
+ 7：填充缺失值
+ 8：将离散得数据标签编码
+ 9：将连续得skew（）得特征进行box-cox转化
+ 10：get_dummies
+ 
+'''
+
 data = pd.read_csv('month6_new.csv')
 
 
@@ -273,10 +289,11 @@ Direct      144
 Indirect     47
 '''
 
-data_feature['buildingTypeId'] = data_feature['buildingTypeId'].fillna(data_feature['buildingTypeId'].mode())
+data_feature['buildingTypeId'] = data_feature['buildingTypeId'].fillna(data_feature['buildingTypeId'].mode()[0])
 data_feature['furnished'] = data_feature['furnished'].fillna("None")
 data_feature['approxSquareFootage'] = data_feature['approxSquareFootage'].fillna(data_feature['approxSquareFootage'].median())
-data_feature['style'] = data_feature['style'].fillna(data_feature['style'].mode())
+data_feature['style'] = data_feature['style'].fillna(data_feature['style'].mode()[0])
+print(data_feature['style'])
 data_feature['airConditioning'] = data_feature['airConditioning'].fillna("None")
 data_feature['washrooms'] = data_feature['washrooms'].fillna(0)
 data_feature['bedroomsPlus'] = data_feature['bedroomsPlus'].fillna("None")
@@ -284,7 +301,7 @@ data_feature['basement1'] = data_feature['basement1'].fillna("None")
 data_feature['basement2'] = data_feature['basement2'].fillna("None")
 data_feature['frontingOn'] = data_feature['frontingOn'].fillna(choice(['E','W','S','N']))
 data_feature['familyRoom'] = data_feature['familyRoom'].fillna(choice(['N','Y']))
-data_feature['lotFront'] = data_feature['lotFront'].fillna(data_feature['lotFront'].mode())
+data_feature['lotFront'] = data_feature['lotFront'].fillna(data_feature['lotFront'].mode()[0])
 data_feature['drive'] = data_feature['drive'].fillna("None")
 data_feature['fireplaceStove'] = data_feature['fireplaceStove'].fillna("None")
 data_feature['heatSource'] = data_feature['heatSource'].fillna("None")
@@ -302,7 +319,7 @@ data_feature['rooms'] = data_feature['rooms'].fillna(0)
 data_feature['taxes'] = data_feature['taxes'].fillna(data_feature['taxes'].median())
 data_feature['waterIncluded'] = data_feature['waterIncluded'].fillna("N")
 data_feature['approxAge'] = data_feature['approxAge'].fillna(data_feature['approxAge'].median()) # 此处用众数或者是中位数填充有待商榷；
-data_feature['garageSpaces'] = data_feature['garageSpaces'].fillna(data_feature['garageSpaces'].mode())
+data_feature['garageSpaces'] = data_feature['garageSpaces'].fillna(0) # 车库应该用0填充，由于它本身是具有意义的；
 data_feature['parkingIncluded'] = data_feature['parkingIncluded'].fillna("None")
 data_feature['laundryLevel'] = data_feature['laundryLevel'].fillna("None")
 data_feature['propertyFeatures3'] = data_feature['propertyFeatures3'].fillna("None")
@@ -311,8 +328,8 @@ data_feature['propertyFeatures5'] = data_feature['propertyFeatures5'].fillna("No
 data_feature['propertyFeatures6'] = data_feature['propertyFeatures6'].fillna("None")
 data_feature['waterfront'] = data_feature['waterfront'].fillna("None")
 data_feature['totalParkingSpaces'] = data_feature['totalParkingSpaces'].fillna(0)
-data_feature['bedrooms'] = data_feature['bedrooms'].fillna(data_feature['bedrooms'].mode())
-data_feature['ownershiptype'] = data_feature['ownershiptype'].fillna(data_feature['ownershiptype'].mode())
+data_feature['bedrooms'] = data_feature['bedrooms'].fillna(data_feature['bedrooms'].mode()[0]) # bedrooms应该是有的，本身情况也是缺失不多；
+data_feature['ownershiptype'] = data_feature['ownershiptype'].fillna(data_feature['ownershiptype'].mode()[0]) # 这是拥有者的类型，是拥有权还是出租权
 print(data_feature.dtypes)
 # 对room进行缺失值填充，并将roomi为none的面积设置为0
 
@@ -326,7 +343,7 @@ def fill_roomi_na(data,room_num):
         for j in range(room_num):
             room_name = 'room' + '{}'.format(str(j + 1))
             room_len_name = 'room' + '{}'.format(str(j + 1)) + 'Length'
-            room_wid_name = 'room' + '{}'.format(str(j + 1)) + 'Length'
+            room_wid_name = 'room' + '{}'.format(str(j + 1)) + 'Width'
             room_square_name = 'rooms' + '{}'.format(str(j + 1)) + 'square'
             if data[room_name].loc[i] == 'None':
                 print(i,j)
@@ -401,7 +418,7 @@ def dummies_class_variable(data):
 
 # data_feature = dummies_class_variable(data_feature)
 
-data_feature.to_csv('./processing_missing_base_base.csv', index=False)
+data_feature.to_csv('./base_data_no_skew_encode.csv', index=False)
 
 
 # label_encode 和getdummies()是非必要的步骤，先将数据运行完了之后再结合模型考虑哟啊不要进行get_dummies或者是labelencode；

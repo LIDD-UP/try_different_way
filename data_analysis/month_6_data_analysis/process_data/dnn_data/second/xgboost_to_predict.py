@@ -23,11 +23,22 @@ mpl.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号
 pd.set_option('max_columns', 200)
 pd.set_option('display.width', 1000)
 
-data = pd.read_csv('./feature_select.csv')
+data = pd.read_csv('./second.csv')
 # data = data[[ 'longitude', 'latitude', 'price','daysOnMarket']]
 # columns = [column for column in data.columns if data[column].dtype !='object']
 # data = data.drop(columns='tradeTypeId')
 # data = data[columns]
+def label_encode(data):
+    for column in data.columns:
+        if data[column].dtypes=='object':
+            data[column] = pd.factorize(data[column].values, sort=True)[0] + 1
+            # data[column] = data[column].astype('str')
+    return data
+data = label_encode(data)
+data = data.drop(columns=['province','city','postalCode',])
+
+
+
 data = data.dropna()
 
 train_data ,test_data  = train_test_split(data,test_size=0.1)

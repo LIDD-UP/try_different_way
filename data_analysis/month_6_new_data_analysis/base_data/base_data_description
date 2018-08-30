@@ -1,0 +1,2 @@
+1:processing_missing_base 和processing_missing_base_base这两个数据是失败的数据，
+    由于对pandas mode()数据获取的问题，以及程序自生的问题；导致了na值未填充完全；
