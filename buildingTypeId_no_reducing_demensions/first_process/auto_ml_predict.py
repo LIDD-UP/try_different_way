@@ -51,7 +51,7 @@ if __name__ == '__main__':
 
     ml_predictor = Predictor(type_of_estimator='Regressor', column_descriptions=column_descriptions)
 
-    ml_predictor.train(df_train,model_names='DeepLearningRegressor')
+    ml_predictor.train(df_train,model_names='XGBRegressor')
 
     # ml_predictor.score(df_test)
     x = ml_predictor.predict(df_test)

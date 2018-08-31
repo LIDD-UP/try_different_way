@@ -127,3 +127,24 @@ ValueError: 'airConditioning_Central Air' is not a valid scope name:column的命
 
 当遇到出现import error的时候
 
+
+pytorch 安装出现错误 由于pytoch不支持pip安装了；
+
+
+Can't instantiate abstract class Supervised with abstract methods evaluate, fit, predict
+这个问题就是它相当于是一个接口，必须继承之后实现，不能直接实例化；
+
+
+非参数检验；和参数检验；利用的假设法；
+非参数检验的适用情况：
+非参数检验适用于以下三种情况：
+　　①顺序类型的数据资料，这类数据的分布形态一般是未知的；
+　　②虽然是连续数据，但总体分布形态未知或者非正态，这和卡方检验一样
+    ，称自由分布检验；③总体分布虽然正态，数据也是连续类型，但样本容量极小，
+    如10以下（虽然T检验被称为小样本统计方法，但样本容量太小时，代表性毕竟很差，
+    最好不要用要求较严格的参数检验法）。
+　　非参数检验(Nonparametric tests)是统计分析方法的重要组成部分，
+    它与参数检验共同构成统计推断的基本内容。参数检验是在总体分布形式已知的情况下
+    ，对总体分布的参数如均值、方差等进行推断的方法。
+
+

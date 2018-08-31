@@ -18,21 +18,21 @@ data = pd.read_csv('./month6_new.csv')
 print(data.shape)
 print(data.head())
 
-def label_encode(data):
-    for column in data.columns:
-        if data[column].dtypes=='object':
-            data[column] = pd.factorize(data[column].values, sort=True)[0] + 1
-            data[column] = data[column].astype('str')
-    return data
-
-data = label_encode(data)
-
-# person相关性，corr()
-# correlation matrix
-corrmat = data.corr()
-f, ax = plt.subplots(figsize=(12, 9))
-sns.heatmap(corrmat, vmax=.8, square=True)
-plt.show()
+# def label_encode(data):
+#     for column in data.columns:
+#         if data[column].dtypes=='object':
+#             data[column] = pd.factorize(data[column].values, sort=True)[0] + 1
+#             data[column] = data[column].astype('str')
+#     return data
+#
+# data = label_encode(data)
+#
+# # person相关性，corr()
+# # correlation matrix
+# corrmat = data.corr()
+# f, ax = plt.subplots(figsize=(12, 9))
+# sns.heatmap(corrmat, vmax=.8, square=True)
+# plt.show()
 
 
 
