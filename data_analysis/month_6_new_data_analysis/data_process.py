@@ -414,6 +414,7 @@ def get_process_skew_numeric_feature(data):
 def dummies_class_variable(data):
     data = pd.get_dummies(data)
     print(data.shape)
+    return data
 
 
 # data_feature = dummies_class_variable(data_feature)

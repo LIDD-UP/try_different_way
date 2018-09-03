@@ -4,18 +4,8 @@
 @file: auto_ml_predict.py
 @time: 2018/8/30
 """
-# -*- coding:utf-8 _*-
-""" 
-@author:Administrator
-@file: auto_ml_to_predict.py
-@time: 2018/8/30
-"""
-# -*- coding:utf-8 _*-
-""" 
-@author:Administrator
-@file: auto_ml_to_prediction.py
-@time: 2018/8/30
-"""
+
+
 from auto_ml import Predictor
 import  pandas as pd
 from sklearn.model_selection import  train_test_split

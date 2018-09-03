@@ -147,4 +147,4 @@ Can't instantiate abstract class Supervised with abstract methods evaluate, fit,
     它与参数检验共同构成统计推断的基本内容。参数检验是在总体分布形式已知的情况下
     ，对总体分布的参数如均值、方差等进行推断的方法。
 
-
+data = data[data.buildingTypeId.isin([1,3,6])]
