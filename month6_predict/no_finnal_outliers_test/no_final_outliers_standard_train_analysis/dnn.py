@@ -1,7 +1,7 @@
 #-*- coding:utf-8 _*-  
 """ 
 @author:Administrator
-@file: dnn.py
+@file: dnn_to_predict.py
 @time: 2018/8/10
 """
 
