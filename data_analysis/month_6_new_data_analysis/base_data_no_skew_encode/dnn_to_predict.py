@@ -72,6 +72,16 @@ def get_process_skew_numeric_feature(data):
 
 _x = get_process_skew_numeric_feature(_x)
 
+# dummies
+def dummies_class_variable(data):
+    data = pd.get_dummies(data)
+    print(data.shape)
+    return data
+
+
+_x = dummies_class_variable(_x)
+print('dummies successful')
+
 
 
 example, example_predict, label, label_predict = train_test_split(_x, _y, test_size=0.02)
@@ -175,13 +185,14 @@ def get_input_to_train_and_test(example,label,estimator_model,batch_size,train_n
         steps_trains = int(len(example)/batch_size)+1
         estimator_model.train(input_fn=train_input_fn, steps=steps_trains)
 
+
         # 测试
         ev = estimator_model.evaluate(input_fn=test_input_fn)
         print('ev: {}'.format(ev))
     return estimator_model
 
 
-estimator_model = get_input_to_train_and_test(example,label,estimator_model,10,1000000)
+estimator_model = get_input_to_train_and_test(example,label,estimator_model,10,1)
 
 
 # 预测
