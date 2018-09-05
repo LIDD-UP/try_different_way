@@ -24,10 +24,23 @@ print(data.shape)
 data = data.dropna()
 print(data.shape)
 
-data = data.drop(columns=['province','city','address','postalCode',
+# 去掉省份城市地址，其实省份可以不用去掉，自身的类别数不多；
+data = data.drop(columns=['province',
+                          'city','address','postalCode',
                           'tradeTypeId'
 
                           ])
+
+# 用少部分特征测试程序是否运行：
+data = data[[
+    'longitude',
+    'latitude',
+    'price',
+
+]]
+
+
+
 data['buildingTypeId'] = data['buildingTypeId'].astype('str')
 # 将longitude转为正的数：
 data['longitude'] = abs(data['longitude'])

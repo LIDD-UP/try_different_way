@@ -94,13 +94,37 @@ print('pred_mean',preds.mean())
 print('true_mean',test_label.mean())
 
 # 画图
-plt.figure(figsize=(100,100))
 
-plt.plot(preds[0:100],c='blue',label='pred')
-plt.plot(test_label,c='red',label='true')
-plt.title("RandomForest preds and true daysOnMarket distribution circumstance")
+plt.figure(figsize=(12,9))
+plt.ylabel("Target--variance%f"%(test_label.var()))
+plt.xlabel("Prediction--variance%f"%(preds.var()))
+plt.title("Target vs. Prediction")
+lim = max(test_label)
+lim *= 1.05
+plt.xlim(0, lim)
+plt.ylim(0, lim)
+plt.plot([0, lim], [0, lim], alpha=0.5, color='red')
+plt.scatter(preds, test_label, alpha=0.5, label="training")
 plt.legend()
+plt.tight_layout()
 plt.show()
+
+
+
+
+
+
+
+
+
+
+# plt.figure(figsize=(12,9))
+#
+# plt.plot(preds[0:100],c='blue',label='pred')
+# plt.plot(test_label[0:100],c='red',label='true')
+# plt.title("RandomForest preds and true daysOnMarket distribution circumstance")
+# plt.legend()
+# plt.show()
 
 '''
 

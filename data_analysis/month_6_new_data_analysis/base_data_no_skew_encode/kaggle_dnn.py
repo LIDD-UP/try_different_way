@@ -38,6 +38,18 @@ data = data.drop(columns=[
     'postalCode',
     'tradeTypeId',
 ])
+data = data[[
+    'longitude',
+    'latitude',
+    'price',
+    'buildingTypeId',
+    'bedrooms',
+    'daysOnMarket',
+]]
+
+
+
+
 data = data.dropna()
 
 
@@ -76,7 +88,7 @@ def get_process_skew_numeric_feature(data):
     return data
 
 
-_x = get_process_skew_numeric_feature(_x)
+# _x = get_process_skew_numeric_feature(_x)
 
 
 def label_encode(data):
@@ -336,7 +348,7 @@ def train_dnn_regressor_model(
         do_validation = False
 
     # 训练多少次；
-    periods = 10
+    periods = 20
     steps_per_period = steps / periods
 
     # Create a linear regressor object.
@@ -381,7 +393,7 @@ def train_dnn_regressor_model(
         # 用相同的数据做预测计算loss值
         training_predictions = dnn_regressor.predict(input_fn=predict_training_input_fn)
         training_predictions = np.array([item['predictions'][0] for item in training_predictions])
-
+        print('len-train-prediction',len(training_predictions))
         # Compute training loss RMSE.
         training_root_mean_squared_error = math.sqrt(
             metrics.mean_squared_error(training_targets, training_predictions))
@@ -394,7 +406,7 @@ def train_dnn_regressor_model(
         if do_validation == True:
             validation_predictions = dnn_regressor.predict(input_fn=predict_validation_input_fn)
             validation_predictions = np.array([item['predictions'][0] for item in validation_predictions])
-
+            print('len-validation-prediction',len(validation_predictions))
             # Compute validation loss RMSE.
             validation_root_mean_squared_error = math.sqrt(
                 metrics.mean_squared_error(validation_targets, validation_predictions))
@@ -678,7 +690,7 @@ def add_category_feature():
                            num_fields_proc=get_logged_series,
                            cat_fields_proc=None,
                            label_name='SalePrice',
-                           train_validate_ratio=0.7)
+                           train_validate_ratio=0.02)
 
     training_features = ret[0]
     training_targets = ret[1]
