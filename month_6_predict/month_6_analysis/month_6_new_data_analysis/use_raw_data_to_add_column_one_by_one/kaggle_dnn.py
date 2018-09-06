@@ -4,7 +4,6 @@
 @file: kaggle_dnn.py
 @time: 2018/9/5
 """
-
 import pandas as pd
 
 pd.set_option('display.column', 100)
@@ -31,6 +30,8 @@ tf.logging.set_verbosity(tf.logging.ERROR)
 data = pd.read_csv('./base_data_no_skew_encode.csv')
 data['buildingTypeId'] = data['buildingTypeId'].astype('str')
 print(data.head())
+
+# drop的特征
 data = data.drop(columns=[
     'province',
     'city',
@@ -38,6 +39,8 @@ data = data.drop(columns=[
     'postalCode',
     'tradeTypeId',
 ])
+
+# 保留的特征
 data = data[[
     'longitude',
     'latitude',
@@ -59,11 +62,11 @@ _y = data['daysOnMarket']
 # 数据处理?\feature 需要用到skew；
 
 print(_x.head())
-# def log_transform_data(data):
-#     for column in data.columns:
-_x['longitude'] = abs(_x['longitude'])
-# _x['buildingTypeId'] = _x['buildingTypeId'].astype('str')
+
+
+
 def get_process_skew_numeric_feature(data):
+    data['longitude'] = abs(data['longitude'])
     numeric_feats = data.dtypes[data.dtypes != "object"].index
 
     # Check the skew of all numerical features
@@ -100,6 +103,7 @@ def label_encode(data):
 
 
 _x = label_encode(_x)
+print('label encode successful')
 
 # dummies
 def dummies_class_variable(data):
@@ -123,12 +127,13 @@ df_test_label = all_data.iloc[0:1000,:]['daysOnMarket']
 print(df_test.shape, df.shape)
 print(df.head())
 
-# check thess vareables
+# 生成连续性特征列表
 numerical_fields = [
 
     numeric_column for numeric_column in df_test.columns if df_test[numeric_column].dtype != 'object'
 ]
 
+# 生成离散性特征列表
 categorical_fields = [
     categorical_column for categorical_column in df_test.columns if df_test[categorical_column].dtype == 'object'
 ]
@@ -138,59 +143,6 @@ fields = numerical_fields + categorical_fields
 
 # Neural Network
 # Use un-processed numerical features only to see how good can it be.
-
-def log2(n):
-    if n <= 0:
-        return 0.0
-    else:
-        return math.log(n)
-
-
-def get_logged_series(s):
-    s1 = [log2(n) for n in s]
-    return s1
-
-
-def get_logged_df(df):
-    df1 = pd.DataFrame()
-    for k in df.keys():
-        s1 = get_logged_series(s)
-        df1[k] = s1
-    return df1
-
-
-def get_scaled_series(base=1.0):
-    def wrapper_get_scaled_series(s):
-        s_max = max(s)
-        return [base * float(n) / float(s_max) for n in s]
-
-    return wrapper_get_scaled_series
-
-
-def get_scaled_df(df, base=1.0):
-    df1 = pd.DataFrame()
-    for k in df.keys():
-        s = df[k]
-        s1 = get_scaled_series(base=base)(s)
-        df1[k] = s1
-    return df1
-
-
-def get_dummies(dummy_na=False):
-    def wrapper_get_dummies(s):
-        df = pd.get_dummies(s, prefix=s.name, dummy_na=dummy_na)
-        df1 = pd.DataFrame()
-        for k in df.keys():
-            s = df[k]
-            name = s.name
-            name = name.replace('(', '')
-            name = name.replace(')', '')
-            name = name.replace(' ', '')
-            s1 = s.rename(name)
-            df1[s1.name] = s1
-        return df1
-
-    return wrapper_get_dummies
 
 
 # 其实就是数据处理的过程，分成分类型数据和连续性数据
@@ -348,7 +300,7 @@ def train_dnn_regressor_model(
         do_validation = False
 
     # 训练多少次；
-    periods = 20
+    periods = 1
     steps_per_period = steps / periods
 
     # Create a linear regressor object.
@@ -382,6 +334,8 @@ def train_dnn_regressor_model(
     validation_rmse = []
     training_rmsle = []
     validation_rmsle = []
+    train_mean_absolute_error_list = []
+    validataion_mean_absolute_error_list = []
     for period in range(0, periods):
         # Train the model, starting from the prior state.
         dnn_regressor.train(
@@ -397,10 +351,12 @@ def train_dnn_regressor_model(
         # Compute training loss RMSE.
         training_root_mean_squared_error = math.sqrt(
             metrics.mean_squared_error(training_targets, training_predictions))
+        training_absolute_error = mean_absolute_error(training_targets,training_predictions)
 
         # Compute training loss RMSLE.
         training_root_mean_squared_log_error = math.sqrt(
             metrics.mean_squared_log_error(training_targets, training_predictions))
+
 
         # 当把数据集切分的时候，就做验证；
         if do_validation == True:
@@ -410,26 +366,44 @@ def train_dnn_regressor_model(
             # Compute validation loss RMSE.
             validation_root_mean_squared_error = math.sqrt(
                 metrics.mean_squared_error(validation_targets, validation_predictions))
+            validataion_absolute_error = mean_absolute_error(validation_targets,validation_predictions)
 
             # Compute validation loss RMSLE.
             validation_root_mean_squared_log_error = math.sqrt(
                 metrics.mean_squared_log_error(validation_targets, validation_predictions))
 
         # Occasionally print the current loss.
-        print("  period %02d : %0.2f, %0.4f" % (
-            period, training_root_mean_squared_error, training_root_mean_squared_log_error))
+        print("  period %02d : %0.2f, %0.4f,%0.4f" % (
+            period, training_root_mean_squared_error, training_root_mean_squared_log_error,training_absolute_error))
+
+        print("  period %02d : %0.2f, %0.4f,%0.4f" % (
+            period, validation_root_mean_squared_error, validataion_absolute_error, validation_root_mean_squared_log_error))
+
         # Add the loss metrics from this period to our list.
         training_rmse.append(training_root_mean_squared_error)
         training_rmsle.append(training_root_mean_squared_log_error)
+        train_mean_absolute_error_list.append(training_absolute_error)
+        validataion_mean_absolute_error_list.append(validataion_absolute_error)
         if do_validation == True:
             validation_rmse.append(validation_root_mean_squared_error)
             validation_rmsle.append(validation_root_mean_squared_log_error)
 
+    print(len(training_targets))
+    print(len(validation_targets))
     print("Model training finished.")
     # Output a graph of loss metrics over periods.
-    plt.figure(figsize=(15, 5))
+    plt.figure(figsize=(20, 5))
     # RMSE
-    plt.subplot(1, 3, 1)
+    plt.subplot(1,4,4)
+    plt.ylabel('mean_absolute_error')
+    plt.xlabel('Periods')
+    plt.title('mean_absolute_error')
+    plt.plot(train_mean_absolute_error_list,label='train')
+    if do_validation == True:
+        plt.plot(validataion_mean_absolute_error_list, label="validation")
+    plt.legend()
+
+    plt.subplot(1, 4, 1)
     plt.ylabel("RMSE")
     plt.xlabel("Periods")
     plt.title("Root Mean Squared Error vs. Periods")
@@ -438,7 +412,7 @@ def train_dnn_regressor_model(
         plt.plot(validation_rmse, label="validation")
     plt.legend()
     # RMSLE
-    plt.subplot(1, 3, 2)
+    plt.subplot(1, 4, 2)
     plt.ylabel("RMSLE")
     plt.xlabel("Periods")
     plt.title("Root Mean Squared Logarithmic Error vs. Periods")
@@ -447,7 +421,7 @@ def train_dnn_regressor_model(
         plt.plot(validation_rmsle, label="validation")
     plt.legend()
     # Target / Prediction
-    plt.subplot(1, 3, 3)
+    plt.subplot(1, 4, 3)
     plt.ylabel("Target")
     plt.xlabel("Prediction")
     plt.title("Target vs. Prediction")
@@ -509,245 +483,8 @@ def no_process_train_raw_data():
 
 # Training model...
 
-
 DNN_model = no_process_train_raw_data()
 
-
-def scale_to_1000():
-    numerical_fields = [
-        numeric_column for numeric_column in df_test.columns if df_test[numeric_column].dtype != 'object'
-    ]
-
-    categorical_fields = [
-        categorical_column for categorical_column in df_test.columns if df_test[categorical_column].dtype == 'object'
-    ]
-
-    ret = convert_features(df,
-                           numerical_fields,
-                           categorical_fields,
-                           num_fields_proc=get_scaled_series(base=1000.0),
-                           cat_fields_proc=None,
-                           label_name='daysOnMarket',
-                           train_validate_ratio=0.7)
-
-    # Scale all features to 0 ~ 1000
-    training_features = ret[0]
-    training_targets = ret[1]
-    validation_features = ret[2]
-    validation_targets = ret[3]
-
-    optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.01)
-    optimizer = tf.contrib.estimator.clip_gradients_by_norm(optimizer, 5.0)
-    dnn_regressor = train_dnn_regressor_model(
-        optimizer,
-        steps=2000,
-        batch_size=100,
-        hidden_units=[22, 44, 22, 11],
-        training_examples=training_features,
-        training_targets=training_targets,
-        validation_examples=validation_features,
-        validation_targets=validation_targets)
-    # Training model...
-    return dnn_regressor
-
-
-# DNN_model_scale = scale_to_1000()
-
-
-def log_transform():
-    # Try scale features with log
-    numerical_fields = [
-        numeric_column for numeric_column in df_test.columns if df_test[numeric_column].dtype != 'object'
-    ]
-
-    categorical_fields = [
-        categorical_column for categorical_column in df_test.columns if df_test[categorical_column].dtype == 'object'
-    ]
-
-    ret = convert_features(df,
-                           numerical_fields,
-                           categorical_fields,
-                           num_fields_proc=get_logged_series,
-                           cat_fields_proc=None,
-                           label_name='SalePrice',
-                           train_validate_ratio=0.7)
-
-    training_features = ret[0]
-    training_targets = ret[1]
-    validation_features = ret[2]
-    validation_targets = ret[3]
-
-    optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.01)
-    optimizer = tf.contrib.estimator.clip_gradients_by_norm(optimizer, 5.0)
-    dnn_regressor = train_dnn_regressor_model(
-        optimizer,
-        steps=2000,
-        batch_size=100,
-        hidden_units=[22, 44, 22, 11],
-        training_examples=training_features,
-        training_targets=training_targets,
-        validation_examples=validation_features,
-        validation_targets=validation_targets)
-    return dnn_regressor
-
-
-# DNN_model_log = log_transform()
-
-
-def change_hidden_layer_setting():
-    # Change hidden layer settings
-    numerical_fields = [
-        numeric_column for numeric_column in df_test.columns if df_test[numeric_column].dtype != 'object'
-    ]
-
-    categorical_fields = [
-        categorical_column for categorical_column in df_test.columns if df_test[categorical_column].dtype == 'object'
-    ]
-
-    ret = convert_features(df,
-                           numerical_fields,
-                           categorical_fields,
-                           num_fields_proc=get_logged_series,
-                           cat_fields_proc=None,
-                           label_name='SalePrice',
-                           train_validate_ratio=0.7)
-
-    training_features = ret[0]
-    training_targets = ret[1]
-    validation_features = ret[2]
-    validation_targets = ret[3]
-
-    optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.03)
-    optimizer = tf.contrib.estimator.clip_gradients_by_norm(optimizer, 5.0)
-    dnn_regressor = train_dnn_regressor_model(
-        optimizer,
-        steps=400000,
-        batch_size=2,
-        hidden_units=[11, 12, 13, 12, 11, 3],
-        training_examples=training_features,
-        training_targets=training_targets,
-        validation_examples=validation_features,
-        validation_targets=validation_targets)
-    return dnn_regressor
-
-
-# DNN_model_change_hidden_layer = change_hidden_layer_setting()
-
-
-def use_adagradoptimaizer():
-    # Use AdagradOptimizer with more iterations, change batch to 10
-    numerical_fields = [
-        numeric_column for numeric_column in df_test.columns if df_test[numeric_column].dtype != 'object'
-    ]
-
-    categorical_fields = [
-        categorical_column for categorical_column in df_test.columns if df_test[categorical_column].dtype == 'object'
-    ]
-
-    ret = convert_features(df,
-                           numerical_fields,
-                           categorical_fields,
-                           num_fields_proc=get_logged_series,
-                           cat_fields_proc=None,
-                           label_name='SalePrice',
-                           train_validate_ratio=0.7)
-
-    training_features = ret[0]
-    training_targets = ret[1]
-    validation_features = ret[2]
-    validation_targets = ret[3]
-    # Use AdagradOptimizer with more iterations, change batch to 10
-
-    optimizer = tf.train.AdagradOptimizer(learning_rate=1.0)
-    optimizer = tf.contrib.estimator.clip_gradients_by_norm(optimizer, 5.0)
-    dnn_regressor = train_dnn_regressor_model(
-        optimizer,
-        steps=1000000,
-        batch_size=10,
-        hidden_units=[11, 12, 13, 12, 11, 3],
-        training_examples=training_features,
-        training_targets=training_targets,
-        validation_examples=validation_features,
-        validation_targets=validation_targets)
-    return dnn_regressor
-
-
-# DNN_model_use_adagradoptimaizer = use_adagradoptimaizer()
-# ------------------------------------------------------------------------------->>>>>>
-def add_category_feature():
-    # add category feature
-    numerical_fields = [
-        numeric_column for numeric_column in df_test.columns if df_test[numeric_column].dtype != 'object'
-    ]
-
-    categorical_fields = [
-        categorical_column for categorical_column in df_test.columns if df_test[categorical_column].dtype == 'object'
-    ]
-
-    ret = convert_features(df,
-                           numerical_fields,
-                           categorical_fields,
-                           num_fields_proc=get_logged_series,
-                           cat_fields_proc=None,
-                           label_name='SalePrice',
-                           train_validate_ratio=0.02)
-
-    training_features = ret[0]
-    training_targets = ret[1]
-    validation_features = ret[2]
-    validation_targets = ret[3]
-
-    optimizer = tf.train.AdagradOptimizer(learning_rate=1.0)
-    optimizer = tf.contrib.estimator.clip_gradients_by_norm(optimizer, 5.0)
-    dnn_regressor = train_dnn_regressor_model(
-        optimizer,
-        steps=100000,
-        batch_size=100,
-        hidden_units=[11, 12, 13, 12, 11, 3],
-        training_examples=training_features,
-        training_targets=training_targets,
-        validation_examples=validation_features,
-        validation_targets=validation_targets)
-    return dnn_regressor
-
-
-# DNN_model_add_category = add_category_feature()
-
-def new1():
-    numerical_fields = [
-        numeric_column for numeric_column in df_test.columns if df_test[numeric_column].dtype != 'object'
-    ]
-
-    categorical_fields = [
-        categorical_column for categorical_column in df_test.columns if df_test[categorical_column].dtype == 'object'
-    ]
-
-    ret = convert_features(df,
-                           numerical_fields,
-                           categorical_fields,
-                           num_fields_proc=get_logged_series,
-                           cat_fields_proc=None,
-                           label_name='SalePrice',
-                           train_validate_ratio=1.0)
-
-    training_features_all = ret[0]
-    training_targets_all = ret[1]
-
-    optimizer = tf.train.AdagradOptimizer(learning_rate=1.0)
-    optimizer = tf.contrib.estimator.clip_gradients_by_norm(optimizer, 5.0)
-    dnn_regressor = train_dnn_regressor_model(
-        optimizer,
-        steps=100000,
-        batch_size=100,
-        hidden_units=[11, 12, 13, 12, 11, 3],
-        training_examples=training_features_all,
-        training_targets=training_targets_all,
-        validation_examples=None,
-        validation_targets=None)
-    return dnn_regressor
-
-
-# DNN_model_new = new1()
 
 
 # 预测；
@@ -762,7 +499,7 @@ def predict_test(dnn_regressor):
     ret = convert_features(df_test,
                            numerical_fields,
                            categorical_fields,
-                           num_fields_proc=get_logged_series,
+                           num_fields_proc=None,
                            cat_fields_proc=None,
                            label_name=None,
                            train_validate_ratio=1.0)
@@ -805,5 +542,7 @@ predict_test(DNN_model)
 # # sns.set(font_scale=1)
 # # hm = sns.heatmap(cm, cbar=True, annot=True, square=True, fmt='.2f', annot_kws={'size': 10}, yticklabels=cols.values, xticklabels=cols.values)
 # # plt.show()
+
+
 
 
