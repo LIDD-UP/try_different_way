@@ -78,7 +78,7 @@ def divide_daysonmarket(data,num,step):
         data_new.to_csv('../in_different_days_to_predict/in_{}_days/in_{}_days.csv'.format(j*step,j*step),index=False)
         i =j
         print('there are 24 week days to divided leaving {} weeks to finish '.format(num-j+1))
-    data_new_more = data[data.daysOnMarket>i]
+    data_new_more = data[data.daysOnMarket>i*step]
     data_new_more.to_csv('../in_different_days_to_predict/more_{}_days/more_{}_days.csv'.format(i*7,i*7),index=False)
 
 
@@ -89,9 +89,9 @@ divide_daysonmarket(data,24,7)
 msg = '''
 # -*- coding:utf-8 _*-  
 """ 
-@author:Administrator
-@file: dnn_prediction.py
-@time: 2018/9/6
+.
+.
+.
 """
 import tensorflow as tf
 import pandas as pd
@@ -402,7 +402,7 @@ def create_report(msg):
                 if index ==25:
                     line = "data = pd.read_csv('./in_{}_days.csv')".format(j*7)
                 if index ==102:
-                    line = "    model_dir='./DNN_in_0_days',\n".format(j*7)
+                    line = "    model_dir='D:/DNN_in{}days',\n".format(j*7)
                 file_data += line
         with open(file_name, "w", encoding="utf-8") as f:
             f.write(file_data)

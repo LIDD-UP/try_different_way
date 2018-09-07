@@ -192,6 +192,14 @@ Feature selection using SelectFromModel（使用SelectFromModel进行特征选�
 plt.tight_layout() 能自动解决多个子图相互重叠的问题，自解决标签，标题重合或者未完全显示问题；自动调整的；
 
 
+pandas 读入pandas数据再写成csv文件的时候，文件大小会改变；
+
+
+2018-09-07 11:08:55.856714: W T:\src\github\tensorflow\tensorflow\core\framework\op_kernel.cc:1275] OP_REQUIRES failed at save_restore_v2_ops.cc:109 : Not found: Failed to create a NewWriteableFile: ./save/file\model.ckpt-0_temp_5156c8ea3fc149db9763a4cc962b8c85/part-00000-of-00001.data-00000-of-00001.tempstate17719047275205881367 : ϵͳ�Ҳ���ָ����·����
+; No such process
+这是需要将model_dir 设置成为绝对地址
+
+
 
 
 
