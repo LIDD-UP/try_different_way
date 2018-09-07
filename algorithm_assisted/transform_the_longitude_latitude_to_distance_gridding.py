@@ -14,3 +14,13 @@ def geodistance(lng1,lat1,lng2,lat2):
     a=sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
     dis=2*asin(sqrt(a))*6371*1000
     return dis
+
+
+
+
+
+
+
+
+
+

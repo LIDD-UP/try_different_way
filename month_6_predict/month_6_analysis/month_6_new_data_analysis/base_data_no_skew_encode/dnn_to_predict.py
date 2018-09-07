@@ -4,12 +4,7 @@
 @file: dnn_to_predict.py
 @time: 2018/9/4
 """
-#-*- coding:utf-8 _*-
-""" 
-@author:Administrator
-@file: dnn_predict.py
-@time: 2018/8/22
-"""
+
 import tensorflow as tf
 import pandas as pd
 pd.set_option('display.column',100)
