@@ -15,10 +15,15 @@ def batch_execution_py_file():
             os.chdir(base+base_path)
             # os.system('python {}'.format(py_name))
         else:
-            base_path = '../in_{}_days'.format(i * 7)
-            py_name = 'in_{}_days_dnn.py'.format(i * 7)
-            os.chdir(base_path)
-            os.system('python {}'.format(py_name))
+            try:
+                base_path = '../in_{}_days'.format(i * 7)
+                py_name = 'in_{}_days_dnn.py'.format(i * 7)
+                os.chdir(base_path)
+                os.system('python {}'.format(py_name))
+            except:
+                print('file_not exit')
+                continue
+
 
 batch_execution_py_file()
 
