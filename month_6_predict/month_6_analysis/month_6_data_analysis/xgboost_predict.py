@@ -23,13 +23,34 @@ pd.set_option('max_columns', 200)
 pd.set_option('display.width', 1000)
 
 data = pd.read_csv('./process_data/process_data_16000_add_column.csv')
+
+# 需要完成的数据
+# prediction_data = pd.read_csv('./predict_data_dropna.csv')
+# prediction_data = prediction_data.dropna()
+
 # data = data[[ 'longitude', 'latitude', 'price','daysOnMarket']]
 # columns = [column for column in data.columns if data[column].dtype !='object']
 # data = data.drop(columns='tradeTypeId')
 # data = data[columns]
 data = data.dropna()
 
+
+data = data[["longitude","latitude","price","buildingTypeId","bedrooms",'daysOnMarket']]
+# prediction_data = prediction_data[["longitude","latitude","price","buildingTypeId","bedrooms",'daysOnMarket']]
+
+
 train_data ,test_data  = train_test_split(data,test_size=0.1)
+
+# train_data = data
+# test_data = prediction_data
+
+
+
+# 任务数据
+# train_data = data
+# test_data = pd.read_csv('./predict_data.csv')
+
+
 
 
 print(train_data.shape)
@@ -62,12 +83,12 @@ from sklearn.model_selection import GridSearchCV,KFold
 # 寻找超参数
 params = {
           # 'n_estimators': [100,300,500,1000,5000],# 300
-          # 'max_depth':[x for x in range(5,6,1)],#5
-          'max_depth':[x for x in range(3,10,1)],#5
-          'learning_rate':[0.001,0.01,0.05,0.1,0.3,0.5,0.7,0.9], # 0.3
+          'max_depth':[x for x in range(5,6,1)],#5
+          # 'max_depth':[x for x in range(3,10,1)],#5
+          # 'learning_rate':[0.001,0.01,0.05,0.1,0.3,0.5,0.7,0.9], # 0.3
           # 'reg_alpha':[1e-5,1e-2,0.1,1,100],#1
           # 'gamma':[x for x in range(0,10,1)],#0
-          'min_child_weight':[x for x in range(1,10,1)],# 5
+          # 'min_child_weight':[x for x in range(1,10,1)],# 5
           #   'subsample':[x for x in np.arange(0,1,0.01)], # 0.65
           }
 '''

@@ -24,6 +24,12 @@ pd.set_option('max_columns', 200)
 pd.set_option('display.width', 1000)
 
 data = pd.read_csv('./second.csv')
+data = data[["longitude","latitude","price","buildingTypeId","bedrooms",'daysOnMarket']]
+
+# predict_data = pd.read_csv('./predict_data.csv'')
+# predict_data = predict_data[["longitude","latitude","price","buildingTypeId","bedrooms",'daysOnMarket']]
+
+
 # data = data[[ 'longitude', 'latitude', 'price','daysOnMarket']]
 # columns = [column for column in data.columns if data[column].dtype !='object']
 # data = data.drop(columns='tradeTypeId')
@@ -36,6 +42,8 @@ def label_encode(data):
     return data
 data = label_encode(data)
 data = data.drop(columns=['province','city','postalCode',])
+
+# predict_data
 
 
 
