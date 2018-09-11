@@ -318,6 +318,16 @@ print(mean_absolute_error(label_predict,list_value))
 
 '''
 
+'''
+# 日期处理：
+def listdate_process(data):
+    data['month'] = [x.split('/')[1] for x in data['listingDate']]
+    data = data.drop(columns='listingDate')
+    return data
+data = listdate_process(data)
+print(data.head(100))
+'''
+
 
 
 def create_report(msg):

@@ -33,6 +33,11 @@ data = pd.read_csv('./more_161_days.csv')
 data['buildingTypeId'] = data['buildingTypeId'].astype('str')
 data['tradeTypeId'] = data['tradeTypeId'].astype('str')
 
+
+
+
+
+
 data = data.dropna()
 
 
