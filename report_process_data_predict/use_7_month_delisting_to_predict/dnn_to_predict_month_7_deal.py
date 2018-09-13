@@ -292,7 +292,7 @@ def train_nn_regression_model(
     # training_data = (canada_housing_data.head(int(data_lenth * TRAINING_PERCENT))).copy()
     training_data = canada_housing_data
     # 验证数据
-    validate_data = (training_data.tail(10000)).copy()
+    validate_data = predict_data.copy()
 
     training_examples = pre_process_features(training_data)
     training_targets = pre_process_targets(training_data)
