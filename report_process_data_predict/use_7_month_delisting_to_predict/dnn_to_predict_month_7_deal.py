@@ -368,7 +368,8 @@ def train_nn_regression_model(
         training_root_mean_squared_error = metrics.mean_absolute_error(training_predictions, training_targets)
         validation_root_mean_squared_error = metrics.mean_absolute_error(validation_predictions, validation_targets)
         # Occasionally print the current loss.
-        print("  period %02d : %0.2f" % (period, training_root_mean_squared_error))
+        print(" train-error: period %02d : %0.2f" % (period, training_root_mean_squared_error))
+        print(" vaidation-error period %02d : %0.2f" % (period, validation_root_mean_squared_error))
         # Add the loss metrics from this period to our list.
         training_rmse.append(training_root_mean_squared_error)
         validation_rmse.append(validation_root_mean_squared_error)
