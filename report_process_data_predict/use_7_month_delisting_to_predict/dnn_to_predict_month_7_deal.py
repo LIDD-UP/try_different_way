@@ -30,9 +30,40 @@ tf.logging.set_verbosity(tf.logging.INFO)
 pd.options.display.max_rows = 30
 pd.options.display.float_format = '{:.1f}'.format
 
-canada_housing_data = pd.read_csv('./input/train.csv')
+canada_housing_data = pd.read_csv('./input/train_month_7_d.csv')
+canada_housing_data = canada_housing_data[[
+        "longitude",
+         "latitude",
+         "city",
+         "province",
+         "price",
+         # "propertyType",
+         "tradeTypeId",
+         "listingDate",
+         "buildingTypeId",
+         "bedrooms",
+         "bathroomTotal",
+        'postalCode',
+        'daysOnMarket',
+]]
 
 predict_data = pd.read_csv('./input/test.csv')
+predict_data = predict_data[[
+        "longitude",
+         "latitude",
+         "city",
+         "province",
+         "price",
+         # "propertyType",
+         "tradeTypeId",
+         "listingDate",
+         "buildingTypeId",
+         "bedrooms",
+         "bathroomTotal",
+        'postalCode',
+        'daysOnMarket',
+]]
+
 print(predict_data.shape)
 
 
@@ -101,7 +132,7 @@ def pre_process_features(canada_housing_data):
          "city",
          "province",
          "price",
-         "propertyType",
+         # "propertyType",
          "tradeTypeId",
          "listingDate",
          "buildingTypeId",
@@ -178,11 +209,11 @@ def construct_feature_columns(training_examples):
         tf.feature_column.categorical_column_with_vocabulary_list(
             key="province",
             vocabulary_list=province_vocabulary_list))
-    property_type_vocabulary_list = list(set(np.array(training_examples["propertyType"])))
-    vocabulary_property_type = tf.feature_column.indicator_column(
-        tf.feature_column.categorical_column_with_vocabulary_list(
-            key="propertyType",
-            vocabulary_list=property_type_vocabulary_list))
+    # property_type_vocabulary_list = list(set(np.array(training_examples["propertyType"])))
+    # vocabulary_property_type = tf.feature_column.indicator_column(
+    #     tf.feature_column.categorical_column_with_vocabulary_list(
+    #         key="propertyType",
+    #         vocabulary_list=property_type_vocabulary_list))
     vocabulary_listing_data_month = tf.feature_column.indicator_column(
         tf.feature_column.categorical_column_with_vocabulary_list(
             key="listingDataMonth",
@@ -216,7 +247,7 @@ def construct_feature_columns(training_examples):
         # vocabulary_trade_type_id,
         vocabulary_city,
         vocabulary_province,
-        vocabulary_property_type,
+        # vocabulary_property_type,
         vocabulary_postal_code_three_str,
         bucketized_longitude,
         bucketized_latitude,
@@ -250,7 +281,7 @@ def train_nn_regression_model(
     # 训练数据百分比
     TRAINING_PERCENT = 0.8
     # 训练次数
-    periods = 4
+    periods = 1
     # steps_per_period = steps / periods
     steps_per_period = steps
     data_lenth = len(canada_housing_data)

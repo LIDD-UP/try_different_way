@@ -19,7 +19,33 @@ import  missingno as msno
 from sklearn.preprocessing import StandardScaler
 
 data = pd.read_csv('./input/train_month_7_d.csv')
+print(data.head())
 
-msno.bar(data)
-plt.tight_layout()
-plt.show()
+data = data.drop(columns=['id',])
+
+
+
+
+# msno.bar(data)
+# plt.tight_layout()
+# plt.show()
+# data = data[[
+#     "longitude",
+#         "latitude",
+#         "city",
+#         "province",
+#         "price",
+#         # "propertyType",
+#         "tradeTypeId",
+#         "listingDate",
+#         "buildingTypeId",
+#         "bedrooms",
+#         "bathroomTotal",
+#         'daysOnMarket'
+#          ]]
+
+# data_corr = data.corr()
+#
+# sns.heatmap(data_corr,annot=True)
+# plt.tight_layout()
+# plt.show()
