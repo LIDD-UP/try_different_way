@@ -100,8 +100,9 @@ predict_data = data_process_before(predict_data)
 print(predict_data.shape)
 predict_data.to_csv('./origin_data.csv',index=False)
 # predict_data = predict_data.reindex() # 这里有reindex可能有问题；
-origin_data = predict_data
-print(origin_data.shape)
+origin_data = predict_data.reset_index()
+
+
 
 # canada_housing_data =predict_data
 
@@ -300,8 +301,10 @@ def train_nn_regression_model(
     validation_examples = pre_process_features(validate_data)
     validation_targets = pre_process_targets(validate_data)
     dnn_regressor = create_dnn_regressor(
-        # hidden_units=[1024, 512, 256, 128, 64, 32],
-        hidden_units=[128, 64, 32],
+        hidden_units=[1024, 512, 256, 128, 64, 32],
+        # hidden_units=[128, 64, 32],
+        # hidden_units=[6,8],
+
         training_examples=training_examples)
     # 数据检查.
     print("Training examples summary:")
@@ -471,7 +474,9 @@ if __name__ == "__main__":
     #     np.random.permutation(canada_housing_data.index))
     test_predict_nn_regression_model(
         dnn_regressor=dnn_regressor,
-        batch_size=len(predict_data),
+        # batch_size=len(predict_data),
+        batch_size=100,
         # canada_housing_test_data=(canada_housing_data.head(10000)).copy()
         canada_housing_test_data=predict_data.copy()
     )
+

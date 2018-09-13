@@ -200,6 +200,11 @@ pandas 读入pandas数据再写成csv文件的时候，文件大小会改变；
 这是需要将model_dir 设置成为绝对地址
 
 
+tensorflow报ResourceExhaustedError (see above for traceback): OOM when allocating tensor with shape
+这是由于内存导致的错误，可以将数据的输入分批次输入；
+
+还有对于下标的重值，直接用reindex不起作用，需要用到reset_index
+
 
 
 
