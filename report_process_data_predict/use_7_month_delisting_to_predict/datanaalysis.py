@@ -21,7 +21,7 @@ from sklearn.preprocessing import StandardScaler
 data = pd.read_csv('./input/train_month_7_d.csv')
 print(data.head())
 
-data = data.drop(columns=['id',])
+data = data.drop(columns=['id','address','airConditioning','sizeExterior','sizeInterior','storiesTotal'])
 
 
 

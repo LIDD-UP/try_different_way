@@ -137,7 +137,8 @@ def pre_process_features(canada_housing_data):
          "listingDate",
          "buildingTypeId",
          "bedrooms",
-         "bathroomTotal"
+         "bathroomTotal",
+         'postalCode',
          ]]
 
     # data_lenth = len(canada_housing_data)
@@ -145,10 +146,11 @@ def pre_process_features(canada_housing_data):
     processed_features = selected_features.copy()
     # processed_features["longitude"] = round(processed_features["longitude"], 2)
     # processed_features["latitude"] = round(processed_features["latitude"], 2)
-    postCodeList = []
-    for item in canada_housing_data["postalCode"]:
-        postCodeList.append(item.split(' ')[0])
-    processed_features["postalCodeThreeStr"] = postCodeList
+    # postCodeList = []
+    # for item in canada_housing_data["postalCode"]:
+    #     # postCodeList.append(item.split(' ')[0])
+    #     postCodeList.append(item)
+    # processed_features["postalCodeThreeStr"] = postCodeList
         # list(set(postCodeList))
     listingDateMonth = []
     for item in canada_housing_data["listingDate"]:
@@ -192,11 +194,11 @@ def construct_feature_columns(training_examples):
             key="buildingTypeId",
             vocabulary_list=building_type_vocabulary_list))
     display.display(training_examples)
-    display.display(training_examples["postalCodeThreeStr"])
-    postal_code_three_str_vocabulary_list = list(set(np.array(training_examples["postalCodeThreeStr"])))
+    display.display(training_examples["postalCode"])
+    postal_code_three_str_vocabulary_list = list(set(list(np.array(canada_housing_data["postalCode"]))+list(np.array(predict_data["postalCode"]))))
     vocabulary_postal_code_three_str = tf.feature_column.indicator_column(
         tf.feature_column.categorical_column_with_vocabulary_list(
-            key="postalCodeThreeStr",
+            key="postalCode",
             vocabulary_list=postal_code_three_str_vocabulary_list))
 
     city_vocabulary_list = list(set(np.array(training_examples["city"])))
