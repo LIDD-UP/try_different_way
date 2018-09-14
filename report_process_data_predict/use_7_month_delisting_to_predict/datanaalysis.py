@@ -20,36 +20,42 @@ from sklearn.preprocessing import StandardScaler
 
 data = pd.read_csv('./input/train_month_7_d.csv')
 print(data.head())
-
-def data_process(data):
-    data = data.drop(columns=['id','address','airConditioning','sizeExterior','sizeInterior','storiesTotal'])
-    data = data.dropna()
-
-
-    # data = data[[column for column in data.columns if data[column].dtype!='object']]
-    bedrooms_list = []
-    for bedroom in data['bedrooms']:
-        bedrooms_list.append(int(eval(bedroom)))
-    data['bedrooms'] = bedrooms_list
-
-    listingDateMonth = []
-    for item in data["listingDate"]:
-        # print(item)
-        if '-' in item:
-            listingDateMonth.append(int(item.split('-')[1]))
-        else:
-            listingDateMonth.append(int(item.split('/')[1]))
-    data["listingDataMonth"] = listingDateMonth
-    return data
+print(data.shape)
+data_test = pd.read_csv('./input/test.csv')
+print(data_test.shape)
+data_month_8_delisting = pd.read_csv('./input/month_8_data_delisting.csv')
+print(data_month_8_delisting.shape)
 
 
-data = data_process(data)
-
-print(data.head())
-
-sns.pairplot(data)
-plt.tight_layout()
-plt.show()
+# def data_process(data):
+#     data = data.drop(columns=['id','address','airConditioning','sizeExterior','sizeInterior','storiesTotal'])
+#     data = data.dropna()
+#
+#
+#     # data = data[[column for column in data.columns if data[column].dtype!='object']]
+#     bedrooms_list = []
+#     for bedroom in data['bedrooms']:
+#         bedrooms_list.append(int(eval(bedroom)))
+#     data['bedrooms'] = bedrooms_list
+#
+#     listingDateMonth = []
+#     for item in data["listingDate"]:
+#         # print(item)
+#         if '-' in item:
+#             listingDateMonth.append(int(item.split('-')[1]))
+#         else:
+#             listingDateMonth.append(int(item.split('/')[1]))
+#     data["listingDataMonth"] = listingDateMonth
+#     return data
+#
+#
+# data = data_process(data)
+#
+# print(data.head())
+#
+# sns.pairplot(data)
+# plt.tight_layout()
+# plt.show()
 
 
 # msno.bar(data)

@@ -438,7 +438,6 @@ def test_predict_nn_regression_model(dnn_regressor,batch_size, canada_housing_te
 
     display.display(predictions.describe())
     predictions.to_csv('./predict_result.csv', index=False)
-    # predictions = predictions.reindex() # 这里可能有问题；
     merge_data = pd.concat((origin_data, predictions), axis=1)
 
     merge_data_df = pd.DataFrame(merge_data)
