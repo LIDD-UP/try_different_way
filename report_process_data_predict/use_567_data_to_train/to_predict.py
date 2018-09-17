@@ -285,7 +285,7 @@ def train_nn_regression_model(
     # 训练数据百分比
     TRAINING_PERCENT = 0.8
     # 训练次数
-    periods = 1
+    periods = 4
     # steps_per_period = steps / periods
     steps_per_period = steps
     data_lenth = len(canada_housing_data)
@@ -368,6 +368,16 @@ def train_nn_regression_model(
 
         validation_predictions = dnn_regressor.predict(input_fn=predict_validation_input_fn)
         validation_predictions = np.array([item['predictions'][0] for item in validation_predictions])
+
+        predictions = pd.DataFrame()
+        predictions['predictions'] = validation_predictions
+        predictions['predictions'] = round(abs(predictions['predictions']))
+        predictions.to_csv('./predict_result.csv', index=False)
+        merge_data = pd.concat((origin_data, predictions), axis=1)
+
+        merge_data_df = pd.DataFrame(merge_data)
+        merge_data_df.to_csv('./merge_result.csv', index=False)
+
 
         # Compute training and validation loss.
         training_root_mean_squared_error = metrics.mean_absolute_error(training_predictions, training_targets)
