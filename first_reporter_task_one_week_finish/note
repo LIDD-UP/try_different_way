@@ -1,0 +1,73 @@
+month7 delisting date as the train data:
+    no remove listingDate and hidden_unite =1024-32:
+        peroid0:
+            train-error: period 00 : 29.74
+            vaidation-error period 00 : 69.77
+        peroid1:
+                train-error: period 01 : 24.40
+                vaidation-error period 01 : 70.95
+    remove listingDate :
+                 train-error: period 00 : 51.77
+                vaidation-error period 00 : 55.43
+
+                 train-error: period 01 : 38.06
+                    vaidation-error period 01 : 55.11
+
+                     train-error: period 02 : 34.63
+                    vaidation-error period 02 : 57.86
+
+                     train-error: period 03 : 28.13
+                     vaidation-error period 03 : 56.61
+
+                      train-error: period 04 : 25.10
+                     vaidation-error period 04 : 56.96
+
+                      train-error: period 05 : 23.20
+                     vaidation-error period 05 : 57.40
+
+month_67_dnn:
+    no remove listingDate:
+         train-error: period 00 : 28.28
+        vaidation-error period 00 : 74.04
+
+        train-error: period 01 : 22.11
+         vaidation-error period 01 : 78.83
+
+          train-error: period 01 : 17.19
+             vaidation-error period 01 : 79.67
+
+          train-error: period 02 : 14.90
+            vaidation-error period 02 : 83.47
+
+    remove listingDate:
+     train-error: period 00 : 49.08
+ vaidation-error period 00 : 54.25
+
+  train-error: period 01 : 41.56
+ vaidation-error period 01 : 54.05
+
+  train-error: period 02 : 37.51
+ vaidation-error period 02 : 54.94
+
+month_567_data:
+    no remove listingDate:
+         train-error: period 00 : 32.26
+        vaidation-error period 00 : 80.17
+
+         train-error: period 00 : 31.86
+         vaidation-error period 00 : 80.17
+
+            train-error: period 01 : 24.29
+             vaidation-error period 01 : 83.06
+     remove：
+         train-error: period 00 : 51.77
+        vaidation-error period 00 : 55.96
+
+         train-error: period 01 : 44.63
+        vaidation-error period 01 : 56.80
+
+month_2to_7data:
+
+
+可以看出加上和去掉month的巨大区别，但是从训练的进步来说，随着训练次数的增加，虽然训练数据的你和效果变好了，但是预测数据的结果是呈现上升的趋势
+所以，选选取的特征依然有问题；
