@@ -20,3 +20,10 @@ np.set_printoptions(suppress=True)
 
 plt.rcParams['savefig.dpi'] = 300 #图片像素
 plt.rcParams['figure.dpi'] = 300 #分辨率
+
+
+
+pd.set_option('display.column',100)
+pd.set_option('display.max_rows', 500)
+pd.set_option('display.max_columns', 500)
+pd.set_option('display.width', 1000)

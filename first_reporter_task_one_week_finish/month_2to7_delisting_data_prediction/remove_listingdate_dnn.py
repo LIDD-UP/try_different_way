@@ -195,10 +195,10 @@ def construct_feature_columns(training_examples):
     #     tf.feature_column.categorical_column_with_vocabulary_list(
     #         key="propertyType",
     #         vocabulary_list=property_type_vocabulary_list))
-    # vocabulary_listing_data_month = tf.feature_column.indicator_column(
-    #     tf.feature_column.categorical_column_with_vocabulary_list(
-    #         key="listingDataMonth",
-    #         vocabulary_list=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]))
+    vocabulary_listing_data_month = tf.feature_column.indicator_column(
+        tf.feature_column.categorical_column_with_vocabulary_list(
+            key="listingDataMonth",
+            vocabulary_list=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]))
     numeric_bedrooms = tf.feature_column.numeric_column("bedrooms")
     numeric_bathroomTotal = tf.feature_column.numeric_column("bathroomTotal")
     vocabulary_trade_type_id = tf.feature_column.indicator_column(
@@ -221,7 +221,7 @@ def construct_feature_columns(training_examples):
             keys=[bucketized_longitude, bucketized_latitude], hash_bucket_size=3600), 60)
 
     feature_columns = [
-        # vocabulary_listing_data_month,
+        vocabulary_listing_data_month,
         vocabulary_building_type_id,
         # numeric_price,
         bucketized_price,

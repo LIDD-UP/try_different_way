@@ -1,13 +1,7 @@
-# -*- coding:utf-8 _*-  
-""" 
+# -*- coding:utf-8 _*-
+"""
 @author:Administrator
 @file: remove_listing_date_month_dnn.py
-@time: 2018/9/17
-"""
-# -*- coding:utf-8 _*-
-""" 
-@author:Administrator
-@file: DNN_model_to_predict.py
 @time: 2018/9/17
 """
 from __future__ import print_function
