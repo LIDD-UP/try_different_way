@@ -1,6 +1,12 @@
 # -*- coding:utf-8 _*-  
 """ 
 @author:Administrator
+@file: xgboost_template2.py
+@time: 2018/9/20
+"""
+# -*- coding:utf-8 _*-
+""" 
+@author:Administrator
 @file: xgboost_to_predict.py
 @time: 2018/9/20
 """
@@ -56,7 +62,7 @@ def preprocess_data(data):
     # data = data[data.tradeTypeId == 1]
     # data = data.drop(columns=['tradeTypeId'])
 
-    data = data.dropna(axis=0)
+    # data = data.dropna(axis=0)
     # 重置下标,删除index列
     data = data.reset_index()
     data = data.drop(columns=['index'])
