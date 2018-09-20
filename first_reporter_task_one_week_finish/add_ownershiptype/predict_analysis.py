@@ -17,6 +17,7 @@ data = data.drop(columns=['index'])
 
 
 for i in range(len(data)):
+    print(i)
     if abs(data.iloc[i]['predictions'] - data.iloc[i]['daysOnMarket']) <=10:
         data_10.append(i)
     if abs(data.iloc[i]['predictions'] - data.iloc[i]['daysOnMarket']) > 10 and abs(data.iloc[i]['predictions'] - data.iloc[i]['daysOnMarket']) <=20:

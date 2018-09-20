@@ -71,7 +71,7 @@ if __name__ == '__main__':
 
 
 
-    df_test_middle = pd.read_csv('./input/hose_info_201808_predict.csv')
+    df_test_middle = pd.read_csv('./input/house_info_treb.csv')
     # df_test_middle['ownerShipType'] = df_test_middle['ownershiptype']
     # df_test_middle = df_test_middle.drop(columns='ownershiptype')
 
@@ -88,7 +88,7 @@ if __name__ == '__main__':
         # "listingDate",
         "buildingTypeId",
         # "bedrooms",
-        # "bathroomTotal",
+        "bathroomTotal",
         # 'postalCode',
         'daysOnMarket',
         'ownerShipType'

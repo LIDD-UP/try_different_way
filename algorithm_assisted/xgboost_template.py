@@ -49,6 +49,7 @@ def preprocess_data(data):
     data = data.drop(columns=['tradeTypeId'])
 
 
+
     data = data.dropna(axis=0)
     bedrooms_list = []
     for bedrooms in data["bedrooms"]:
@@ -71,11 +72,11 @@ test_data = preprocess_data(test_data)
 
 # 3：特征变换，log或者其他的方式
 # log变换price
-train_data['price'] = np.log1p(train_data['price'])
-test_data['price'] = np.log1p(test_data['price'])
+# train_data['price'] = np.log1p(train_data['price'])
+# test_data['price'] = np.log1p(test_data['price'])
 
 # log变换daysOnMarket
-train_data['daysOnMarket'] = np.log1p(train_data['daysOnMarket'])
+# train_data['daysOnMarket'] = np.log1p(train_data['daysOnMarket'])
 # 对于原始的预测数据不需要进行log变换;只需要再程序末尾把预测好的数据进行反变换
 
 
@@ -98,10 +99,16 @@ test = test_data.drop(columns='daysOnMarket')
 
 
 train_label = train_data['daysOnMarket']
-test_label = np.expm1(test_data['daysOnMarket'])
+
+test_label = test_data['daysOnMarket']
 
 
 # 寻找超参数
+
+# 参数的调节方法:
+
+
+
 params = {
           # 'n_estimators': [100,300,500,1000,5000],# 300
           'max_depth':[x for x in range(5,6,1)],#5
@@ -136,10 +143,13 @@ print(model)
 
 
 # 预测
-preds = np.expm1(model.predict(test))
+# preds = np.expm1(model.predict(test))
+preds = model.predict(test)
 
 preds_Series = pd.Series(preds)
+
 print(preds_Series.describe())
+print(test_label.describe())
 print('error',mean_absolute_error(test_label,preds))
 print('pred_mean',preds.mean())
 print('true_mean',test_label.mean())
