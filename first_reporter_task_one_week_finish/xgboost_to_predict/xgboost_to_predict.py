@@ -60,6 +60,7 @@ def preprocess_data(data):
     # 重置下标,删除index列
     data = data.reset_index()
     data = data.drop(columns=['index'])
+    origin_data = data
     bedrooms_list = []
     for bedrooms in data["bedrooms"]:
         # print(bedrooms)
@@ -78,11 +79,11 @@ def preprocess_data(data):
             bathroom_total_list.append(int(bathroom_total))
     data["bathroomTotal"] = bathroom_total_list
 
-    return data
+    return data,origin_data
 
 
-train_data = preprocess_data(train_data)
-test_data = preprocess_data(test_data)
+train_data,origin_train_data= preprocess_data(train_data)
+test_data, origin_data = preprocess_data(test_data)
 
 
 # 3：特征变换，log或者其他的方式
@@ -115,7 +116,7 @@ def one_hot_encode(train_data,test_data):
     merge_data['tradeTypeId'] = merge_data['tradeTypeId'].astype('str')
     merge_data = pd.get_dummies(merge_data)
     train_data = merge_data[:train_data.shape[0]]
-    test_data = merge_data[test_data.shape[0]:]
+    test_data = merge_data[train_data.shape[0]:]
     print(train_data.head())
     print(test_data.head())
     return train_data,test_data
@@ -188,6 +189,9 @@ print(model)
 preds = model.predict(test)
 
 preds_Series = pd.Series(preds)
+preds_df = pd.DataFrame(preds_Series,columns=['predictions'])
+merge_data = pd.concat((origin_data,preds_df),axis=1)
+merge_data.to_csv('./merge_result_xgboost.csv',index=False)
 
 print(preds_Series.describe())
 print(test_label.describe())

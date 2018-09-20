@@ -5,3 +5,11 @@
 
 进行调参实验:
 按照教程一步步的实行:分成好几步调参,由于电脑限制,只能分开组合调参,不然电脑跑不动:
+GridSearchCv得score有很多:也可能会影响最终得结果:具体如下:
+Regression
+‘explained_variance’	metrics.explained_variance_score
+‘neg_mean_absolute_error’	metrics.mean_absolute_error
+‘neg_mean_squared_error’	metrics.mean_squared_error
+‘neg_mean_squared_log_error’	metrics.mean_squared_log_error
+‘neg_median_absolute_error’	metrics.median_absolute_error
+‘r2’	metrics.r2_score
