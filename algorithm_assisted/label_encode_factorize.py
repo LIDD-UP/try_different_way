@@ -4,6 +4,7 @@
 @file: label_encode_factorize.py
 @time: 2018/8/28
 """
+import pandas as pd
 def label_encode(data):
     for column in data.columns:
         if data[column].dtypes=='object':

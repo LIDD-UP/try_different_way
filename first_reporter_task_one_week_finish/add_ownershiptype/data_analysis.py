@@ -16,5 +16,9 @@ import missingno as msno
 
 train_data = pd.read_csv('./input/month_7_delisting_after_process_2.csv')
 
-msno.bar(train_data)
-plt.show()
+# msno.bar(train_data)
+# plt.show()
+
+print(train_data['city'].describe())
+
+

@@ -11,28 +11,33 @@ def preprocess_data(data):
     data = data[[
         "longitude",
         "latitude",
-        "city",
+        # "city",
         "province",
-        "price",
-        "tradeTypeId",
-        "listingDate",
+        # "price",
+        # "tradeTypeId",
+        # "listingDate",
         "buildingTypeId",
-        "bedrooms",
-        "bathroomTotal",
+        # "bedrooms",
+        # "bathroomTotal",
         # 'postalCode',
         'daysOnMarket',
         'ownerShipType'
     ]]
-    data = data[data.tradeTypeId == 1]
+    # data = data[data.tradeTypeId == 1]
+    # data = data.drop(columns=['tradeTypeId'])
     data = data.dropna(axis=0)
-    bedrooms_list = []
-    for bedrooms in data["bedrooms"]:
-        bedrooms_list.append(int(eval(bedrooms)))
-    data["bedrooms"] = bedrooms_list
-    bathroom_total_list = []
-    for bathroom_total in data["bathroomTotal"]:
-        bathroom_total_list.append(int(bathroom_total))
-    data["bathroomTotal"] = bathroom_total_list
+    # bedrooms_list = []
+    # for bedrooms in data["bedrooms"]:
+    #     # print(bedrooms)
+    #     if isinstance(bedrooms,float):
+    #         bedrooms_list.append(int(bedrooms))
+    #     else:
+    #         bedrooms_list.append(int(eval(bedrooms)))
+    # data["bedrooms"] = bedrooms_list
+    # bathroom_total_list = []
+    # for bathroom_total in data["bathroomTotal"]:
+    #     bathroom_total_list.append(int(bathroom_total))
+    # data["bathroomTotal"] = bathroom_total_list
     return data
 
 
@@ -59,25 +64,50 @@ def date_processing(data):
 
 
 if __name__ == '__main__':
-
     df_train = pd.read_csv('./input/month_7_delisting_after_process_2.csv')
     df_train = preprocess_data(df_train)
-    df_train = date_processing(df_train)
+    print(df_train.shape)
+    # df_train = date_processing(df_train)
 
 
 
-    df_test_middle = pd.read_csv('./input/month_8_delisting_data_after_process.csv')
-    df_test_middle['ownerShipType'] = df_test_middle['ownershiptype']
-    df_test_middle = df_test_middle.drop(columns='ownershiptype')
-    df_test_middle = preprocess_data(df_test_middle)
-    df_test_middle = date_processing(df_test_middle)
-    origin_data = df_test_middle
-    df_test_middle.to_csv('./origin_data_auto_ml.csv',index=False)
+    df_test_middle = pd.read_csv('./input/hose_info_201808_predict.csv')
+    # df_test_middle['ownerShipType'] = df_test_middle['ownershiptype']
+    # df_test_middle = df_test_middle.drop(columns='ownershiptype')
 
+    # df_test_middle = preprocess_data(df_test_middle)
 
-
-    df_train =df_train.dropna()
+    df_test_middle = df_test_middle[[
+        'id',
+        "longitude",
+        "latitude",
+        # "city",
+        "province",
+        # "price",
+        # "tradeTypeId",
+        # "listingDate",
+        "buildingTypeId",
+        # "bedrooms",
+        # "bathroomTotal",
+        # 'postalCode',
+        'daysOnMarket',
+        'ownerShipType'
+    ]]
     df_test_middle = df_test_middle.dropna()
+    print(df_test_middle.shape)
+
+    origin_data = df_test_middle.reset_index()
+    df_test_middle.to_csv('./origin_data_auto_ml.csv', index=False)
+
+    df_test_middle = df_test_middle.drop(columns=['id'])
+    print(df_test_middle.shape)
+    # df_test_middle = date_processing(df_test_middle)
+
+
+
+
+    # df_train =df_train.dropna()
+    # df_test_middle = df_test_middle.dropna()
 
     df_test = df_test_middle.drop(columns='daysOnMarket')
     df_test_label = df_test_middle['daysOnMarket']
@@ -91,8 +121,9 @@ if __name__ == '__main__':
     column_description2 = {
         'daysOnMarket': 'output',
         'buildingTypeId': 'categorical',
-        'year': 'categorical',
-        'month': 'categorical',
+        'tradeTypeId': 'categorical',
+        # 'year': 'categorical',
+        # 'month': 'categorical',
 
     }
 

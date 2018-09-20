@@ -27,8 +27,10 @@ mpl.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号
 pd.set_option('max_columns', 200)
 pd.set_option('display.width', 1000)
 
-# train_data = pd.read_csv('./final_process_train_6.csv')
-# test_data = pd.read_csv('./final_process_test_6.csv')
+
+
+
+
 
 train_data = pd.read_csv('./month_6_train_1.csv')
 test_data = pd.read_csv('./test_data_1.csv')
@@ -98,22 +100,6 @@ print(preds_Series.describe())
 print('error',mean_absolute_error(test_label,preds))
 print('pred_mean',preds.mean())
 print('true_mean',test_label.mean())
-
-# 画图
-
-# plt.figure(figsize=(12,9))
-# plt.ylabel("Target--variance%f"%(test_label.var()))
-# plt.xlabel("Prediction--variance%f"%(preds.var()))
-# plt.title("Target vs. Prediction")
-# lim = max(test_label)
-# lim *= 1.05
-# plt.xlim(0, lim)
-# plt.ylim(0, lim)
-# plt.plot([0, lim], [0, lim], alpha=0.5, color='red')
-# plt.scatter(preds, test_label, alpha=0.5, label="training")
-# plt.legend()
-# plt.tight_layout()
-# plt.show()
 
 
 
