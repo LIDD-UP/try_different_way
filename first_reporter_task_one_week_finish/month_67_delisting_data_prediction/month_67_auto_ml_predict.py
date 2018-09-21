@@ -29,8 +29,8 @@ def preprocess_data(data):
         'daysOnMarket',
         'ownerShipType'
     ]]
-    data = data[data.tradeTypeId == 1]
-    data = data.drop(columns=['tradeTypeId'])
+    # data = data[data.tradeTypeId == 1]
+    # data = data.drop(columns=['tradeTypeId'])
     data = data.dropna(axis=0)
     bedrooms_list = []
     for bedrooms in data["bedrooms"]:
@@ -80,7 +80,7 @@ if __name__ == '__main__':
 
 
 
-    df_test_middle = pd.read_csv('./input/realtor_search_month_8_delisted_after_process2.csv')
+    df_test_middle = pd.read_csv('./input/hose_info_201808_predict_2.csv')
     # df_test_middle['ownerShipType'] = df_test_middle['ownershiptype']
     # df_test_middle = df_test_middle.drop(columns='ownershiptype')
     df_test_middle = preprocess_data(df_test_middle)
@@ -112,6 +112,7 @@ if __name__ == '__main__':
     }
 
     print(column_description1)
+    # 合并两个字典
     column_descriptions = dict(column_description1, **column_description2)
 
     ml_predictor = Predictor(type_of_estimator='Regressor', column_descriptions=column_descriptions)
@@ -123,7 +124,7 @@ if __name__ == '__main__':
     x_dataframe = pd.DataFrame(x,columns=['predictions'])
     merge_data = pd.concat((origin_data,x_dataframe),axis=1)
     merge_data_df = pd.DataFrame(merge_data)
-    merge_data_df.to_csv('merge_data_auto_ml.csv',index=False)
+    merge_data_df.to_csv('merge_data_auto_ml_17.csv',index=False)
     print(x_dataframe.describe())
     print(df_test_label.describe())
 

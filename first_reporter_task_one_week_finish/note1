@@ -1,6 +1,6 @@
+dnn
 对于用month7 delistingDate作为训练数据：
     标准化的情况比为标准化的情况好，未标准化是：65：标准化是56；
     再加上daysOnmarket进行log变换之后就成了53；
 
-
-#
+xgboost 和auto_ml 的效果更好一些，并且在加上tradetype

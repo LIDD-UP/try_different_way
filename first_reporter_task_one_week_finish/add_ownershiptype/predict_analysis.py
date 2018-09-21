@@ -6,7 +6,7 @@
 """
 import pandas as pd
 
-data = pd.read_csv('merge_data_auto_ml.csv')
+data = pd.read_csv('merge_data_auto_ml_17.csv')
 
 data_10 = []
 data_20 = []

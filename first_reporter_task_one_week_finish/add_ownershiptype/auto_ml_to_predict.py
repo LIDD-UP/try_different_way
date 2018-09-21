@@ -14,7 +14,7 @@ def preprocess_data(data):
         # "city",
         "province",
         # "price",
-        # "tradeTypeId",
+        "tradeTypeId",
         # "listingDate",
         "buildingTypeId",
         # "bedrooms",
@@ -71,7 +71,7 @@ if __name__ == '__main__':
 
 
 
-    df_test_middle = pd.read_csv('./input/house_info_treb.csv')
+    df_test_middle = pd.read_csv('./input/hose_info_201808_predict_2.csv')
     # df_test_middle['ownerShipType'] = df_test_middle['ownershiptype']
     # df_test_middle = df_test_middle.drop(columns='ownershiptype')
 
@@ -139,7 +139,7 @@ if __name__ == '__main__':
     x_dataframe = pd.DataFrame(x,columns=['predictions'])
     merge_data = pd.concat((origin_data,x_dataframe),axis=1)
     merge_data_df = pd.DataFrame(merge_data)
-    merge_data_df.to_csv('merge_data_auto_ml.csv',index=False)
+    merge_data_df.to_csv('merge_data_auto_ml_17.csv',index=False)
     print(x_dataframe.describe())
     print(df_test_label.describe())
 

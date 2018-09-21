@@ -180,7 +180,7 @@ def GridSearchCV_function(train,train_label,test,test_label,params):
 
 
 result_list_save_in_file = []
-tuned_parameter_counts = 1
+tuned_parameter_counts = 5
 for i in range(tuned_parameter_counts):
     if i==0:
         params = {
@@ -253,7 +253,7 @@ for i in range(tuned_parameter_counts):
     if i==5:
         params = {
                   # 'n_estimators': [100,300,500,1000,5000],# 300
-                  'max_depth':[x for x in range(5,6,1)],#5
+                  # 'max_depth':[x for x in range(5,6,1)],#5
                   # 'max_depth':[x for x in range(3,10,1)],#5
                   # 'learning_rate':[0.001,0.01,0.05,0.1,0.3,0.5,0.7,0.9], # 0.3
                   # 'reg_alpha':[1e-5,1e-2,0.1,1,100],#1
