@@ -99,7 +99,7 @@ def process_city(train_data,test_data,threshold_value):
     # 只要满足条件的数据
     train_data = train_data[train_data.city.isin(list_fill)]
     print(train_data.shape)
-    test_data = test_data[test_data.city.isin(list_fill)]
+    test_data = test_data[~test_data.city.isin(list_fill)]
     print(test_data.shape)
 
     return train_data,test_data
@@ -117,8 +117,8 @@ def get_category_class_bigger_than_threshold_value_postalcode(data,test_data,col
         if len(data[data.postalCode == value]) > threshold_value:
             list_fill.append(value)
     print('postalCode nums after process:', len(list_fill))
-    data = data[data.postalCode.isin(list_fill)]
-    test_data = test_data[test_data.postalCode.isin(list_fill)]
+    data = data[~data.postalCode.isin(list_fill)]
+    test_data = test_data[~test_data.postalCode.isin(list_fill)]
     return data,test_data
 
 
@@ -133,8 +133,8 @@ def get_category_class_bigger_than_threshold_value_province(data,test_data,colum
         if len(data[data.province == value]) > threshold_value:
             list_fill.append(value)
     print('province nums after process:', len(list_fill))
-    data = data[data.province.isin(list_fill)]
-    test_data = test_data[test_data.province.isin(list_fill)]
+    data = data[~data.province.isin(list_fill)]
+    test_data = test_data[~test_data.province.isin(list_fill)]
     return data,test_data
 
 
@@ -147,8 +147,8 @@ def get_category_class_bigger_than_threshold_value_buildingTypeId(data,test_data
         if len(data[data.buildingTypeId == value]) > threshold_value:
             list_fill.append(value)
     print('buildingTypeId nums after process:', len(list_fill))
-    data = data[data.buildingTypeId.isin(list_fill)]
-    test_data = test_data[test_data.buildingTypeId.isin(list_fill)]
+    data = data[~data.buildingTypeId.isin(list_fill)]
+    test_data = test_data[~test_data.buildingTypeId.isin(list_fill)]
     return data,test_data
 
 
@@ -164,8 +164,8 @@ def get_category_class_bigger_than_threshold_value_ownerShipType(data,test_data,
         if len(data[data.ownerShipType == value]) > threshold_value:
             list_fill.append(value)
     print('ownerShipType nums after process:', len(list_fill))
-    data = data[data.ownerShipType.isin(list_fill)]
-    test_data = test_data[test_data.ownerShipType.isin(list_fill)]
+    data = data[~data.ownerShipType.isin(list_fill)]
+    test_data = test_data[~test_data.ownerShipType.isin(list_fill)]
     return data, test_data
 
 
@@ -178,8 +178,8 @@ def get_category_class_bigger_than_threshold_value_bedrooms(data,test_data,colum
         if len(data[data.bedrooms == value]) > threshold_value:
             list_fill.append(value)
     print('bedrooms nums after process:', len(list_fill))
-    data = data[data.bedrooms.isin(list_fill)]
-    test_data = test_data[test_data.bedrooms.isin(list_fill)]
+    data = data[~data.bedrooms.isin(list_fill)]
+    test_data = test_data[~test_data.bedrooms.isin(list_fill)]
     return data, test_data
 
 
@@ -193,8 +193,8 @@ def get_category_class_bigger_than_threshold_value_bathroomTotal(data,test_data,
         if len(data[data.bathroomTotal == value]) > threshold_value:
             list_fill.append(value)
     print('bathroomTotal nums after process:', len(list_fill))
-    data = data[data.bathroomTotal.isin(list_fill)]
-    test_data = test_data[test_data.bathroomTotal.isin(list_fill)]
+    data = data[~data.bathroomTotal.isin(list_fill)]
+    test_data = test_data[~test_data.bathroomTotal.isin(list_fill)]
     return data, test_data
 
 
@@ -202,41 +202,39 @@ def get_category_class_bigger_than_threshold_value_bathroomTotal(data,test_data,
 
 
 if __name__ == '__main__':
-    # # 预处理数据
-    # train_data = preprocess_data(train_data)
-    # test_data = preprocess_data(test_data)
-    # train_data = date_processing(train_data)
-    # test_data = date_processing(test_data)
-    #
-    # # train_data = train_data[train_data.year == 2018]
-    # # test_data = test_data[test_data.year == 2018]
-    #
-    # print(train_data.head())
-    # print(test_data.head())
-    #
-    #
-    # category_variable = ['province', 'city',
-    #                      'tradeTypeId', 'buildingTypeId',
-    #                      'bedrooms', 'bathroomTotal',
-    #                      # 'postalCode',
-    #                      'ownerShipType',
-    #                      'year', 'month',
-    #                      # 'daysOnMarket'
-    #                      ]
-    #
-    # # 处理city
-    # print(train_data.shape)
-    # train_data, test_data = process_city(train_data,test_data,100) # 50:366:shape:15000
-    #
+    # 预处理数据
+    train_data = preprocess_data(train_data)
+    test_data = preprocess_data(test_data)
+    train_data = date_processing(train_data)
+    test_data = date_processing(test_data)
 
-    # # # # 处理省份
-    # train_data,test_data = get_category_class_bigger_than_threshold_value_province(train_data,test_data,'province',1000)
+    # train_data = train_data[train_data.year == 2018]
+    # test_data = test_data[test_data.year == 2018]
 
-    train_data = pd.read_csv('./input/train.csv')
-    test_data = pd.read_csv('./input/test.csv')
-    print(train_data['province'].value_counts())
+    print(train_data.head())
+    print(test_data.head())
 
-    train_data,test_data = get_category_class_bigger_than_threshold_value_province(train_data,test_data,'province',10000)
+
+    category_variable = ['province', 'city',
+                         'tradeTypeId', 'buildingTypeId',
+                         'bedrooms', 'bathroomTotal',
+                         # 'postalCode',
+                         'ownerShipType',
+                         'year', 'month',
+                         # 'daysOnMarket'
+                         ]
+
+    # 处理city
+    print(train_data.shape)
+    train_data, test_data = process_city(train_data,test_data,100) # 50:366:shape:15000
+
+
+    # # # 处理省份
+    train_data,test_data = get_category_class_bigger_than_threshold_value_province(train_data,test_data,'province',1000)
+
+    # train_data = pd.read_csv('./input/train.csv')
+    # test_data = pd.read_csv('./input/test.csv')
+    # print(train_data['province'].value_counts())
 
 
     train_data ,test_data= get_category_class_bigger_than_threshold_value_buildingTypeId(train_data,test_data,'buildingTypeId',10000)
@@ -247,7 +245,7 @@ if __name__ == '__main__':
     # # # 处理bathroomTotal
     train_data,test_data = get_category_class_bigger_than_threshold_value_bathroomTotal(train_data,test_data,'bathroomTotal',10000)
 
-    # # 处理postalCode
+    # # 处理postalCode，最好不要，这样会导致数据量过少，其实效果并没有提升；
     # train_data, test_data = get_category_class_bigger_than_threshold_value_postalcode(train_data,test_data, 'postalCode', 10)
     # train_data = train_data[train_data.tradeTypeId==1]
     # test_data = test_data[test_data.tradeTypeId==1]
@@ -257,8 +255,8 @@ if __name__ == '__main__':
     test_data = test_data[test_data.year==2018]
     print(train_data.head())
     print(test_data.head())
-    train_data.to_csv('./input/train1.csv',index=False)
-    test_data.to_csv('./input/test1.csv',index=False)
+    train_data.to_csv('./input/train_inverse.csv',index=False)
+    test_data.to_csv('./input/test1_inverse.csv',index=False)
 
 
 

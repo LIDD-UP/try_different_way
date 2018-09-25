@@ -39,6 +39,8 @@ def preprocess_data(data):
         # print(bedrooms)
         if isinstance(bedrooms,float):
             bedrooms_list.append(int(bedrooms))
+        elif isinstance(bedrooms,int):
+            bedrooms_list.append(int(bedrooms))
         else:
             bedrooms_list.append(int(eval(bedrooms)))
     data["bedrooms"] = bedrooms_list
@@ -76,7 +78,8 @@ def date_processing(data):
 
 if __name__ == '__main__':
 
-    df_train = pd.read_csv('./input/month_567_data_process_17.csv')
+    df_train = pd.read_csv('./input/train1.csv')
+    print(df_train.shape)
     # df_train = pd.read_csv('./data_process/process_fliers.csv')
     # df_train['ownerShipType'] = df_train['ownershiptype']
     # df_train = df_train.drop(columns='ownershiptype')
@@ -86,7 +89,8 @@ if __name__ == '__main__':
 
 
 
-    df_test_middle = pd.read_csv('./input/month_8_prediction17.csv')
+    df_test_middle = pd.read_csv('./input/test1.csv')
+    print(df_test_middle.shape)
     # df_test_middle['ownerShipType'] = df_test_middle['ownershiptype']
     # df_test_middle = df_test_middle.drop(columns='ownershiptype')
     df_test_middle = preprocess_data(df_test_middle)
@@ -116,6 +120,7 @@ if __name__ == '__main__':
         'daysOnMarket': 'output',
         'buildingTypeId': 'categorical',
         "tradeTypeId": 'categorical',
+        # 'bedrooms': 'categorical',
         # 'year': 'categorical',
         # 'month': 'categorical',
 
