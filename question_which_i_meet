@@ -206,6 +206,15 @@ tensorflow报ResourceExhaustedError (see above for traceback): OOM when allocati
 还有对于下标的重值，直接用reindex不起作用，需要用到reset_index
 
 
+通过下表来区分数据：
+train_2 = train_data[~(train_data.index.isin(train.index))]
+
+运算符号：~的合理应用；
+
+
+机器学习中的分布对模型的影响；
+
+
 
 
 

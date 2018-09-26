@@ -78,7 +78,7 @@ def date_processing(data):
 
 if __name__ == '__main__':
 
-    df_train = pd.read_csv('./input/train1.csv')
+    df_train = pd.read_csv('./input/train.csv')
     print(df_train.shape)
     # df_train = pd.read_csv('./data_process/process_fliers.csv')
     # df_train['ownerShipType'] = df_train['ownershiptype']
@@ -89,7 +89,7 @@ if __name__ == '__main__':
 
 
 
-    df_test_middle = pd.read_csv('./input/test1.csv')
+    df_test_middle = pd.read_csv('./input/test.csv')
     print(df_test_middle.shape)
     # df_test_middle['ownerShipType'] = df_test_middle['ownershiptype']
     # df_test_middle = df_test_middle.drop(columns='ownershiptype')
@@ -143,9 +143,13 @@ if __name__ == '__main__':
     x_dataframe = pd.DataFrame(x,columns=['predictions'])
     merge_data = pd.concat((origin_data,x_dataframe),axis=1)
     merge_data_df = pd.DataFrame(merge_data)
-    merge_data_df.to_csv('merge_data_auto_ml_17.csv',index=False)
+    merge_data_df.to_csv('./merge_data_bak/merge_data_auto_ml.csv',index=False)
     print(x_dataframe.describe())
     print(df_test_label.describe())
 
     print(mean_absolute_error(df_test_label,x))
+
+
+
+
 

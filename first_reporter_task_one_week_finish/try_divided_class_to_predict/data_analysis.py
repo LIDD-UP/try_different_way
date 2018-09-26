@@ -11,8 +11,11 @@ pd.set_option('display.max_columns', 500)
 pd.set_option('display.width', 1000)
 
 
-train_data = pd.read_csv("./input/month_567_data.csv")
-test_data = pd.read_csv("./input/hose_info_201808_predict_2.csv")
+train_data_origin = pd.read_csv("./input/month_567_data.csv")
+test_data_origin = pd.read_csv("./input/hose_info_201808_predict_2.csv")
+
+train_data = train_data_origin
+test_data = test_data_origin
 
 # 预处理数据
 def preprocess_data(data):
