@@ -91,40 +91,48 @@ category_variable = [
 
 
 def use_std_to_remove_fliers(data,column):
+    # 必须重置下标之后才能用下标的方式获取fliers的信息：
+    print(data.shape)
+    data = data.reset_index(drop=True) # drop =True可以删除原来行的索引
     outliers_collections = []
-    price_mean = data[column].mean()
-    price_std = data[column].std()
+    column_mean = data[column].mean()
+    column_std = data[column].std()
     for index,value in enumerate(data[column]):
-        if abs(value-price_mean)>3*price_std:
-            outliers_collections.append(value)
-    return outliers_collections
+        if abs(value-column_mean)>3*column_std:
+            outliers_collections.append(index)
+    data = data[~data.index.isin(outliers_collections)]
+    print(data.shape)
+    return data
+
+
+# price 去除离散值
+train_data = use_std_to_remove_fliers(train_data,'price')
+train_data = use_std_to_remove_fliers(train_data,'daysOnMarket')
+
 
 def data_process(data):
     # data= data[data.daysOnMarket]
-    data = data[data.bedrooms<1000]
+    data = data[data.bathroomTotal<1000]
+    data = data[data.bedrooms<15]
+    print(data['buildingTypeId'].value_counts())
+    data = data[~data.buildingTypeId.isin([14,18,17,16,13,10,2,7,5])]
+    print(data['buildingTypeId'].value_counts())
+    print(data['province'].value_counts())
+    data = data[~data.province.isin(['Newfoundland & Labrador','Yukon','New Brunswick'])]
+    print(data['province'].value_counts())
 
     return data
 
-# price 去除离散值
-outliers_collections = use_std_to_remove_fliers(train_data)
-print(outliers_collections)
-print(len(outliers_collections))
-train_data = train_data[~train_data.price.isin(outliers_collections)]
 
-# outliers_collections = use_std_to_remove_fliers(train_data)
-# print(outliers_collections)
-# print(len(outliers_collections))
-# train_data = train_data[~train_data.price.isin(outliers_collections)]
+train_data = data_process(train_data)
 
-# daysOnMarket 去除离散值
-outliers_collections = use_std_to_remove_fliers(train_data)
-print(outliers_collections)
-print(len(outliers_collections))
-train_data = train_data[~train_data.price.isin(outliers_collections)]
+print(train_data.shape)
+train_data.to_csv('./train_process_price.csv',index=False)
 
 
 
 
-sns.pairplot(train_data)
-plt.tight_layout()
-plt.show()
+
+# sns.pairplot(train_data)
+# plt.tight_layout()
+# plt.show()
