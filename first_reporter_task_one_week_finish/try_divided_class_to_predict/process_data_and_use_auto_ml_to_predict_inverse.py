@@ -1,7 +1,7 @@
 # -*- coding:utf-8 _*-  
 """ 
 @author:Administrator
-@file: process_data_and_use_auto_ml_to_predict.py
+@file: process_data_and_use_auto_ml_to_predict_less.py
 @time: 2018/9/21
 """
 from auto_ml import Predictor
@@ -78,7 +78,7 @@ def date_processing(data):
 
 if __name__ == '__main__':
 
-    df_train = pd.read_csv('./input/train_inverse.csv')
+    df_train = pd.read_csv('./input/train.csv')
     print(df_train.shape)
     # df_train = pd.read_csv('./data_process/process_fliers.csv')
     # df_train['ownerShipType'] = df_train['ownershiptype']
@@ -89,7 +89,7 @@ if __name__ == '__main__':
 
 
 
-    df_test_middle = pd.read_csv('./input/test_inverse.csv')
+    df_test_middle = pd.read_csv('./input/test.csv')
     print(df_test_middle.shape)
     # df_test_middle['ownerShipType'] = df_test_middle['ownershiptype']
     # df_test_middle = df_test_middle.drop(columns='ownershiptype')

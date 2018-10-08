@@ -1,7 +1,7 @@
 # -*- coding:utf-8 _*-  
 """ 
 @author:Administrator
-@file: process_data_and_use_auto_ml_to_predict.py
+@file: process_data_and_use_auto_ml_to_predict_less.py
 @time: 2018/9/21
 """
 from auto_ml import Predictor

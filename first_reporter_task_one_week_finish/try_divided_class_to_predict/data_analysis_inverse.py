@@ -219,8 +219,8 @@ if __name__ == '__main__':
                          ]
 
     # 处理city
-    print(train_data.shape)
-    train_data, test_data = process_city(train_data,test_data,10) # 50:366:shape:15000
+    # print(train_data.shape)
+    # train_data, test_data = process_city(train_data,test_data,10) # 50:366:shape:15000
 
 
     # # # # 处理省份
@@ -256,6 +256,8 @@ if __name__ == '__main__':
     # 现在进行区分不同的省份进行预测：
     # train_data = train_data[train_data.province=='Ontario']
     # test_data = test_data[test_data.province=='Ontario']
+    train_data = train_data[train_data.city=='Toronto']
+    test_data = test_data[test_data.city=='Toronto']
 
     print(train_data.head())
     print(test_data.head())

@@ -7,6 +7,10 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+from imblearn.combine import SMOTETomek,SMOTEENN
+
+
+
 pd.set_option('display.column', 100)
 pd.set_option('display.max_rows', 500)
 pd.set_option('display.max_columns', 500)
@@ -106,20 +110,20 @@ def use_std_to_remove_fliers(data,column):
 
 
 # price 去除离散值
-train_data = use_std_to_remove_fliers(train_data,'price')
-train_data = use_std_to_remove_fliers(train_data,'daysOnMarket')
+# train_data = use_std_to_remove_fliers(train_data,'price')
+# train_data = use_std_to_remove_fliers(train_data,'daysOnMarket')
 
 
 def data_process(data):
     # data= data[data.daysOnMarket]
     data = data[data.bathroomTotal<1000]
-    data = data[data.bedrooms<15]
-    print(data['buildingTypeId'].value_counts())
-    data = data[~data.buildingTypeId.isin([14,18,17,16,13,10,2,7,5])]
-    print(data['buildingTypeId'].value_counts())
-    print(data['province'].value_counts())
-    data = data[~data.province.isin(['Newfoundland & Labrador','Yukon','New Brunswick'])]
-    print(data['province'].value_counts())
+    # data = data[data.bedrooms<15]
+    # print(data['buildingTypeId'].value_counts())
+    # data = data[~data.buildingTypeId.isin([14,18,17,16,13,10,2,7,5])]
+    # print(data['buildingTypeId'].value_counts())
+    # print(data['province'].value_counts())
+    # data = data[~data.province.isin(['Newfoundland & Labrador','Yukon','New Brunswick'])]
+    # print(data['province'].value_counts())
 
     return data
 
