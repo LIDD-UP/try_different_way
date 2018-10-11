@@ -1,0 +1,7 @@
+分析的时候还可以画box图，如这个项目可以画seaborn.boxplot(x='buildingType',y='daysOnmarket')这也是一种分析方式；
+还可以seaborn.factorplot(x=bedrooms,y=daysOnMarket
+heatmap的另一种方法：heatmap.（listing_data.groupby([bedrooms],[buildingTypeId])[daysOnMarket].mean().unstack(),annot=True,fmt='.0f')
+
+D3画图工具，
+
+log 变化
