@@ -76,7 +76,9 @@ def date_processing(data):
 
 if __name__ == '__main__':
 
-    df_train = pd.read_csv('./input/month_567_data_process_17.csv')
+    # df_train = pd.read_csv('./input/month_567_data_process_17.csv')
+    df_train = pd.read_csv('./input/month_567_data.csv')
+
     # df_train = pd.read_csv('./data_process/process_fliers.csv')
     # df_train['ownerShipType'] = df_train['ownershiptype']
     # df_train = df_train.drop(columns='ownershiptype')
@@ -86,7 +88,8 @@ if __name__ == '__main__':
 
 
 
-    df_test_middle = pd.read_csv('./input/month_8_prediction17.csv')
+    # df_test_middle = pd.read_csv('./input/month_8_prediction17.csv')
+    df_test_middle = pd.read_csv('./input/hose_info_201808_predict_2.csv')
     # df_test_middle['ownerShipType'] = df_test_middle['ownershiptype']
     # df_test_middle = df_test_middle.drop(columns='ownershiptype')
     df_test_middle = preprocess_data(df_test_middle)

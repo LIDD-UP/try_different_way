@@ -5,3 +5,5 @@ heatmap的另一种方法：heatmap.（listing_data.groupby([bedrooms],[building
 D3画图工具，
 
 log 变化
+
+iforest 森林：可以实现异常值的检测问题：
