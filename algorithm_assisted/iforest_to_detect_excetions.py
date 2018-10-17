@@ -8,7 +8,6 @@ from sklearn.ensemble import IsolationForest
 import pandas as pd
 from auto_ml import Predictor
 from sklearn.metrics import mean_absolute_error
-from sklearn.neighbors import LocalOutlierFactor
 
 
 def preprocess_data(data):
@@ -62,6 +61,7 @@ def get_factorize_data(data):
     return data
 
 
+# IsolationForest 异常值检测；
 def use_iforest_to_get_normal_data(data):
     clf = IsolationForest(
         # max_samples=100, contamination='auto'
@@ -73,23 +73,6 @@ def use_iforest_to_get_normal_data(data):
     #iforest确认离群点返回值两个分别是1和-1：1：代表不是异常值，-1 代表是异常值；
     inline_list = df_prediction[df_prediction[0] == 1].index
     return inline_list
-
-
-def use_local_outlier_factor_to_get_normal_data(data):
-    clf = LocalOutlierFactor(n_neighbors=20)  # n_neighbors临近距离，默认20
-    clf.fit(data)
-
-    # predict预测
-    y_pred = clf.fit_predict(data)
-    y_pred_outliers = pd.DataFrame(y_pred)
-    print(y_pred_outliers.head(100))
-
-
-
-
-
-
-
 
 
 
