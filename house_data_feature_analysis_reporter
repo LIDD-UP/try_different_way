@@ -1,0 +1,78 @@
+美国房屋的特征
+Feature	Description	翻译	特征描述，以及使用过的处理方法和结果描述	数据存在的问题，以及解决方式是和结果	数据库表中是否拥有该字段以及它的名称
+'airconditioningtypeid'	 Type of cooling system present in the home (if any)	家中现有的冷却系统类型（如果有）			airconditioning
+'architecturalstyletypeid'	 Architectural style of the home (i.e. ranch, colonial, split-level, etc…)	房屋的建筑风格（如牧场，殖民地，错层等			buildingTypeId
+'basementsqft'	 Finished living area below or partially below ground level	在地面以下或部分在地下完成的居住区域			basement
+'bathroomcnt'	 Number of bathrooms in home including fractional bathrooms	家庭浴室的数量包括部分浴室			bathroomTotal
+'bedroomcnt'	 Number of bedrooms in home 	家里卧室的数量			bedrooms
+'buildingqualitytypeid'	 Overall assessment of condition of the building from best (lowest) to worst (highest)	楼宇整体评估由最佳(最低)至最差(最高)
+'buildingclasstypeid'	The building framing type (steel frame, wood frame, concrete/brick) 	建筑框架类型(钢框架、木框架、混凝土/砖)
+'calculatedbathnbr'	 Number of bathrooms in home including fractional bathroom	家庭浴室的数量包括部分浴室
+'decktypeid'	Type of deck (if any) present on parcel	地面类型（deck（俚语）地面）现在的区域pacel）俚语
+'threequarterbathnbr'	 Number of 3/4 bathrooms in house (shower + sink + toilet)	3/4户卫生间(淋浴+水池+卫生间)包含淋浴，水池，卫生间的卫生间；
+'finishedfloor1squarefeet'	 Size of the finished living area on the first (entry) floor of the home	住宅第一层(入口)层的完工生活区面积
+'calculatedfinishedsquarefeet'	 Calculated total finished living area of the home 	计算了住宅的总完工居住面积
+'finishedsquarefeet6'	Base unfinished and finished area	基地未完成和完成面积
+'finishedsquarefeet12'	Finished living area	完工的居住面积
+'finishedsquarefeet13'	Perimeter  living area	周边的居住面积
+'finishedsquarefeet15'	Total area	总面积
+'finishedsquarefeet50'	 Size of the finished living area on the first (entry) floor of the home	住宅第一层(入口)层的完工生活区面积
+'fips'	 Federal Information Processing Standard code -  see https://en.wikipedia.org/wiki/FIPS_county_code for more details	联邦信息处理标准代码
+'fireplacecnt'	 Number of fireplaces in a home (if any)	家中的壁炉数量(如有)			fireplace
+'fireplaceflag'	 Is a fireplace present in this home 	家里有壁炉吗
+'fullbathcnt'	 Number of full bathrooms (sink, shower + bathtub, and toilet) present in home	全套设备的卫生间总数
+'garagecarcnt'	 Total number of garages on the lot including an attached garage	停车场上的车库总数，包括一个附属车库			garage
+'garagetotalsqft'	 Total number of square feet of all garages on lot including an attached garage	停车场上所有车库的总面积，包括附属车库
+'hashottuborspa'	 Does the home have a hot tub or spa	家里有热水浴缸或水疗中心吗
+'heatingorsystemtypeid'	 Type of home heating system	家庭供暖系统类型
+'latitude'	 Latitude of the middle of the parcel multiplied by 10e6	土地中间的纬度乘以10e6			latitude
+'longitude'	 Longitude of the middle of the parcel multiplied by 10e6	土地中间的经度乘以10e6			longitude
+'lotsizesquarefeet'	 Area of the lot in square feet	土地面积用英尺表示
+'numberofstories'	 Number of stories or levels the home has	房子有多少层
+'parcelid'	 Unique identifier for parcels (lots) 	土地唯一id号
+'poolcnt'	 Number of pools on the lot (if any)	地段上的泳池数目(如有)			pooling
+'poolsizesum'	 Total square footage of all pools on property	所有泳池的总面积
+'pooltypeid10'	 Spa or Hot Tub	温泉或热水浴缸
+'pooltypeid2'	 Pool with Spa/Hot Tub	带水疗/热水浴缸的游泳池
+'pooltypeid7'	 Pool without hot tub	无热水浴缸的游泳池
+'propertycountylandusecode'	 County land use code i.e. it's zoning at the county level	郡土地使用编码，也就是郡一级的分区
+'propertylandusetypeid'	 Type of land use the property is zoned for	土地用途的类型
+'propertyzoningdesc'	 Description of the allowed land uses (zoning) for that property	该物业的准许土地用途(分区)说明
+'rawcensustractandblock'	 Census tract and block ID combined - also contains blockgroup assignment by extension	人口普查区和区块ID合并-也包含区块群的扩展分配
+'censustractandblock'	 Census tract and block ID combined - also contains blockgroup assignment by extension	人口普查区和区块ID合并-也包含区块群的扩展分配
+'regionidcounty'	County in which the property is located	财产所在地的县			address(详细地址）里面应该有county
+'regionidcity'	 City in which the property is located (if any)	财产所在城市(如有)			city
+'regionidzip'	 Zip code in which the property is located	该财产所在的邮政编码			postalCode
+'regionidneighborhood'	Neighborhood in which the property is located	财产所在的社区			community
+'roomcnt'	 Total number of rooms in the principal residence	主住宅的房间总数
+'storytypeid'	 Type of floors in a multi-story house (i.e. basement and main level, split-level, attic, etc.).  See tab for details.	多层住宅的楼层类型(即地下室和主层、错层、阁楼等
+'typeconstructiontypeid'	 What type of construction material was used to construct the home	房子是用什么材料建造的
+'unitcnt'	 Number of units the structure is built into (i.e. 2 = duplex, 3 = triplex, etc...)	结构被构建成的单元数(即2 =双工，3 =三工，等等)。
+'yardbuildingsqft17'	Patio in  yard	屋类庭院
+'yardbuildingsqft26'	Storage shed/building in yard	仓库/建筑在院子里
+'yearbuilt'	 The Year the principal residence was built 	主住宅建成的那年			age
+'taxvaluedollarcnt'	The total tax assessed value of the parcel	土地完税的价值			tax
+'structuretaxvaluedollarcnt'	The assessed value of the built structure on the parcel	土地上建筑价值的估价
+'landtaxvaluedollarcnt'	The assessed value of the land area of the parcel	区域上土地面积的估价
+'taxamount'	The total property tax assessed for that assessment year	该课税年度的财产税总额
+'assessmentyear'	The year of the property tax assessment 	物业税评税年度
+'taxdelinquencyflag'	Property taxes for this parcel are past due as of 2015	这个包裹的财产税在2015年到期
+'taxdelinquencyyear'	Year for which the unpaid propert taxes were due 	欠缴物业税的年份
+
+
+加拿大数据特征
+province		省份	category：处理类别不均衡问题，对结果影响不大，但是如果相应类别如果数据量过多可能预测效果更好
+city			category：每个城市类别数据量不均匀，有些过少，只有一个或几个，类别量达到几千个，用上之后消耗内存，而且效果也没想象中的那么好
+address			这个特征也同city一样，数量过多，消耗太多内存，效果也不好，同时如果是精确的地址不应该有重复的数据
+postalCode			邮编，种类太多，虽然能加大原始数据的拟合，但是或多或少也会导致过拟合问题，模型泛化能力不高
+buildingTypeId			算是比较好的特征，之前对它进行了强行的合并它的种类（只看成两类），但是效果不好，
+TradeTypeId			只有两类，之前以lisitngdate为分界取数据训练得时候把他分成两个模型，效果好一点，但是以delistingdate为分界取数据得时候，加上之后效果要好，但是通过测试显示；对于按照类别来分模型预测没有效果，合并之后结果也一样，但是可能由于两种类别相差太大，一种类别可能有另一种类别没有得特征，所以导致效果也有一定差异，所以也有一定得可取性，但是这是建立在特征类别不同得情况下，如果只是单纯得按照某一个特征得类别分模型，然后其他数据没有变化，那是不起效果得；
+listingDate			房屋的发布日期，单从这个特征将没啥太大的意义，但是也可能是玄学，但是经过实际的测试，表明效果并不好；如果转化成其他的特征，如发布日期距离买房热度期的时间差可能是个很好的描述，
+delistingDate			delistingDate这个特征没用，因为预测的东西和这个有直接的关系；
+daysOnMarket			预测的字段，根据listingDate和delistingdate算出
+ownerShipType		对房屋的拥有权限
+bedrooms
+bathroomTotal
+
+
+
