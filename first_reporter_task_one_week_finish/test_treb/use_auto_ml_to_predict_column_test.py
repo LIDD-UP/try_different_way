@@ -30,25 +30,26 @@ def preprocess_data(data):
         'daysOnMarket',
         'ownerShipType',
         'projectDaysOnMarket',
+        'district',
 
         # 以下就是用于测试得新得特征；
-        'style', #22.769283885157083
+        # 'style', #22.769283885157083
         'community', # 类似于city类型得数据，类型有766个； #22.38147912725983
-        'airConditioning', #22.755048806968883
-        'washrooms', # 连续 #23.691205780782205
-        'basement1',# 地下室22.797430800725444
-        'familyRoom', # 22.794731300998404
-        'fireplaceStove', # 2 w 左右 #22.82878318024665
-        'heatSource', # 数据量可以2w+# 22.75554140962404
-        'garageType', # 2 w+ #22.79707321027956
-        'kitchens', # 22.79393809434976
-        'parkingSpaces', #22.807931672409705
+        # 'airConditioning', #22.755048806968883
+        # 'washrooms', # 连续 #23.691205780782205
+        # 'basement1',# 地下室22.797430800725444
+        # 'familyRoom', # 22.794731300998404
+        # 'fireplaceStove', # 2 w 左右 #22.82878318024665
+        # 'heatSource', # 数据量可以2w+# 22.75554140962404
+        # 'garageType', # 2 w+ #22.79707321027956
+        # 'kitchens', # 22.79393809434976
+        # 'parkingSpaces', #22.807931672409705
         #
-        'parkingIncluded',#22.786586056260784
-        'rooms',# 22.785397232054713
+        # 'parkingIncluded',#22.786586056260784
+        # 'rooms',# 22.785397232054713
 
-        'waterIncluded', # 22.80653144493355
-        'totalParkingSpaces', # 22.81551411353129
+        # 'waterIncluded', # 22.80653144493355
+        # 'totalParkingSpaces', # 22.81551411353129
         #
         # 'frontingOn',  # 面向得方向，drop掉之后有1w多:14270
         # 'drive',  # 14270
@@ -140,7 +141,9 @@ def compute_ratio(data):
 
 if __name__ == '__main__':
     # df_train = pd.read_csv('./input/test_treb_month_78.csv')
-    df_train = pd.read_csv('./input/treb_all_column_month_3to8.csv')
+    df_train = pd.read_csv('./input/treb_district_month_78.csv')
+    # .csv
+    # df_train = pd.read_csv('./input/treb_all_column_month_3to8.csv')
     print(df_train.shape)
     df_train = preprocess_data(df_train)
     # df_train = df_train.drop(columns='projectDaysOnMarket')
@@ -151,7 +154,9 @@ if __name__ == '__main__':
 
 
     # df_test_middle = pd.read_csv('./input/treb_test_month_9.csv')
-    df_test_middle = pd.read_csv('./input/treb_test_all_column_month_9.csv')
+    # df_test_middle = pd.read_csv('./input/treb_test_all_column_month_9.csv')
+    df_test_middle = pd.read_csv('./input/treb_district_month_9.csv')
+
     print(df_test_middle.shape)
 
     df_test_middle = preprocess_data(df_test_middle)
