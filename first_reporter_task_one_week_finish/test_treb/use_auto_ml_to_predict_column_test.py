@@ -141,7 +141,7 @@ def compute_ratio(data):
 
 if __name__ == '__main__':
     # df_train = pd.read_csv('./input/test_treb_month_78.csv')
-    df_train = pd.read_csv('./input/treb_district_month_78.csv')
+    df_train = pd.read_csv('./input/treb_toronto_78.csv')
     # .csv
     # df_train = pd.read_csv('./input/treb_all_column_month_3to8.csv')
     print(df_train.shape)
@@ -155,7 +155,7 @@ if __name__ == '__main__':
 
     # df_test_middle = pd.read_csv('./input/treb_test_month_9.csv')
     # df_test_middle = pd.read_csv('./input/treb_test_all_column_month_9.csv')
-    df_test_middle = pd.read_csv('./input/treb_district_month_9.csv')
+    df_test_middle = pd.read_csv('./input/treb_toronto_9.csv')
 
     print(df_test_middle.shape)
 

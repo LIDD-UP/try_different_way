@@ -7,8 +7,9 @@
 import pandas as pd
 from sklearn.metrics import mean_absolute_error
 
-data = pd.read_csv('merge_data_auto_ml.csv')
+# data = pd.read_csv('merge_data_auto_ml.csv')
 # data = pd.read_csv('merge_data_auto_ml_xgboost.csv')
+data = pd.read_csv('../input/treb_toronto_9.csv')
 
 
 
@@ -19,8 +20,8 @@ data_more = []
 
 # data = data.drop(columns=['index'])
 
-# test_column = 'projectDaysOnMarket'
-test_column = 'predictions'
+test_column = 'projectDaysOnMarket'
+# test_column = 'predictions'
 
 
 for i in range(len(data)):
@@ -41,18 +42,27 @@ print(len(data_more)/len(data))
 print(mean_absolute_error(data[test_column],data['daysOnMarket']))
 
 '''
-0.25138180272108845
-0.25690901360544216
-0.1953656462585034
-0.296343537414966
+0.3420238095238095
+0.2695238095238095
+0.07547619047619047
+0.31297619047619046
+28.07547619047619
+'''
 
-
-0.3410234899328859
-0.26824664429530204
-# 0.61
-0.07560822147651007
-0.31512164429530204
-28.361052852348994
+'''
+my predictions
+0.26134169884169883
+0.2592905405405405
+0.19063706563706564
+0.288730694980695
+24.81238204908187
+'''
+'''
+0.3322876447876448
+0.2548262548262548
+0.16011100386100385
+0.2527750965250965
+22.444079292096685
 '''
 
 

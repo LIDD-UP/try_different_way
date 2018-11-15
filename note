@@ -1,0 +1,4 @@
+tensorflow 的日志输出：
+tf.logging.set_verbosity(tf.logging.INFO)
+
+
