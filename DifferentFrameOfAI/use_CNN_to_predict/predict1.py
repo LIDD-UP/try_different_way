@@ -4,12 +4,7 @@
 @file: predict1.py
 @time: 2018/7/23
 """
-#-*- coding:utf-8 _*-
-""" 
-@author:Administrator
-@file: test_boston.py
-@time: 2018/7/23
-"""
+
 import numpy as np
 from sklearn import preprocessing
 import tensorflow as tf
@@ -32,6 +27,17 @@ x_test = test_data_6[['longitude','latitude', 'price', 'buildingTypeId',]]
 y_test = test_data_6['daysOnMarket']
 x_test = np.array(x)
 y_test = np.array(y)
+
+
+
+
+
+
+
+
+
+
+
 
 
 
