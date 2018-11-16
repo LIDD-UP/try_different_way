@@ -12,10 +12,19 @@ import matplotlib
 import matplotlib.pyplot as plt
 from scipy.stats import skew
 from scipy.stats.stats import pearsonr
-pd.set_option('max_columns',200)
-pd.set_option('display.width',1000)
-train = pd.read_csv('./kaggle_house_data/train.csv')
-test = pd.read_csv('./kaggle_house_data/test.csv')
+
+from DisplayAndPlotSettings.pandas_settings import PandasSettings
+pandas_settings = PandasSettings(100,200)
+pandas_settings.pandas_settings()
+
+from GetRootPath.approot import get_root
+path = get_root()
+print(path)
+data = pd.read_csv(path+ '/DataFile/ML_data/kaggle_price_predict_data/train.csv')
+
+
+train = pd.read_csv(path+ '/DataFile/ML_data/kaggle_price_predict_data/train.csv')
+test = pd.read_csv(path+ '/DataFile/ML_data/kaggle_price_predict_data/test.csv')
 
 print(train.head())
 print(test.head())
