@@ -26,10 +26,18 @@ data = pd.read_csv(path+ '/DataFile/ML_data/kaggle_price_predict_data/train.csv'
 train = pd.read_csv(path+ '/DataFile/ML_data/kaggle_price_predict_data/train.csv')
 test = pd.read_csv(path+ '/DataFile/ML_data/kaggle_price_predict_data/test.csv')
 
+
 print(train.head())
 print(test.head())
 print(train.shape)
 print(test.shape)
+
+
+class KaggleSolution(object):
+    def __init__(self,):
+        pass
+
+
 
 all_data = pd.concat((train.loc[:,'MSSubClass':'SaleCondition'],
                       test.loc[:,'MSSubClass':'SaleCondition']))
