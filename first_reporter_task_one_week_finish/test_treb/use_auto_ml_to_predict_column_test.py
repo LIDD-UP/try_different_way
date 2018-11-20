@@ -29,12 +29,12 @@ def preprocess_data(data):
         # 'postalCode',
         'daysOnMarket',
         'ownerShipType',
-        'projectDaysOnMarket',
+        # 'projectDaysOnMarket',
         'district',
 
         # 以下就是用于测试得新得特征；
         # 'style', #22.769283885157083
-        'community', # 类似于city类型得数据，类型有766个； #22.38147912725983
+        # 'community', # 类似于city类型得数据，类型有766个； #22.38147912725983
         # 'airConditioning', #22.755048806968883
         # 'washrooms', # 连续 #23.691205780782205
         # 'basement1',# 地下室22.797430800725444
@@ -136,17 +136,37 @@ def compute_ratio(data):
     print(mean_absolute_error(data[test_column], data['daysOnMarket']))
 
 
+def compute_ratio2(data):
+    test_column = 'predictions'
+    data_len = len(data)
+    print(data[abs(data.predictions - data.daysOnMarket) <= 10]/data_len)
+    print(data[abs(data.predictions - data.daysOnMarket) > 10 and abs(
+                data.predictions - data.daysOnMarket) <= 20]/data_len)
+    print(data[abs(data.predictions - data.daysOnMarket) > 20 and abs(
+                data.predictions - data.daysOnMarket) <= 30]/data_len)
+    print(data[abs(data.predictions - data.daysOnMarket) > 30]/data_len)
+    print(mean_absolute_error(data[test_column], data['daysOnMarket']))
+
+
+
 
 
 
 if __name__ == '__main__':
-    # df_train = pd.read_csv('./input/test_treb_month_78.csv')
-    df_train = pd.read_csv('./input/treb_toronto_78.csv')
-    # .csv
+    df_train = pd.read_csv('./input/treb_toronto_3to8_1.csv')
+    # df_train = pd.read_csv('./input/treb_toronto_678_1.csv')
+    # df_train = pd.read_csv('./input/treb_toronto_78_1.csv')
+
     # df_train = pd.read_csv('./input/treb_all_column_month_3to8.csv')
     print(df_train.shape)
     df_train = preprocess_data(df_train)
-    # df_train = df_train.drop(columns='projectDaysOnMarket')
+
+    # 用于预测原始数据
+    df_train_middle = df_train
+    df_train_prediction = df_train_middle.drop(columns=['daysOnMarket'])
+    # 用于保存原始的数据
+    origin_data_train = df_train.reset_index(drop=True)
+
 
     print(df_train.shape)
 
@@ -161,7 +181,7 @@ if __name__ == '__main__':
 
     df_test_middle = preprocess_data(df_test_middle)
     print(df_test_middle.shape)
-    origin_data = df_test_middle.reset_index()
+    origin_data = df_test_middle.reset_index(drop=True)
 
 
 
@@ -200,12 +220,9 @@ if __name__ == '__main__':
 
     ml_predictor.train(df_train,model_names='XGBRegressor')
 
-    # ml_predictor.score(df_test)
+
+    # 预测预测数据
     x = ml_predictor.predict(df_test)
-
-    # log还原
-    # x = np.expm1(x)
-
     x_dataframe = pd.DataFrame(x,columns=['predictions'])
     merge_data = pd.concat((origin_data,x_dataframe),axis=1)
     merge_data_df = pd.DataFrame(merge_data)
@@ -215,6 +232,16 @@ if __name__ == '__main__':
 
     print(mean_absolute_error(df_test_label,x))
     compute_ratio(merge_data_df)
+    # compute_ratio2(merge_data_df)
+
+    # 预测训练数据
+    train_prediction = ml_predictor.predict(df_train_prediction)
+    train_dataframe = pd.DataFrame(train_prediction,columns=['trainPrediction'])
+    merge_train_data = pd.concat((origin_data_train,train_dataframe),axis=1)
+    merge_train_data_df = pd.DataFrame(merge_train_data)
+    merge_train_data_df.to_csv('./merge_data_bak/merge_train_data.csv',index=False)
+
+
 
 
 

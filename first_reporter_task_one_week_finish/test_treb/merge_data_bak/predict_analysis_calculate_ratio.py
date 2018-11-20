@@ -7,39 +7,57 @@
 import pandas as pd
 from sklearn.metrics import mean_absolute_error
 
-# data = pd.read_csv('merge_data_auto_ml.csv')
+data = pd.read_csv('merge_data_auto_ml.csv')
 # data = pd.read_csv('merge_data_auto_ml_xgboost.csv')
-data = pd.read_csv('../input/treb_toronto_9.csv')
+# data = pd.read_csv('../input/treb_toronto_9.csv')
 
 
 
-data_10 = []
-data_20 = []
-data_30 = []
-data_more = []
-
-# data = data.drop(columns=['index'])
-
-test_column = 'projectDaysOnMarket'
+# data_10 = []
+# data_20 = []
+# data_30 = []
+# data_more = []
+#
+# # data = data.drop(columns=['index'])
+#
+# test_column = 'projectDaysOnMarket'
 # test_column = 'predictions'
 
 
-for i in range(len(data)):
-    print(i)
-    if abs(data.iloc[i][test_column] - data.iloc[i]['daysOnMarket']) <=10:
-        data_10.append(i)
-    if abs(data.iloc[i][test_column] - data.iloc[i]['daysOnMarket']) > 10 and abs(data.iloc[i][test_column] - data.iloc[i]['daysOnMarket']) <=20:
-        data_20.append(i)
-    if abs(data.iloc[i][test_column] - data.iloc[i]['daysOnMarket']) > 20 and abs(data.iloc[i][test_column] - data.iloc[i]['daysOnMarket']) <=30:
-        data_30.append(i)
-    if abs(data.iloc[i][test_column] - data.iloc[i]['daysOnMarket']) >30:
-        data_more.append(i)
+# for i in range(len(data)):
+#     print(i)
+#     if abs(data.iloc[i][test_column] - data.iloc[i]['daysOnMarket']) <=10:
+#         data_10.append(i)
+#     if abs(data.iloc[i][test_column] - data.iloc[i]['daysOnMarket']) > 10 and abs(data.iloc[i][test_column] - data.iloc[i]['daysOnMarket']) <=20:
+#         data_20.append(i)
+#     if abs(data.iloc[i][test_column] - data.iloc[i]['daysOnMarket']) > 20 and abs(data.iloc[i][test_column] - data.iloc[i]['daysOnMarket']) <=30:
+#         data_30.append(i)
+#     if abs(data.iloc[i][test_column] - data.iloc[i]['daysOnMarket']) >30:
+#         data_more.append(i)
+#
+# print(len(data_10)/len(data))
+# print(len(data_20)/len(data))
+# print(len(data_30)/len(data))
+# print(len(data_more)/len(data))
+# print(mean_absolute_error(data[test_column],data['daysOnMarket']))
 
-print(len(data_10)/len(data))
-print(len(data_20)/len(data))
-print(len(data_30)/len(data))
-print(len(data_more)/len(data))
-print(mean_absolute_error(data[test_column],data['daysOnMarket']))
+# def compute_ratio2(data):
+#     test_column = 'predictions'
+#     data_len = len(data)
+#     print(len(data[abs(data.predictions - data.daysOnMarket) <= 10])/data_len)
+#     print(len(data[abs(data.predictions - data.daysOnMarket).all() > 10 and abs(
+#                 data.predictions - data.daysOnMarket).all() <= 20])/data_len)
+#     print(len(data[abs(data.predictions - data.daysOnMarket) > 20 and abs(
+#                 data.predictions - data.daysOnMarket) <= 30])/data_len)
+#     print(len(data[abs(data.predictions - data.daysOnMarket) > 30])/data_len)
+#     print(mean_absolute_error(data[test_column], data['daysOnMarket']))
+
+if __name__ == '__main__':
+    # compute_ratio2(data)
+
+
+
+
 
 '''
 0.3420238095238095
