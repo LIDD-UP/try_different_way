@@ -4,7 +4,7 @@
 @file: SklearnAPI.py
 @time: 2018/11/19
 """
-# 一般的线性方法
+# 一般线性的方法作为模型
 from sklearn.linear_model import Ridge, RidgeCV, ElasticNet, LassoCV, LassoLarsCV
 
 # xgboost
@@ -27,3 +27,5 @@ class SklearnAPI(object):
 
     def randomforest_prediction(self):
         pass
+
+    def
