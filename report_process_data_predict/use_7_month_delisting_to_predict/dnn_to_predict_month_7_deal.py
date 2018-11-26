@@ -18,7 +18,7 @@ from sklearn.preprocessing import StandardScaler
 from matplotlib import pyplot as plt
 
 # 根目录
-root_path = "F:\\PycharmProject\\try_different_way\\"
+root_path = "D:\\PycharmProject\\try_different_way\\"
 
 
 # Model存储路径
@@ -284,7 +284,7 @@ def train_nn_regression_model(
     # 训练数据百分比
     TRAINING_PERCENT = 0.8
     # 训练次数
-    periods = 1
+    periods = 100
     # steps_per_period = steps / periods
     steps_per_period = steps
     data_lenth = len(canada_housing_data)
@@ -301,8 +301,8 @@ def train_nn_regression_model(
     validation_examples = pre_process_features(validate_data)
     validation_targets = pre_process_targets(validate_data)
     dnn_regressor = create_dnn_regressor(
-        hidden_units=[1024, 512, 256, 128, 64, 32],
-        # hidden_units=[128, 64, 32],
+        # hidden_units=[1024, 512, 256, 128, 64, 32],
+        hidden_units=[128, 64, 32],
         # hidden_units=[6,8],
 
         training_examples=training_examples)

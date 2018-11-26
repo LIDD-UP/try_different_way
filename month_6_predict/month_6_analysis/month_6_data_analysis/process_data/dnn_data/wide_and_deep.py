@@ -86,6 +86,11 @@ estimator_model = tf.estimator.DNNLinearCombinedRegressor(
     dnn_feature_columns=generate_columns(data.drop(columns='daysOnMarket'))[0],
     linear_feature_columns=generate_columns(data.drop(columns='daysOnMarket'))[0] +generate_columns(data.drop(columns='daysOnMarket'))[2],
     dnn_hidden_units=[32,64,128,256,512],
+    # dnn_dropout=0.1,
+    dnn_optimizer=tf.train.ProximalAdagradOptimizer(
+        learning_rate=0.1,
+        l1_regularization_strength=0.001
+    )
 )
 
 # 获取预测输入：
@@ -97,7 +102,7 @@ def get_predict_input(example_predict):
         },
         y=np.array(label_predict),
         num_epochs=1,  # 此处注意，如果设置成为None了会无限读下去；
-        shuffle=True,
+        shuffle=False,
         batch_size=len(example_predict)
     )
     return predict_input_fn
@@ -117,7 +122,7 @@ def get_input_to_train_and_test(example,label,estimator_model,batch_size,train_n
             },
             y=np.array(label_train),
             num_epochs=1,
-            shuffle=False,
+            shuffle=True,
             batch_size=batch_size,
         )
 
@@ -142,7 +147,7 @@ def get_input_to_train_and_test(example,label,estimator_model,batch_size,train_n
     return estimator_model
 
 
-estimator_model = get_input_to_train_and_test(example,label,estimator_model,1,1)
+estimator_model = get_input_to_train_and_test(example,label,estimator_model,1,1000000)
 
 
 # 预测

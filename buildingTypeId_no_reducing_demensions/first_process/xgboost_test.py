@@ -47,27 +47,27 @@ print(train.head())
 print(test.head())
 
 from xgboost import XGBRegressor
-from sklearn.model_selection import GridSearchCV,KFold
+from sklearn.model_selection import GridSearchCV
 # print(help(XGBRegressor))
 
 # 寻找超参数
 params = {
           # 'n_estimators': [100,300,500,1000,5000],# 300
-          'max_depth':[x for x in range(5,6,1)],#5
-          # 'max_depth':[x for x in range(3,10,1)],#5
-          # 'learning_rate':[0.001,0.01,0.05,0.1,0.3,0.5,0.7,0.9], # 0.3
+          # 'max_depth':[x for x in range(5,6,1)],#5
+          'max_depth':[x for x in range(3,10,1)],#5
+          'learning_rate':[0.001,0.01,0.05,0.1,0.3,0.5,0.7,0.9], # 0.3
           # 'reg_alpha':[1e-5,1e-2,0.1,1,100],#1
-          # 'gamma':[x for x in range(0,10,1)],#0
-          # 'min_child_weight':[x for x in range(1,10,1)],# 5
-          #   'subsample':[x for x in np.arange(0,1,0.01)], # 0.65
+          'gamma':[x for x in range(0,10,1)],#0
+          'min_child_weight':[x for x in range(1,10,1)],# 5
+            'subsample':[x for x in np.arange(0,1,0.01)], # 0.65
           }
 '''
    eta –> learning_rate
    lambda –> reg_lambda
    alpha –> reg_alpha
 '''
-kfold = KFold(n_splits=10)
-grid = GridSearchCV(estimator=XGBRegressor(),param_grid=params,scoring='neg_mean_absolute_error',cv=kfold)
+
+grid = GridSearchCV(estimator=XGBRegressor(),param_grid=params,scoring='neg_mean_absolute_error')
 
 # 训练
 grid.fit(train,train_label)
@@ -131,7 +131,18 @@ plt.show()
 '''
 
 '''
-
+count    673.000000
+mean      14.606949
+std        2.897275
+min        7.759204
+25%       12.663421
+50%       14.537750
+75%       16.666067
+max       24.427197
+dtype: float64
+error 7.282985529963365
+pred_mean 14.606949
+true_mean 17.057949479940564
 '''
 
 

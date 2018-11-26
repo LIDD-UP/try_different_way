@@ -116,7 +116,7 @@ def get_predict_input(example_predict):
         },
         y=np.array(label_predict),
         num_epochs=1,  # 此处注意，如果设置成为None了会无限读下去；
-        shuffle=True,
+        shuffle=False,
         batch_size=len(example_predict)
     )
     return predict_input_fn
@@ -136,7 +136,7 @@ def get_input_to_train_and_test(example,label,estimator_model,batch_size,train_n
             },
             y=np.array(label_train),
             num_epochs=1,
-            shuffle=False,
+            shuffle=True,
             batch_size=batch_size,
         )
 

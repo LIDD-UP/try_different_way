@@ -84,13 +84,13 @@ from sklearn.model_selection import GridSearchCV,KFold
 # 寻找超参数
 params = {
           # 'n_estimators': [100,300,500,1000,5000],# 300
-          'max_depth':[x for x in range(5,6,1)],#5
-          # 'max_depth':[x for x in range(3,10,1)],#5
-          # 'learning_rate':[0.001,0.01,0.05,0.1,0.3,0.5,0.7,0.9], # 0.3
+          # 'max_depth':[x for x in range(5,6,1)],#5
+          'max_depth':[x for x in range(3,10,1)],#5
+          'learning_rate':[0.001,0.01,0.05,0.1,0.3,0.5,0.7,0.9], # 0.3
           # 'reg_alpha':[1e-5,1e-2,0.1,1,100],#1
-          # 'gamma':[x for x in range(0,10,1)],#0
-          # 'min_child_weight':[x for x in range(1,10,1)],# 5
-          #   'subsample':[x for x in np.arange(0,1,0.01)], # 0.65
+          'gamma':[x for x in range(0,10,1)],#0
+          'min_child_weight':[x for x in range(1,10,1)],# 5
+            'subsample':[x for x in np.arange(0,1,0.01)], # 0.65
           }
 '''
    eta –> learning_rate
@@ -168,6 +168,21 @@ error 7.762931422705459
 pred_mean 18.151232
 true_mean 17.057949479940564
 
+'''
+
+'''
+count    673.000000
+mean      16.258291
+std        2.843739
+min        8.347778
+25%       14.278810
+50%       16.480049
+75%       18.418049
+max       23.973202
+dtype: float64
+error 7.2567000835469715
+pred_mean 16.258291
+true_mean 17.057949479940564
 '''
 
 
