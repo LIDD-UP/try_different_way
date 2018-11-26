@@ -650,6 +650,7 @@ sys:1: DtypeWarning: Columns (25,91) have mixed types. Specify dtype option on i
 之前的逻辑有一定的问题，如果重原始的模型开始基础上再进行训练，可能有一定的问题：具体还是要以测试
 情况定：
 
+finish the auto shell program
 
 
 
