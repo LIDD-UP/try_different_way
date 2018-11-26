@@ -18,7 +18,7 @@ from sklearn.preprocessing import StandardScaler
 from matplotlib import pyplot as plt
 
 # 根目录
-root_path = "F:\\PycharmProject\\try_different_way\\"
+root_path = "D:\\PycharmProject\\try_different_way\\"
 
 
 # Model存储路径
@@ -350,11 +350,11 @@ def train_nn_regression_model(
         predictions['predictions'] = validation_predictions
         predictions['predictions'] = round(abs(predictions['predictions']))
         display.display(predictions.describe())
-        predictions.to_csv('./validation_predict_result.csv', index=False)
+        predictions.to_csv('./validation_predict_result_remove.csv', index=False)
         merge_data = pd.concat((origin_data, predictions), axis=1)
 
         merge_data_df = pd.DataFrame(merge_data)
-        merge_data_df.to_csv('./validation_merge_result.csv', index=False)
+        merge_data_df.to_csv('./validation_merge_result_remove.csv', index=False)
 
 
         # Compute training and validation loss.

@@ -1,0 +1,378 @@
+    data = data[[
+        "longitude",
+        "latitude",
+        # "city",
+        # "province",
+        "price",
+        "tradeTypeId",
+        # "listingDate",
+        "buildingTypeId",
+        # "bedrooms",
+        # "bathroomTotal",
+        # 'postalCode',
+        'daysOnMarket',
+        # 'ownerShipType'
+    ]]
+
+        predictions
+count  82779.000000
+mean      82.338991
+std       48.004588
+min       31.340864
+25%       44.911205
+50%       70.747246
+75%      102.167839
+max      323.193787
+count    82779.000000
+mean        82.252335
+std         85.478813
+min          1.000000
+25%         25.000000
+50%         58.000000
+75%        102.000000
+max        473.000000
+Name: daysOnMarket, dtype: float64
+49.894581482308155
+
+
+只有buildingTypeId:
+        predictions
+count  82789.000000
+mean      84.712655
+std       12.686877
+min       53.967457
+25%       84.752419
+50%       86.562561
+75%       86.562561
+max      176.045975
+count    82789.000000
+mean        82.250130
+std         85.474545
+min          1.000000
+25%         25.000000
+50%         58.000000
+75%        102.000000
+max        473.000000
+Name: daysOnMarket, dtype: float64
+58.87351066720123
+
+只有price：
+        predictions
+count  82779.000000
+mean      84.483111
+std       26.337026
+min       36.246441
+25%       65.477798
+50%       72.069283
+75%      101.083115
+max      214.165787
+count    82779.000000
+mean        82.252335
+std         85.478813
+min          1.000000
+25%         25.000000
+50%         58.000000
+75%        102.000000
+max        473.000000
+Name: daysOnMarket, dtype: float64
+57.665274148155625
+
+latitude：
+        predictions
+count  82789.000000
+mean      83.432509
+std       40.724741
+min       38.778465
+25%       47.190975
+50%       75.970116
+75%      108.546600
+max      207.359268
+count    82789.000000
+mean        82.250130
+std         85.474545
+min          1.000000
+25%         25.000000
+50%         58.000000
+75%        102.000000
+max        473.000000
+Name: daysOnMarket, dtype: float64
+53.188360872102685
+
+
+longtitude：
+        predictions
+count  82789.000000
+mean      82.704428
+std       45.689080
+min       33.942932
+25%       46.569176
+50%       64.249100
+75%      102.257462
+max      252.958496
+count    82789.000000
+mean        82.250130
+std         85.474545
+min          1.000000
+25%         25.000000
+50%         58.000000
+75%        102.000000
+max        473.000000
+Name: daysOnMarket, dtype: float64
+51.59778289574672
+
+city：
+        predictions
+count  82190.000000
+mean      84.619209
+std       17.352114
+min       47.788383
+25%       75.990135
+50%       92.278030
+75%       92.278030
+max      186.485291
+count    82190.000000
+mean        82.285047
+std         85.564344
+min          1.000000
+25%         25.000000
+50%         58.000000
+75%        102.000000
+max        473.000000
+Name: daysOnMarket, dtype: float64
+56.01656426781212
+
+province：
+        predictions
+count  82195.000000
+mean      82.940105
+std       44.933707
+min       47.589603
+25%       47.589603
+50%       68.313332
+75%       89.988472
+max      179.684769
+count    82195.000000
+mean        82.286489
+std         85.562419
+min          1.000000
+25%         25.000000
+50%         58.000000
+75%        102.000000
+max        473.000000
+Name: daysOnMarket, dtype: float64
+52.087425430430585
+
+bedrooms：
+        predictions
+count  82654.000000
+mean      84.563864
+std       13.821036
+min       54.372555
+25%       86.312538
+50%       86.312538
+75%       89.127373
+max      241.868149
+count    82654.000000
+mean        82.167409
+std         85.347632
+min          1.000000
+25%         25.000000
+50%         58.000000
+75%        102.000000
+max        473.000000
+Name: daysOnMarket, dtype: float64
+58.6404516623605
+
+
+直接是month和year：但是感觉并不合理：
+应为取数据的时候人为的限制了delisitingdate这一项，通过lisitngdate来确定，不太合理，
+对于未来的数据就应该是在一个时间段类的上架和下架的数据两者作为取数据的限制区间才是比较好的作为训练数据的原始数据；然后在用delistingdate作为特征比较合理：
+
+
+其中效果最明显的；是时间这个特征
+
+
+
+def preprocess_data(data):
+    data = data[[
+        "longitude",
+        "latitude",
+        "city",
+        "province",
+        "price",
+        "tradeTypeId",
+        # "listingDate",
+        "buildingTypeId",
+        "bedrooms",
+        "bathroomTotal",
+        # 'postalCode',
+        'daysOnMarket',
+        'ownerShipType'
+    ]]
+        predictions
+count  70010.000000
+mean      69.504161
+std       35.326192
+min       32.256325
+25%       43.759533
+50%       56.607800
+75%       82.800049
+max      324.329407
+count    70010.000000
+mean        71.994629
+std         72.864172
+min          1.000000
+25%         23.000000
+50%         53.000000
+75%         93.000000
+max        473.000000
+Name: daysOnMarket, dtype: float64
+42.53229779321251
+
+
+ownerShipType:这个特征是除了listingDate效果最好的；
+        predictions
+count  70728.000000
+mean      70.378581
+std       11.514488
+min       49.169594
+25%       66.696068
+50%       66.696068
+75%       66.696068
+max      217.711411
+count    70728.000000
+mean        72.079742
+std         72.953039
+min          1.000000
+25%         23.000000
+50%         53.000000
+75%         93.000000
+max        473.000000
+Name: daysOnMarket, dtype: float64
+48.962665263053964
+
+    data = data[[
+        # "longitude",
+        # "latitude",
+        # "city",
+        # "province",
+        # "price",
+        "tradeTypeId",
+        # "listingDate",
+        "buildingTypeId",
+        # "bedrooms",
+        # "bathroomTotal",
+        # 'postalCode',
+        'daysOnMarket',
+        'ownerShipType'
+    ]]
+        predictions
+count  70728.000000
+mean      70.368188
+std       13.892480
+min       43.898518
+25%       67.805191
+50%       67.805191
+75%       67.805191
+max      318.480804
+count    70728.000000
+mean        72.079742
+std         72.953039
+min          1.000000
+25%         23.000000
+50%         53.000000
+75%         93.000000
+max        473.000000
+Name: daysOnMarket, dtype: float64
+48.69831958710777
+
+
+
+    data = data[[
+        "longitude",
+        # "latitude",
+        # "city",
+        # "province",
+        # "price",
+        "tradeTypeId",
+        # "listingDate",
+        # "buildingTypeId",
+        # "bedrooms",
+        # "bathroomTotal",
+        # 'postalCode',
+        'daysOnMarket',
+        'ownerShipType'
+    ]]
+        predictions
+count  70728.000000
+mean      69.723648
+std       34.313161
+min       40.978180
+25%       44.513565
+50%       56.271904
+75%       83.563110
+max      349.577179
+count    70728.000000
+mean        72.079742
+std         72.953039
+min          1.000000
+25%         23.000000
+50%         53.000000
+75%         93.000000
+max        473.000000
+Name: daysOnMarket, dtype: float64
+43.64023122948201
+
+42.5
+42.49
+42.46
+
+
+        predictions
+count  70015.000000
+mean      69.536945
+std       36.373050
+min       26.402229
+25%       42.934086
+50%       58.080723
+75%       83.754517
+max      303.006958
+count    70015.000000
+mean        71.997058
+std         72.862796
+min          1.000000
+25%         23.000000
+50%         53.000000
+75%         93.000000
+max        473.000000
+Name: daysOnMarket, dtype: float64
+42.40489069696138
+
+
+经过分析可以得出ownershiptype 和longtitude，latitude是比较重要的，其次是price，province，bedrooms，bathroomtotal
+只有
+
+加上city之后有一定的减少，说明可能跟与有数据的那个特征有冲突，所以，city可能是噪音数据，目前还没有处理city的异常数据；
+        predictions
+count  70010.000000
+mean      69.504161
+std       35.326192
+min       32.256325
+25%       43.759533
+50%       56.607800
+75%       82.800049
+max      324.329407
+count    70010.000000
+mean        71.994629
+std         72.864172
+min          1.000000
+25%         23.000000
+50%         53.000000
+75%         93.000000
+max        473.000000
+Name: daysOnMarket, dtype: float64
+42.53229779321251
+
+
+没有ownershiptype ：49，将近50，说明了这个特征的重要性；
+

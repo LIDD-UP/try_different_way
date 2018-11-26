@@ -20,7 +20,7 @@ from sklearn.preprocessing import StandardScaler
 from matplotlib import pyplot as plt
 
 # 根目录
-root_path = "F:\\PycharmProject\\try_different_way\\"
+root_path = "D:\\PycharmProject\\try_different_way\\"
 
 
 # Model存储路径
