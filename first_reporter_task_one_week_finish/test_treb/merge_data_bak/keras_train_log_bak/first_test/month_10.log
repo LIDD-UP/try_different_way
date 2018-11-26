@@ -1,0 +1,481 @@
+this time we will remove:300---------------------->>>>>>
+this is first train ,model is save as model.h5
+in this time ,we predict test data,and result as follows
+
+            in 10:0.16753293847455578
+
+            10 to 20:0.08376646923727789
+
+            20 to 30:0.051130182521455333
+
+            more 30:0.697570409766711 
+
+            mean_absolute_error:122.67106272277154
+
+            finish train data prediction and save the merge the train data and label
+finish the remove big gap of train data ,remove ratio is:300and train data shape is:(49509, 26)
+this time we will remove:270---------------------->>>>>>
+this is another train and will remove train data 270in this time ,we predict test data,and result as follows
+
+            in 10:0.27221080623715704
+
+            10 to 20:0.2717273056932189
+
+            20 to 30:0.15919255409162336
+
+            more 30:0.29686933397800075 
+
+            mean_absolute_error:28.835079633237143
+
+            finish train data prediction and save the merge the train data and label
+finish the remove big gap of train data ,remove ratio is:270and train data shape is:(49502, 26)
+this time we will remove:250---------------------->>>>>>
+this is another train and will remove train data 250in this time ,we predict test data,and result as follows
+
+            in 10:0.28732019823522303
+
+            10 to 20:0.2718481808292034
+
+            20 to 30:0.15109391998066
+
+            more 30:0.2897377009549136 
+
+            mean_absolute_error:37.03778225038672
+
+            finish train data prediction and save the merge the train data and label
+finish the remove big gap of train data ,remove ratio is:250and train data shape is:(49501, 26)
+this time we will remove:230---------------------->>>>>>
+this is another train and will remove train data 230in this time ,we predict test data,and result as follows
+
+            in 10:0.2601232926387042
+
+            10 to 20:0.2688263024295902
+
+            20 to 30:0.1547201740601958
+
+            more 30:0.31633023087150974 
+
+            mean_absolute_error:39.560063923628604
+
+            finish train data prediction and save the merge the train data and label
+finish the remove big gap of train data ,remove ratio is:230and train data shape is:(49499, 26)
+this time we will remove:200---------------------->>>>>>
+this is another train and will remove train data 200in this time ,we predict test data,and result as follows
+
+            in 10:0.2875619485071921
+
+            10 to 20:0.2737821830049559
+
+            20 to 30:0.14722591562915507
+
+            more 30:0.29142995285869694 
+
+            mean_absolute_error:37.01392447119913
+
+            finish train data prediction and save the merge the train data and label
+finish the remove big gap of train data ,remove ratio is:200and train data shape is:(49495, 26)
+this time we will remove:170---------------------->>>>>>
+this is another train and will remove train data 170in this time ,we predict test data,and result as follows
+
+            in 10:0.2772875619485072
+
+            10 to 20:0.2824851927958419
+
+            20 to 30:0.159796929771546
+
+            more 30:0.2804303154841049 
+
+            mean_absolute_error:29.424839468542963
+
+            finish train data prediction and save the merge the train data and label
+finish the remove big gap of train data ,remove ratio is:170and train data shape is:(49481, 26)
+this time we will remove:150---------------------->>>>>>
+this is another train and will remove train data 150in this time ,we predict test data,and result as follows
+
+            in 10:0.27644143599661547
+
+            10 to 20:0.2811555663000121
+
+            20 to 30:0.14831379185301583
+
+            more 30:0.2940892058503566 
+
+            mean_absolute_error:38.02499837355474
+
+            finish train data prediction and save the merge the train data and label
+finish the remove big gap of train data ,remove ratio is:150and train data shape is:(49449, 26)
+this time we will remove:120---------------------->>>>>>
+this is another train and will remove train data 120in this time ,we predict test data,and result as follows
+
+            in 10:0.30823159676054634
+
+            10 to 20:0.2690680527015593
+
+            20 to 30:0.14178653450985132
+
+            more 30:0.28091381602804305 
+
+            mean_absolute_error:32.89641895787569
+
+            finish train data prediction and save the merge the train data and label
+finish the remove big gap of train data ,remove ratio is:120and train data shape is:(49342, 26)
+this time we will remove:100---------------------->>>>>>
+this is another train and will remove train data 100in this time ,we predict test data,and result as follows
+
+            in 10:0.3238244893025505
+
+            10 to 20:0.2747491840928321
+
+            20 to 30:0.1260727668318627
+
+            more 30:0.2753535597727547 
+
+            mean_absolute_error:35.067498541506545
+
+            finish train data prediction and save the merge the train data and label
+finish the remove big gap of train data ,remove ratio is:100and train data shape is:(49174, 26)
+this time we will remove:100---------------------->>>>>>
+this is another train and will remove train data 100in this time ,we predict test data,and result as follows
+
+            in 10:0.33289012450139005
+
+            10 to 20:0.27499093436480115
+
+            20 to 30:0.1329626495829808
+
+            more 30:0.259156291550828 
+
+            mean_absolute_error:25.80498649078889
+
+            finish train data prediction and save the merge the train data and label
+finish the remove big gap of train data ,remove ratio is:100and train data shape is:(49146, 26)
+this time we will remove:95---------------------->>>>>>
+this is another train and will remove train data 95in this time ,we predict test data,and result as follows
+
+            in 10:0.30835247189653087
+
+            10 to 20:0.2782545630363834
+
+            20 to 30:0.13030339659132117
+
+            more 30:0.28308956847576455 
+
+            mean_absolute_error:31.647316876423773
+
+            finish train data prediction and save the merge the train data and label
+finish the remove big gap of train data ,remove ratio is:95and train data shape is:(49096, 26)
+this time we will remove:95---------------------->>>>>>
+this is another train and will remove train data 95in this time ,we predict test data,and result as follows
+
+            in 10:0.2928804544905113
+
+            10 to 20:0.2810346911640276
+
+            20 to 30:0.13755590475039284
+
+            more 30:0.2885289495950683 
+
+            mean_absolute_error:34.85540823012529
+
+            finish train data prediction and save the merge the train data and label
+finish the remove big gap of train data ,remove ratio is:95and train data shape is:(49094, 26)
+this time we will remove:90---------------------->>>>>>
+this is another train and will remove train data 90in this time ,we predict test data,and result as follows
+
+            in 10:0.32140698658285993
+
+            10 to 20:0.2702768040614046
+
+            20 to 30:0.11567750513719328
+
+            more 30:0.29263870421854227 
+
+            mean_absolute_error:28.46290408330083
+
+            finish train data prediction and save the merge the train data and label
+finish the remove big gap of train data ,remove ratio is:90and train data shape is:(48952, 26)
+this time we will remove:85---------------------->>>>>>
+this is another train and will remove train data 85in this time ,we predict test data,and result as follows
+
+            in 10:0.30690197026471655
+
+            10 to 20:0.2875619485071921
+
+            20 to 30:0.1356219025746404
+
+            more 30:0.26991417865345096 
+
+            mean_absolute_error:26.1325175375139
+
+            finish train data prediction and save the merge the train data and label
+finish the remove big gap of train data ,remove ratio is:85and train data shape is:(48860, 26)
+this time we will remove:80---------------------->>>>>>
+this is another train and will remove train data 80in this time ,we predict test data,and result as follows
+
+            in 10:0.32503324066239575
+
+            10 to 20:0.2731778073250332
+
+            20 to 30:0.13199564849510456
+
+            more 30:0.26979330351746644 
+
+            mean_absolute_error:26.406077715674176
+
+            finish train data prediction and save the merge the train data and label
+finish the remove big gap of train data ,remove ratio is:80and train data shape is:(48693, 26)
+this time we will remove:75---------------------->>>>>>
+this is another train and will remove train data 75in this time ,we predict test data,and result as follows
+
+            in 10:0.31258310165598935
+
+            10 to 20:0.28139731657198114
+
+            20 to 30:0.1183367581288529
+
+            more 30:0.2876828236431766 
+
+            mean_absolute_error:34.255805902147934
+
+            finish train data prediction and save the merge the train data and label
+finish the remove big gap of train data ,remove ratio is:75and train data shape is:(48560, 26)
+this time we will remove:70---------------------->>>>>>
+this is another train and will remove train data 70in this time ,we predict test data,and result as follows
+
+            in 10:0.33276924936540553
+
+            10 to 20:0.2862323220113623
+
+            20 to 30:0.11096337483379669
+
+            more 30:0.2700350537894355 
+
+            mean_absolute_error:30.746326090216595
+
+            finish train data prediction and save the merge the train data and label
+finish the remove big gap of train data ,remove ratio is:70and train data shape is:(48295, 26)
+this time we will remove:65---------------------->>>>>>
+this is another train and will remove train data 65in this time ,we predict test data,and result as follows
+
+            in 10:0.3533180224827753
+
+            10 to 20:0.2841774446996253
+
+            20 to 30:0.11495225432128611
+
+            more 30:0.2475522784963133 
+
+            mean_absolute_error:25.254836113813436
+
+            finish train data prediction and save the merge the train data and label
+finish the remove big gap of train data ,remove ratio is:65and train data shape is:(47840, 26)
+this time we will remove:60---------------------->>>>>>
+this is another train and will remove train data 60in this time ,we predict test data,and result as follows
+
+            in 10:0.34316451106007495
+
+            10 to 20:0.2683428018856521
+
+            20 to 30:0.11591925540916234
+
+            more 30:0.2725734316451106 
+
+            mean_absolute_error:25.941652122985406
+
+            finish train data prediction and save the merge the train data and label
+finish the remove big gap of train data ,remove ratio is:60and train data shape is:(47572, 26)
+this time we will remove:55---------------------->>>>>>
+this is another train and will remove train data 55in this time ,we predict test data,and result as follows
+
+            in 10:0.3565816511543575
+
+            10 to 20:0.27922156412425964
+
+            20 to 30:0.0864257222289375
+
+            more 30:0.2777710624924453 
+
+            mean_absolute_error:27.440824516621003
+
+            finish train data prediction and save the merge the train data and label
+finish the remove big gap of train data ,remove ratio is:55and train data shape is:(46965, 26)
+this time we will remove:50---------------------->>>>>>
+this is another train and will remove train data 50in this time ,we predict test data,and result as follows
+
+            in 10:0.3610540311857851
+
+            10 to 20:0.27233168137314157
+
+            20 to 30:0.079898464885773
+
+            more 30:0.28671582255530037 
+
+            mean_absolute_error:28.705233359385844
+
+            finish train data prediction and save the merge the train data and label
+finish the remove big gap of train data ,remove ratio is:50and train data shape is:(46547, 26)
+this time we will remove:50---------------------->>>>>>
+this is another train and will remove train data 50in this time ,we predict test data,and result as follows
+
+            in 10:0.36709778798501147
+
+            10 to 20:0.27632056086063095
+
+            20 to 30:0.08533784600507675
+
+            more 30:0.2712438051492808 
+
+            mean_absolute_error:25.883480695200905
+
+            finish train data prediction and save the merge the train data and label
+finish the remove big gap of train data ,remove ratio is:50and train data shape is:(46375, 26)
+this time we will remove:45---------------------->>>>>>
+this is another train and will remove train data 45in this time ,we predict test data,and result as follows
+
+            in 10:0.3625045328175994
+
+            10 to 20:0.3311978725976067
+
+            20 to 30:0.05560256255288287
+
+            more 30:0.250695032031911 
+
+            mean_absolute_error:25.72817020630672
+
+            finish train data prediction and save the merge the train data and label
+finish the remove big gap of train data ,remove ratio is:45and train data shape is:(45506, 26)
+this time we will remove:45---------------------->>>>>>
+this is another train and will remove train data 45in this time ,we predict test data,and result as follows
+
+            in 10:0.39888794874894234
+
+            10 to 20:0.29469358153027925
+
+            20 to 30:0.05584431282485193
+
+            more 30:0.2505741568959265 
+
+            mean_absolute_error:25.335874342621562
+
+            finish train data prediction and save the merge the train data and label
+finish the remove big gap of train data ,remove ratio is:45and train data shape is:(45430, 26)
+this time we will remove:40---------------------->>>>>>
+this is another train and will remove train data 40in this time ,we predict test data,and result as follows
+
+            in 10:0.3927233168137314
+
+            10 to 20:0.30049558805753657
+
+            20 to 30:0.05729481445666627
+
+            more 30:0.24948628067206577 
+
+            mean_absolute_error:25.379562734361574
+
+            finish train data prediction and save the merge the train data and label
+finish the remove big gap of train data ,remove ratio is:40and train data shape is:(44773, 26)
+this time we will remove:35---------------------->>>>>>
+this is another train and will remove train data 35in this time ,we predict test data,and result as follows
+
+            in 10:0.4130303396591321
+
+            10 to 20:0.2753535597727547
+
+            20 to 30:0.05741568959265079
+
+            more 30:0.25420041097546237 
+
+            mean_absolute_error:25.431802316658963
+
+            finish train data prediction and save the merge the train data and label
+finish the remove big gap of train data ,remove ratio is:35and train data shape is:(43589, 26)
+this time we will remove:35---------------------->>>>>>
+this is another train and will remove train data 35in this time ,we predict test data,and result as follows
+
+            in 10:0.43212861114468754
+
+            10 to 20:0.24851927958418954
+
+            20 to 30:0.05947056690438777
+
+            more 30:0.25988154236673516 
+
+            mean_absolute_error:25.58072039358535
+
+            finish train data prediction and save the merge the train data and label
+finish the remove big gap of train data ,remove ratio is:35and train data shape is:(43318, 26)
+this time we will remove:30---------------------->>>>>>
+this is another train and will remove train data 30in this time ,we predict test data,and result as follows
+
+            in 10:0.43732624199202225
+
+            10 to 20:0.24199202224102503
+
+            20 to 30:0.06043756799226399
+
+            more 30:0.26024416777468873 
+
+            mean_absolute_error:25.620938140046533
+
+            finish train data prediction and save the merge the train data and label
+finish the remove big gap of train data ,remove ratio is:30and train data shape is:(42120, 26)
+this time we will remove:30---------------------->>>>>>
+this is another train and will remove train data 30in this time ,we predict test data,and result as follows
+
+            in 10:0.44095249607155806
+
+            10 to 20:0.23401426326604619
+
+            20 to 30:0.060921068536202105
+
+            more 30:0.26411217212619365 
+
+            mean_absolute_error:25.742671671101597
+
+            finish train data prediction and save the merge the train data and label
+finish the remove big gap of train data ,remove ratio is:30and train data shape is:(41909, 26)
+this time we will remove:25---------------------->>>>>>
+this is another train and will remove train data 25in this time ,we predict test data,and result as follows
+
+            in 10:0.4422821225673879
+
+            10 to 20:0.23232201136226277
+
+            20 to 30:0.060921068536202105
+
+            more 30:0.2644747975341472 
+
+            mean_absolute_error:25.788506999293045
+
+            finish train data prediction and save the merge the train data and label
+finish the remove big gap of train data ,remove ratio is:25and train data shape is:(40552, 26)
+this time we will remove:25---------------------->>>>>>
+this is another train and will remove train data 25in this time ,we predict test data,and result as follows
+
+            in 10:0.4570288891575003
+
+            10 to 20:0.20959748579717152
+
+            20 to 30:0.06164631935210927
+
+            more 30:0.2717273056932189 
+
+            mean_absolute_error:26.020314940659265
+
+            finish train data prediction and save the merge the train data and label
+finish the remove big gap of train data ,remove ratio is:25and train data shape is:(40196, 26)
+this time we will remove:20---------------------->>>>>>
+this is another train and will remove train data 20in this time ,we predict test data,and result as follows
+
+            in 10:0.4608968935090052
+
+            10 to 20:0.205125105765744
+
+            20 to 30:0.06237157016801644
+
+            more 30:0.2716064305572344 
+
+            mean_absolute_error:26.143199118221453
+
+            finish train data prediction and save the merge the train data and label
+finish the remove big gap of train data ,remove ratio is:20and train data shape is:(38120, 26)

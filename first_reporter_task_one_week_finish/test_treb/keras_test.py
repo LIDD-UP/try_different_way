@@ -1,7 +1,7 @@
 # -*- coding:utf-8 _*-  
 """ 
 @author:Administrator
-@file: keras_test.py
+@file: keras_auto_shell.py
 @time: 2018/11/23
 """
 
@@ -230,9 +230,11 @@ if __name__ == '__main__':
     delay_time =20
     epochs = 10
     is_first_train = 1
-    for i in [300,270,250,230,200,170,150,120,100,100,95,95,90,85,80,75,70,65,60,55,50,50,45,45,40,35,35,30,30,25,25,20]:
+    for i in [300,
+              # 270,250,230,200,170,150,120,100,100,95,95,90,85,80,75,70,65,60,55,50,50,45,45,40,35,35,30,30,25,25,20
+              ]:
         # 训练数据
-        with open('./log.log','a+',encoding='utf8') as f:
+        with open('./month_9.log','a+',encoding='utf8') as f:
             f.write('this time we will remove:{0}---------------------->>>>>>\n'.format(i))
             if is_first_train:
                 df_train = pd.read_csv('./input/treb_toronto_3to8.csv')

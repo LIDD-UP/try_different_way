@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import mean_absolute_error
 import seaborn as sns
 import numpy as np
+from auto_ml import K
 
 
 def preprocess_data(data):
@@ -177,6 +178,7 @@ if __name__ == '__main__':
     # df_test_middle = pd.read_csv('./input/treb_test_all_column_month_9.csv')
     df_test_middle = pd.read_csv('./input/treb_toronto_9.csv')
     # df_test_middle = pd.read_csv('./input/treb_toronto_10.csv')
+    from auto_ml import load_ml_model
 
     print(df_test_middle.shape)
 
@@ -219,7 +221,8 @@ if __name__ == '__main__':
 
     ml_predictor = Predictor(type_of_estimator='Regressor', column_descriptions=column_descriptions)
 
-    ml_predictor.train(df_train,model_names='XGBRegressor')
+    ml_predictor.train(df_train,model_names='KerasRegressor') # KerasRegressor XGBRegressor
+    ml_predictor.save('model_auto_ml.h5')
 
 
     # 预测预测数据
