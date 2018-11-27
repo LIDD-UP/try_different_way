@@ -210,7 +210,6 @@ if __name__ == '__main__':
     # 等待csv文件保存完整，其实也可以设置一个全局变量，在循环之外；
     delay_time =20
     # 训练的次数
-    epochs = 10
     # 是否是第一次训练
     is_first_train = 1
     # 指定log文件目录；
@@ -218,18 +217,33 @@ if __name__ == '__main__':
     model_path = './model_file/auto_ml_model.h5'
 
     # 指定数据的切分列表：
-    for i in [300,
-              270,
-              250,230,200,170,150,
-              120,
-              100,100,95,
-              95,90,85,80,75,
-              70,65,60,55,50,
-              50,45,45,
+    for i in [300,300,
+              # 270,
+              250,
+              # 230,
+              200,
+              # 170,
+              # 150,
+              # 120,
+              100,
+              # 100,95,
+              # 95,
+              90,
+              # 85,
+              80,
+              # 75,
+              70,70,
+              # 65,
+              60,
+              # 55,
+              50,
+              # 50,45,45,
               40,
-              35,35,
+              # 35,35,
+              # 30,
               30,
-              30,25,25,20
+              # 25,25,
+              20
               ]:
         # 训练数据
         with open(log_path,'a+',encoding='utf8') as f:
@@ -305,7 +319,7 @@ if __name__ == '__main__':
             ml_predictor = Predictor(type_of_estimator='Regressor', column_descriptions=column_descriptions)
 
             ml_predictor.train(df_train, model_names='XGBRegressor')  # KerasRegressor XGBRegressor
-            ml_predictor.save(model_path)
+            ml_predictor.save(model_path) # 这里保存模型之后可能存在某个问题就是可能会在原有模型的基础上进行训练；
 
             # 预测
             pred1 = ml_predictor.predict(df_test)

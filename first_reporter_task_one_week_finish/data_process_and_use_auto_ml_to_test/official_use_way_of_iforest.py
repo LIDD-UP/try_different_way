@@ -20,7 +20,7 @@ print(__doc__)
 
 matplotlib.rcParams['contour.negative_linestyle'] = 'solid'
 
-# Example settings
+# Example Configure
 n_samples = 300
 outliers_fraction = 0.15
 n_outliers = int(outliers_fraction * n_samples)
@@ -50,7 +50,7 @@ datasets = [
           np.array([0.5, 0.25])),
     14. * (np.random.RandomState(42).rand(n_samples, 2) - 0.5)]
 
-# Compare given classifiers under given settings
+# Compare given classifiers under given Configure
 xx, yy = np.meshgrid(np.linspace(-7, 7, 150),
                      np.linspace(-7, 7, 150))
 

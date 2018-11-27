@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import mean_absolute_error
 import seaborn as sns
 import numpy as np
-from auto_ml import K
+
 
 
 def preprocess_data(data):
@@ -34,23 +34,23 @@ def preprocess_data(data):
         'district',
 
         # 以下就是用于测试得新得特征；
-        'style', #22.769283885157083
-        'community', # 类似于city类型得数据，类型有766个； #22.38147912725983
-        'airConditioning', #22.755048806968883
-        'washrooms', # 连续 #23.691205780782205
-        'basement1',# 地下室22.797430800725444
-        'familyRoom', # 22.794731300998404
-        'fireplaceStove', # 2 w 左右 #22.82878318024665
-        'heatSource', # 数据量可以2w+# 22.75554140962404
-        'garageType', # 2 w+ #22.79707321027956
-        'kitchens', # 22.79393809434976
-        'parkingSpaces', #22.807931672409705
+        # 'style', #22.769283885157083
+        # 'community', # 类似于city类型得数据，类型有766个； #22.38147912725983
+        # 'airConditioning', #22.755048806968883
+        # 'washrooms', # 连续 #23.691205780782205
+        # 'basement1',# 地下室22.797430800725444
+        # 'familyRoom', # 22.794731300998404
+        # 'fireplaceStove', # 2 w 左右 #22.82878318024665
+        # 'heatSource', # 数据量可以2w+# 22.75554140962404
+        # 'garageType', # 2 w+ #22.79707321027956
+        # 'kitchens', # 22.79393809434976
+        # 'parkingSpaces', #22.807931672409705
+        # #
+        # 'parkingIncluded',#22.786586056260784
+        # 'rooms',# 22.785397232054713
         #
-        'parkingIncluded',#22.786586056260784
-        'rooms',# 22.785397232054713
-
-        'waterIncluded', # 22.80653144493355
-        'totalParkingSpaces', # 22.81551411353129
+        # 'waterIncluded', # 22.80653144493355
+        # 'totalParkingSpaces', # 22.81551411353129
         #
         # 'frontingOn',  # 面向得方向，drop掉之后有1w多:14270
         # 'drive',  # 14270
@@ -221,7 +221,7 @@ if __name__ == '__main__':
 
     ml_predictor = Predictor(type_of_estimator='Regressor', column_descriptions=column_descriptions)
 
-    ml_predictor.train(df_train,model_names='KerasRegressor') # KerasRegressor XGBRegressor
+    ml_predictor.train(df_train,model_names='DeepLearningRegressor') # KerasRegressor XGBRegressor
     ml_predictor.save('model_auto_ml.h5')
 
 
@@ -230,7 +230,7 @@ if __name__ == '__main__':
     x_dataframe = pd.DataFrame(x,columns=['predictions'])
     merge_data = pd.concat((origin_data,x_dataframe),axis=1)
     merge_data_df = pd.DataFrame(merge_data)
-    merge_data_df.to_csv('./merge_data_bak/merge_data_auto_ml.csv',index=False)
+    merge_data_df.to_csv('./merge_data_bak/merge_data_predictions_auto_ml.csv',index=False)
     print(x_dataframe.describe())
     print(df_test_label.describe())
 
@@ -243,7 +243,7 @@ if __name__ == '__main__':
     train_dataframe = pd.DataFrame(train_prediction,columns=['trainPrediction'])
     merge_train_data = pd.concat((origin_data_train,train_dataframe),axis=1)
     merge_train_data_df = pd.DataFrame(merge_train_data)
-    merge_train_data_df.to_csv('./merge_data_bak/merge_train_data.csv',index=False)
+    merge_train_data_df.to_csv('./merge_data_bak/merge_train_data_auto_ml.csv',index=False)
 
 
 

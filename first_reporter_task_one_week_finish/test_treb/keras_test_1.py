@@ -57,23 +57,23 @@ def preprocess_data(data):
         'district',
 
         # 以下就是用于测试得新得特征；
-        'style', #22.769283885157083
-        'community', # 类似于city类型得数据，类型有766个； #22.38147912725983
-        'airConditioning', #22.755048806968883
-        'washrooms', # 连续 #23.691205780782205
-        'basement1',# 地下室22.797430800725444
-        'familyRoom', # 22.794731300998404
-        'fireplaceStove', # 2 w 左右 #22.82878318024665
-        'heatSource', # 数据量可以2w+# 22.75554140962404
-        'garageType', # 2 w+ #22.79707321027956
-        'kitchens', # 22.79393809434976
-        'parkingSpaces', #22.807931672409705
+        # 'style', #22.769283885157083
+        # 'community', # 类似于city类型得数据，类型有766个； #22.38147912725983
+        # 'airConditioning', #22.755048806968883
+        # 'washrooms', # 连续 #23.691205780782205
+        # 'basement1',# 地下室22.797430800725444
+        # 'familyRoom', # 22.794731300998404
+        # 'fireplaceStove', # 2 w 左右 #22.82878318024665
+        # 'heatSource', # 数据量可以2w+# 22.75554140962404
+        # 'garageType', # 2 w+ #22.79707321027956
+        # 'kitchens', # 22.79393809434976
+        # 'parkingSpaces', #22.807931672409705
+        # #
+        # 'parkingIncluded',#22.786586056260784
+        # 'rooms',# 22.785397232054713
         #
-        'parkingIncluded',#22.786586056260784
-        'rooms',# 22.785397232054713
-
-        'waterIncluded', # 22.80653144493355
-        'totalParkingSpaces', # 22.81551411353129
+        # 'waterIncluded', # 22.80653144493355
+        # 'totalParkingSpaces', # 22.81551411353129
         #
         # 'frontingOn',  # 面向得方向，drop掉之后有1w多:14270
         # 'drive',  # 14270
@@ -172,7 +172,7 @@ def first_train(train_data,train_data_label,epochs,f):
     model.compile(loss="mse", optimizer="adam")
     model.summary()
     model.fit(train_data, train_data_label, epochs=epochs, )
-    model.save('model.h5')
+    model.save('model_keras_test.h5')
     f.write('this is first train ,model is save as model.h5\n')
     return model
 
@@ -190,7 +190,7 @@ def test_data_save_and_merge_data(prediction_result,origin_data,f):
     x_dataframe = pd.DataFrame(x, columns=['predictions'])
     merge_data = pd.concat((origin_data, x_dataframe), axis=1)
     merge_data_df = pd.DataFrame(merge_data)
-    merge_data_df.to_csv('./merge_data_bak/merge_data_auto_ml.csv', index=False)
+    merge_data_df.to_csv('./merge_data_bak/merge_data_keras.csv', index=False)
     print(x_dataframe.describe())
     print(df_test_label.describe())
 
@@ -214,7 +214,7 @@ def train_data_save_and_merge(model,origin_data_train,X_train_data,f):
     merge_train_data = pd.concat((origin_data_train, train_dataframe), axis=1)
     merge_train_data_df = pd.DataFrame(merge_train_data)
 
-    merge_train_data_df.to_csv('./merge_data_bak/merge_train_data.csv', index=False)
+    merge_train_data_df.to_csv('./merge_data_bak/merge_train_data_keras.csv', index=False)
     f.write('finish train data prediction and save the merge the train data and label\n')
 
 
@@ -236,9 +236,9 @@ def process_train_merge_data_remove_some_data(data,f,remove_ratio):
 if __name__ == '__main__':
     delay_time =20
     epochs = 10
-    is_first_train = 1
+    is_first_train = 0
     for i in [300,
-              270,250,230,200,170,
+              # 270,250,230,200,170,
               # 150,120,100,100,95,95,90,85,80,75,70,65,60,55,50,50,45,45,40,35,35,30,30,25,25,20
               ]:
         # 训练数据
@@ -302,10 +302,13 @@ if __name__ == '__main__':
             # 判断是否是第一次训练，如果是第一次训练就需要保存一次模型，如果
             # 不是就直接从本地读入模型；
             # 训练
-            if is_first_train:
-                model = first_train(X_train_data,Y_train_data_label,1,f)
-            else:
-                model = continue_train(X_train_data,Y_train_data_label,epochs,f,i)
+            # if is_first_train:
+            #     model = first_train(X_train_data,Y_train_data_label,1,f)
+            # else:
+            #     model = continue_train(X_train_data,Y_train_data_label,epochs,f,i)
+
+            model = first_train(X_train_data, Y_train_data_label, epochs, f)
+
             # 预测
             pred1 = model.predict(X_test_data)
             print(mean_absolute_error(Y_test_data_label,pred1))
@@ -314,9 +317,9 @@ if __name__ == '__main__':
             test_data_save_and_merge_data(pred1,origin_data,f)
             # 合并保存训练数据的预测结果
             train_data_save_and_merge(model,origin_data_train,X_train_data,f)
-            time.sleep(delay_time)
-            data_new = pd.read_csv('./merge_data_bak/merge_train_data.csv')
-            process_train_merge_data_remove_some_data(data_new,f,i)
+            # time.sleep(delay_time)
+            # data_new = pd.read_csv('./merge_data_bak/merge_train_data.csv')
+            # process_train_merge_data_remove_some_data(data_new,f,i)
         is_first_train=0
 
 

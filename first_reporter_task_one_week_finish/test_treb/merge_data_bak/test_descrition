@@ -652,6 +652,10 @@ sys:1: DtypeWarning: Columns (25,91) have mixed types. Specify dtype option on i
 
 finish the auto shell program
 
+用写好的连续脚本跑，但是存在一定的问题，效果相差了很多；
+需要更改脚本的筛选情况，然后减少特征值；
+
+
 
 
 

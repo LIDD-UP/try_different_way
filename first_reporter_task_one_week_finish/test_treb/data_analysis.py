@@ -9,14 +9,14 @@ import missingno as msno
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-data_train = pd.read_csv('./input/treb_toronto_all.csv')
+data_train = pd.read_csv('./input/treb_toronto_3to8.csv')
 # data_train_all = pd.read_csv('./input/treb_all_column_month_3to8.csv')
 #
 # data_test = pd.read_csv('./input/treb_test_month_9.csv')
 # data_test_all = pd.read_csv('./input/treb_test_all_column_month_9.csv')
 
-data = data_train.iloc[:,150:200]
-msno.bar(data)
+# data = data_train.iloc[:,150:200]
+msno.bar(data_train)
 plt.tight_layout()
 # plt.tick_params(labelsize=11)
 plt.show()
