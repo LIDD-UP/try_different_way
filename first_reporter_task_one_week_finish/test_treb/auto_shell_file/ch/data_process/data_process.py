@@ -86,5 +86,17 @@ class DataProcess(object):
         # data['price'] = np.log1p(data['price'])
         return data
 
-    def keras_data_process(self):
+    def keras_data_process(self,data):
+        # 这里用相对路径还是有问题；
+        merge_data = pd.read_csv('../merge_data_for_dummies/merge_data_for_dummies.csv')
+        new_data = pd.concat((data,merge_data))
+        new_data = pd.get_dummies(new_data)
+        final_data = new_data.iloc[:data.shape[0],:]
+        print(final_data.shape)
+        return final_data
+
+
+if __name__ == '__main__':
+    db = DataProcess()
+    db.keras_data_process([])
 

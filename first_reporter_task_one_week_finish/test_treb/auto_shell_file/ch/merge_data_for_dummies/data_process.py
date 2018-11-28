@@ -7,39 +7,39 @@
 import pandas as pd
 
 
-data = pd.read_csv('./solve_dummies_problem.csv')
-
-data = data[[
-            "longitude",
-            "latitude",
-            # "city",
-            # "province",
-            "price",
-            "tradeTypeId",
-            # # "listingDate",
-            "buildingTypeId",
-            "bedrooms",
-            "bathroomTotal",
-            # 'postalCode',
-            'daysOnMarket',
-            'ownerShipType',
-            # 'projectDaysOnMarket',
-            'district',
-]]
-data = data.dropna()
-new_data = pd.DataFrame()
-print(data.shape)
-for column in data.columns:
-    if column in [
-            "tradeTypeId",
-            "buildingTypeId",
-            'ownerShipType',
-            'district']:
-        new_data = pd.concat((pd.DataFrame(list(set(list(data[column])))),new_data),axis=1)
+# data = pd.read_csv('./solve_dummies_problem.csv')
 #
-
-print(new_data.shape)
-print(new_data)
+# data = data[[
+#             "longitude",
+#             "latitude",
+#             # "city",
+#             # "province",
+#             "price",
+#             "tradeTypeId",
+#             # # "listingDate",
+#             "buildingTypeId",
+#             "bedrooms",
+#             "bathroomTotal",
+#             # 'postalCode',
+#             'daysOnMarket',
+#             'ownerShipType',
+#             # 'projectDaysOnMarket',
+#             'district',
+# ]]
+# data = data.dropna()
+# new_data = pd.DataFrame()
+# print(data.shape)
+# for column in data.columns:
+#     if column in [
+#             "tradeTypeId",
+#             "buildingTypeId",
+#             'ownerShipType',
+#             'district']:
+#         new_data = pd.concat((pd.DataFrame(list(set(list(data[column])))),new_data),axis=1)
+# #
+#
+# print(new_data.shape)
+# print(new_data)
 
 # buildingTypeId = pd.DataFrame(list(set(list(data['buildingTypeId']))))
 # district = pd.DataFrame(list(set(list(data['district']))))
@@ -49,3 +49,14 @@ print(new_data)
 # merge_data = pd.concat((district,buildingTypeId),axis=1)
 # print(merge_data.shape)
 # print(merge_data)
+
+
+data = pd.read_csv('./merge_data_for_dummies.csv')
+new_data = pd.get_dummies(data)
+print(new_data.head(100))
+print(new_data.shape)
+# new_data.to_csv('./test.csv')
+for column in new_data.columns:
+    print(column)
+
+print(new_data['ownerShipType_Leasehold Condo/Strata'])

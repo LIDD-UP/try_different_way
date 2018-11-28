@@ -235,7 +235,7 @@ def process_train_merge_data_remove_some_data(data,f,remove_ratio):
 
 if __name__ == '__main__':
     delay_time =20
-    epochs = 100
+    epochs = 10
     is_first_train = 0
     for i in [300,
               # 270,250,230,200,170,

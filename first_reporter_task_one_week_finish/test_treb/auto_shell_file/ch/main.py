@@ -27,16 +27,18 @@ if __name__ == '__main__':
     sql_query_string = treb_sql_string
     prediction_data = pd.read_sql(sql_query_string,con=conn)
     prediction_data_after_process = DataProcess.data_process(prediction_data)
+    dp = DataProcess()
+    keras_process = dp.keras_data_process(prediction_data_after_process)
     my_prediciton = MyPrediction()
-    result_auto_ml = my_prediciton.my_predict_auto_ml(prediction_data)
-    # result_keras = my_prediciton.my_predict_keras(prediction_data)
-    data1 = transform_data_to_dataframe(result_auto_ml)
-    # data2 = transform_data_to_dataframe(result_keras)
-    print(data1.head())
-    data1.to_csv('./auto_ml_result.csv')
+    # result_auto_ml = my_prediciton.my_predict_auto_ml(prediction_data)
+    result_keras = my_prediciton.my_predict_keras(keras_process)
+    # data1 = transform_data_to_dataframe(result_auto_ml)
+    data2 = transform_data_to_dataframe(result_keras)
+    # print(data1.head())
+    # data1.to_csv('./auto_ml_result.csv')
     # merge_data = pd.concat((data1,data2),axis=1)
     # merge_data.to_csv('./merge_auto_keras.csv')
-    # print(data2.head())
+    print(data2.head())
 
 
 
