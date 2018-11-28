@@ -169,7 +169,7 @@ def first_train(train_data,train_data_label,epochs,f):
     model.add(Dense(256, activation="relu", input_dim=X_train_data.shape[1]))
     model.add(Dense(516, activation="relu", input_dim=X_train_data.shape[1]))
     model.add(Dense(1, input_dim=X_train_data.shape[1], kernel_regularizer=l1(0.1)))
-    model.compile(loss="mse", optimizer="adam")
+    model.compile(loss="mse", optimizer="adam") # SGD adam Adadelta
     model.summary()
     model.fit(train_data, train_data_label, epochs=epochs, )
     model.save('model_keras_test.h5')
@@ -178,7 +178,7 @@ def first_train(train_data,train_data_label,epochs,f):
 
 
 def continue_train(train_data,test_data,epochs,f,i):
-    model = load_model('model.h5')
+    model = load_model('model_keras.h5')
     model.fit(train_data,test_data,epochs=epochs)
     model.save('model.h5')
     f.write('this is another train and will remove train data %d'%i)
@@ -228,14 +228,14 @@ def process_train_merge_data_remove_some_data(data,f,remove_ratio):
     # print(data.head())
     print(data.shape)
     data.to_csv('./input/treb_toronto_3to8_1.csv')
-    data_orgin.to_csv('./orgin_data.csv')
+    data_orgin.to_csv('./orgin_data_keras.csv')
     f.write('finish the remove big gap of train data ,remove ratio is:{0}and train data shape is:{1}\n'.format(remove_ratio,data.shape))
 
 
 
 if __name__ == '__main__':
     delay_time =20
-    epochs = 10
+    epochs = 100
     is_first_train = 0
     for i in [300,
               # 270,250,230,200,170,

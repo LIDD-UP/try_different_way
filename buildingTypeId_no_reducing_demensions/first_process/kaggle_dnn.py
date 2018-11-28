@@ -558,7 +558,7 @@ def log_transform():
 
 
 def change_hidden_layer_setting():
-    # Change hidden layer Configure
+    # Change hidden layer my_conf
     numerical_fields = [
         numeric_column for numeric_column in df_test.columns if df_test[numeric_column].dtype != 'object'
     ]

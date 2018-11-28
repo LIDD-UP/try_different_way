@@ -32,23 +32,23 @@ def preprocess_data(data):
         'district',
 
         # 以下就是用于测试得新得特征；
-        'style', #22.769283885157083
-        'community', # 类似于city类型得数据，类型有766个； #22.38147912725983
-        'airConditioning', #22.755048806968883
-        'washrooms', # 连续 #23.691205780782205
-        'basement1',# 地下室22.797430800725444
-        'familyRoom', # 22.794731300998404
-        'fireplaceStove', # 2 w 左右 #22.82878318024665
-        'heatSource', # 数据量可以2w+# 22.75554140962404
-        'garageType', # 2 w+ #22.79707321027956
-        'kitchens', # 22.79393809434976
-        'parkingSpaces', #22.807931672409705
+        # 'style', #22.769283885157083
+        # 'community', # 类似于city类型得数据，类型有766个； #22.38147912725983
+        # 'airConditioning', #22.755048806968883
+        # 'washrooms', # 连续 #23.691205780782205
+        # 'basement1',# 地下室22.797430800725444
+        # 'familyRoom', # 22.794731300998404
+        # 'fireplaceStove', # 2 w 左右 #22.82878318024665
+        # 'heatSource', # 数据量可以2w+# 22.75554140962404
+        # 'garageType', # 2 w+ #22.79707321027956
+        # 'kitchens', # 22.79393809434976
+        # 'parkingSpaces', #22.807931672409705
+        # #
+        # 'parkingIncluded',#22.786586056260784
+        # 'rooms',# 22.785397232054713
         #
-        'parkingIncluded',#22.786586056260784
-        'rooms',# 22.785397232054713
-
-        'waterIncluded', # 22.80653144493355
-        'totalParkingSpaces', # 22.81551411353129
+        # 'waterIncluded', # 22.80653144493355
+        # 'totalParkingSpaces', # 22.81551411353129
         #
         # 'frontingOn',  # 面向得方向，drop掉之后有1w多:14270
         # 'drive',  # 14270
@@ -220,8 +220,8 @@ if __name__ == '__main__':
     # ml_predictor = Predictor(type_of_estimator='Regressor', column_descriptions=column_descriptions)
     #
     # ml_predictor.train(df_train,model_names='XGBRegressor')
-    # ml_predictor.save('model_auto_ml.h5')
-    ml_predictor = load_ml_model('model_auto_ml.h5')
+    # ml_predictor.save('model_auto_ml_9.h5')
+    ml_predictor = load_ml_model('auto_ml_saved_pipeline0.23390790332728517_keras_deep_learning_model.h5')
 
 
 
@@ -238,12 +238,12 @@ if __name__ == '__main__':
     compute_ratio(merge_data_df)
     # compute_ratio2(merge_data_df)
 
-    # 预测训练数据
-    train_prediction = ml_predictor.predict(df_train_prediction)
-    train_dataframe = pd.DataFrame(train_prediction,columns=['trainPrediction'])
-    merge_train_data = pd.concat((origin_data_train,train_dataframe),axis=1)
-    merge_train_data_df = pd.DataFrame(merge_train_data)
-    merge_train_data_df.to_csv('./merge_data_bak/merge_train_data.csv',index=False)
+    # # 预测训练数据
+    # train_prediction = ml_predictor.predict(df_train_prediction)
+    # train_dataframe = pd.DataFrame(train_prediction,columns=['trainPrediction'])
+    # merge_train_data = pd.concat((origin_data_train,train_dataframe),axis=1)
+    # merge_train_data_df = pd.DataFrame(merge_train_data)
+    # merge_train_data_df.to_csv('./merge_data_bak/merge_train_data.csv',index=False)
 
 
 

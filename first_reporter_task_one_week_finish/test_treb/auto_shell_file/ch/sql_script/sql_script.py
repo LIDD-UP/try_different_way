@@ -17,6 +17,7 @@ treb_sql_string = '''
         rs."buildingTypeId",
         rs."tradeTypeId",
         rs."listingDate",
+        rs."ownerShipType",
         
         rs.furnished,
         rs."style",

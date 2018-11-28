@@ -125,7 +125,7 @@ if __name__ == '__main__':
     data_label = data['daysOnMarket']
     data_prediction = data.drop(columns=['daysOnMarket'])
     # 导入模型
-    model = load_ml_model('./some_fine_model/model_auto_ml.h5')
+    model = load_ml_model('./some_fine_model/model_auto_ml_9.h5')
     # 预测：
     prediction_result = model.predict(data_prediction)
 

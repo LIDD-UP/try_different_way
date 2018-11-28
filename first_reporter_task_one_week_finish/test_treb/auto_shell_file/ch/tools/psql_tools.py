@@ -7,7 +7,7 @@
 import psycopg2
 import os,sys
 sys.path.append(os.path.dirname(os.path.abspath(os.path.curdir)))
-from Configure import psql_settings
+from my_conf import psql_settings
 
 
 
@@ -18,6 +18,7 @@ class PSQLToos(object):
         self.user = psql_settings.USER
         self.password = psql_settings.PASSWORD
         self.dbname = psql_settings.DBNAME
+
     def get_psql_connection_obj(self):
         conn = psycopg2.connect(
             host=self.host,
