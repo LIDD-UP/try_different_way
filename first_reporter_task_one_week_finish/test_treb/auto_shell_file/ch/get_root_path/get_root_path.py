@@ -9,5 +9,5 @@ import sys
 
 
 def get_root_path():
-    path = os.path.dirname(os.path.abspath(os.path.curdir))
+    path = os.path.dirname(os.path.abspath(__file__))
     sys.path.append(path)

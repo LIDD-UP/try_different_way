@@ -6,7 +6,7 @@
 """
 import psycopg2
 import os,sys
-sys.path.append(os.path.dirname(os.path.abspath(os.path.curdir)))
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from my_conf import psql_settings
 
 

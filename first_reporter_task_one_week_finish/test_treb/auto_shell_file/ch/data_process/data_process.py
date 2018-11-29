@@ -4,7 +4,11 @@
 @file: data_process.py
 @time: 2018/11/27
 """
+import os,sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import pandas as pd
+from my_conf.merge_data_file_for_dummies_settings import merge_data_path
+print('merege_data_path:',merge_data_path)
 
 
 class DataProcess(object):
@@ -28,7 +32,7 @@ class DataProcess(object):
             "bedrooms",
             "bathroomTotal",
             # 'postalCode',
-            'daysOnMarket',
+            # 'daysOnMarket',
             'ownerShipType',
             # 'projectDaysOnMarket',
             'district',
@@ -84,19 +88,32 @@ class DataProcess(object):
 
         # 将price做log变换
         # data['price'] = np.log1p(data['price'])
+        data['price'] = data['price'].astype(int)
+        data['buildingTypeId'] = data['buildingTypeId'].astype(int)
+        data['tradeTypeId'] = data['tradeTypeId'].astype(int)
+
         return data
 
     def keras_data_process(self,data):
         # 这里用相对路径还是有问题；
-        merge_data = pd.read_csv('../merge_data_for_dummies/merge_data_for_dummies.csv')
+        merge_data = pd.read_csv(merge_data_path)
+        merge_data = self.data_process(merge_data)
+        print('merge_dummies_data:',merge_data.head())
+        print('merge_dummies_data:',merge_data.shape)
+        # 这里再合并得时候要注意字段名称得问题；
         new_data = pd.concat((data,merge_data))
+        print('concat shape:',new_data.shape)
+        # 这里dummies得时候，原始得tradeTypeId和buildingTypeId 没有转化成类别型得变量；
         new_data = pd.get_dummies(new_data)
         final_data = new_data.iloc[:data.shape[0],:]
-        print(final_data.shape)
+        print('get_dummies shape:',final_data.shape)
         return final_data
 
 
 if __name__ == '__main__':
     db = DataProcess()
-    db.keras_data_process([])
+    # 这里需要注意合并时候字段名称得问题i；
+    test_dataframe = pd.DataFrame([[1,1,1,1,1,1,1,1,1,1]])
+    print(test_dataframe.shape)
+    db.keras_data_process(test_dataframe)
 

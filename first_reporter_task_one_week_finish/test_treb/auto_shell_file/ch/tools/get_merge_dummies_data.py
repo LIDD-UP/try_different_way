@@ -25,7 +25,7 @@ class GetMergeDummiesData(object):
             "bedrooms",
             "bathroomTotal",
             # 'postalCode',
-            'daysOnMarket',
+            # 'daysOnMarket',
             'ownerShipType',
             # 'projectDaysOnMarket',
             'district',
@@ -44,14 +44,15 @@ class GetMergeDummiesData(object):
                 'ownerShipType',
                 'district']:
                 new_data = pd.concat((pd.DataFrame(list(set(list(data[column]))),columns=[column]), new_data), axis=1)
-        #
+            else:
+                new_data = pd.concat((pd.DataFrame([1],columns=[column]),new_data),axis=1)
 
         print(new_data.shape)
         print(new_data)
-        new_data.to_csv('../merge_data_for_dummies/merge_data_for_dummies.csv')
+        new_data.to_csv('../merge_data_for_dummies/merge_data_for_dummies.csv',index=False)
 
 
 if __name__ == '__main__':
-    data = pd.read_csv('../merge_data_for_dummies/solve_dummies_problem.csv')
+    data = pd.read_csv('../merge_data_for_dummies/treb_toronto_3to8_1.csv')
     get_merge_dummies_data_obj = GetMergeDummiesData()
     get_merge_dummies_data_obj.get_merge_dummies_data(data,[])

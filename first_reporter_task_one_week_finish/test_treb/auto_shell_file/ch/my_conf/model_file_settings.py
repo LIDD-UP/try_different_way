@@ -7,7 +7,11 @@
 import os
 import sys
 
-model_auto_ml_path= os.path.dirname(os.path.abspath(os.path.curdir)) + '/ch/model_file/model_auto_ml_9.h5'
-print(model_auto_ml_path)
-model_kears_path = os.path.dirname(os.path.abspath(os.path.curdir)) + '/ch/model_file/model_keras_test_6_4_9.h5'
+auto_ml_model_name = 'model_auto_ml_9.h5'
+keras_model_name = 'model_keras_test.h5'
 
+
+model_auto_ml_path= os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/model_file/{}'.format(auto_ml_model_name)
+print(model_auto_ml_path)
+model_keras_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/model_file/{}'.format(keras_model_name)
+print(model_keras_path)

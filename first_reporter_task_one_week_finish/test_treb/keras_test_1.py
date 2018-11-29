@@ -299,6 +299,8 @@ if __name__ == '__main__':
             X_train_data = train_test_merge.iloc[:X_train_data.shape[0],:]
             X_test_data = train_test_merge.iloc[X_train_data.shape[0]:,:]
 
+            print('X_train_data',X_train_data.shape)
+
             # 判断是否是第一次训练，如果是第一次训练就需要保存一次模型，如果
             # 不是就直接从本地读入模型；
             # 训练

@@ -6,7 +6,7 @@
 """
 import smtplib
 import os,sys
-sys.path.append(os.path.dirname(os.path.abspath(os.path.curdir)))
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from email.mime.text import MIMEText
 import my_conf.emial_settings as mail_conf
 
