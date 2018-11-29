@@ -222,7 +222,7 @@ if __name__ == '__main__':
     ml_predictor = Predictor(type_of_estimator='Regressor', column_descriptions=column_descriptions)
 
     ml_predictor.train(df_train,model_names='XGBRegressor') # KerasRegressor XGBRegressor DeepLearningRegressor
-    file_name = ml_predictor.save()
+    ml_predictor.save('auto_ml_new.h5')
 
 
     # 预测预测数据
