@@ -32,7 +32,7 @@ class DataProcess(object):
             "bedrooms",
             "bathroomTotal",
             # 'postalCode',
-            # 'daysOnMarket',
+            'daysOnMarket',
             'ownerShipType',
             # 'projectDaysOnMarket',
             'district',
@@ -98,6 +98,10 @@ class DataProcess(object):
         # 这里用相对路径还是有问题；
         merge_data = pd.read_csv(merge_data_path)
         merge_data = self.data_process(merge_data)
+
+        # 这里有一个合并问题：需要去除daysOnMarket
+        merge_data = merge_data.drop(columns='daysOnMarket')
+
         print('merge_dummies_data:',merge_data.head())
         print('merge_dummies_data:',merge_data.shape)
         # 这里再合并得时候要注意字段名称得问题；
