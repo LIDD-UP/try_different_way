@@ -28,32 +28,37 @@ def transform_data_to_dataframe(data):
 if __name__ == '__main__':
 
     # 读取数据库数据
-    psql_tools = PSQLToos()
-    conn = psql_tools.get_psql_connection_obj()
-    sql_query_string = treb_sql_string
-    prediction_data = pd.read_sql(sql_query_string,con=conn)
+    # psql_tools = PSQLToos()
+    # conn = psql_tools.get_psql_connection_obj()
+    # sql_query_string = treb_sql_string
+    # prediction_data = pd.read_sql(sql_query_string,con=conn)
 
-    # prediction_data = pd.read_csv('treb_toronto_9.csv')
+    prediction_data = pd.read_csv('treb_toronto_11.csv')
+
+    # 数据处理
     print('prediction_data',prediction_data.shape)
     prediction_data_after_process = DataProcess.data_process(prediction_data)
-
-
-
-
     # print('prediction_data_after_process shape:',prediction_data_after_process.shape)
     dp = DataProcess()
     keras_process = dp.keras_data_process(prediction_data_after_process)
     # print('keras_process :shape:',keras_process.shape)
+    # 预测
     my_prediciton = MyPrediction()
+    # auto_ml 预测
     result_auto_ml = my_prediciton.my_predict_auto_ml(prediction_data)
+    # keras预测
     result_keras = my_prediciton.my_predict_keras(keras_process)
+    # 转化成DataFrame格式
     data1 = transform_data_to_dataframe(result_auto_ml)
     data2 = transform_data_to_dataframe(result_keras)
+    # 测试
     print(data1.head())
     data1.to_csv('./auto_ml_result.csv')
     merge_data = pd.concat((data1,data2),axis=1)
     merge_data.to_csv('./merge_auto_keras.csv')
     print(data2.head())
+    # 读入数据库
+    
 
 
 

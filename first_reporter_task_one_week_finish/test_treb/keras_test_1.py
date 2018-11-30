@@ -188,6 +188,7 @@ def continue_train(train_data,test_data,epochs,f,i):
 def test_data_save_and_merge_data(prediction_result,origin_data,f):
     x = prediction_result
     x_dataframe = pd.DataFrame(x, columns=['predictions'])
+    x_dataframe = x_dataframe[x_dataframe.predictions>0]
     merge_data = pd.concat((origin_data, x_dataframe), axis=1)
     merge_data_df = pd.DataFrame(merge_data)
     merge_data_df.to_csv('./merge_data_bak/merge_data_keras.csv', index=False)
@@ -270,7 +271,7 @@ if __name__ == '__main__':
 
             # df_test_middle = pd.read_csv('./input/treb_test_month_9.csv')
             # df_test_middle = pd.read_csv('./input/treb_test_all_column_month_9.csv')
-            df_test_middle = pd.read_csv('./input/treb_toronto_9.csv')
+            df_test_middle = pd.read_csv('./input/treb_toronto_11.csv')
             # df_test_middle = pd.read_csv('./input/treb_toronto_10.csv')
 
             print(df_test_middle.shape)

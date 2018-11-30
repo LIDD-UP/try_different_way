@@ -1,8 +1,8 @@
 # -*- coding:utf-8 _*-  
 """ 
 @author:Administrator
-@file: predict_analysis.py
-@time: 2018/9/20
+@file: comput_ratio.py
+@time: 2018/11/30
 """
 import pandas as pd
 from sklearn.metrics import mean_absolute_error
@@ -94,14 +94,8 @@ def compute_ratio2(data):
     print(len(data[abs(data.predictions - data.daysOnMarket) > 30])/data_len)
     print(mean_absolute_error(data[test_column], data['daysOnMarket']))
 
-if __name__ == '__main__':
-    # data = pd.read_csv('merge_data_auto_ml.csv')
-    # data = pd.read_csv('merge_data_auto_ml_xgboost.csv')
-    data = pd.read_csv('../input/treb_toronto_11.csv')
-    data = preprocess_data(data)
-    print(data.shape,'------------------------->>>>')
 
-
+def compute_ratio(data,test_column):
     data_10 = []
     data_20 = []
     data_30 = []
@@ -109,7 +103,7 @@ if __name__ == '__main__':
 
     # data = data.drop(columns=['index'])
 
-    test_column = 'projectDaysOnMarket'
+    # test_column = 'projectDaysOnMarket'
     # test_column = 'predictions'
 
     for i in range(len(data)):
@@ -130,6 +124,16 @@ if __name__ == '__main__':
     print(len(data_30) / len(data))
     print(len(data_more) / len(data))
     print(mean_absolute_error(data[test_column], data['daysOnMarket']))
+
+if __name__ == '__main__':
+    # data = pd.read_csv('merge_data_auto_ml.csv')
+    # data = pd.read_csv('merge_data_auto_ml_xgboost.csv')
+    data = pd.read_csv('../treb_toronto_9.csv')
+    data = preprocess_data(data)
+    print(data.shape,'------------------------->>>>')
+
+    compute_ratio(data,'projectDaysOnMarket')
+
 
 
 

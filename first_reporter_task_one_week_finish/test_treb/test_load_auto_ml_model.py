@@ -174,7 +174,7 @@ if __name__ == '__main__':
 
     # df_test_middle = pd.read_csv('./input/treb_test_month_9.csv')
     # df_test_middle = pd.read_csv('./input/treb_test_all_column_month_9.csv')
-    df_test_middle = pd.read_csv('./input/treb_toronto_9.csv')
+    df_test_middle = pd.read_csv('./input/treb_toronto_11.csv')
     # df_test_middle = pd.read_csv('./input/treb_toronto_10.csv')
     from auto_ml import load_ml_model
 
@@ -221,7 +221,7 @@ if __name__ == '__main__':
     #
     # ml_predictor.train(df_train,model_names='XGBRegressor')
     # ml_predictor.save('model_auto_ml_9.h5')
-    ml_predictor = load_ml_model('auto_ml_saved_pipeline0.23390790332728517_keras_deep_learning_model.h5')
+    ml_predictor = load_ml_model('auto_ml_new.h5')
 
 
 
