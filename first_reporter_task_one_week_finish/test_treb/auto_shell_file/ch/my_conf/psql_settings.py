@@ -8,4 +8,4 @@ HOST = '127.0.0.1'
 PORT = 5432
 USER = 'postgres'
 PASSWORD = '123456'
-DBNAME = 'test'
+DBNAME = 'test2'

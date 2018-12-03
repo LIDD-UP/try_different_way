@@ -12,12 +12,12 @@ from my_conf import psql_settings
 
 
 class PSQLToos(object):
-    def __init__(self):
+    def __init__(self,dbname):
         self.host = psql_settings.HOST
         self.port = psql_settings.PORT
         self.user = psql_settings.USER
         self.password = psql_settings.PASSWORD
-        self.dbname = psql_settings.DBNAME
+        self.dbname = dbname
 
     def get_psql_connection_obj(self):
         conn = psycopg2.connect(
