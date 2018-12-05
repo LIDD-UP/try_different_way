@@ -23,6 +23,7 @@ from keras.models import load_model
 from my_conf.model_file_settings import model_keras_path
 from tools.comput_ratio import compute_ratio
 from sqlalchemy import create_engine
+from tools.send_email import send_email
 def transform_data_to_dataframe(data,column):
     data = pd.DataFrame(data,columns=[column])
     return data
@@ -53,48 +54,57 @@ def save_data_to_database(prediction_result,origin_data,table_name,columns_list)
 
 
 def main():
-    predict_or_test = "test"
-    print(sys.argv[1])
+    try:
+        predict_or_test = "test"
+        print(sys.argv[1])
 
-    # 读取数据库数据
-    # psql_tools = PSQLToos()
-    # conn = psql_tools.get_psql_connection_obj(psql_settings.is_ssh)
-    # sql_query_string = prediciton_query_string
-    # prediction_data = pd.read_sql(sql_query_string,con=conn)
+        # 读取数据库数据
+        psql_tools = PSQLToos()
+        conn = psql_tools.get_psql_connection_obj(psql_settings.is_ssh)
+        sql_query_string = prediciton_query_string
+        prediction_data = pd.read_sql(sql_query_string,con=conn)
 
-    # 本地读取数据
-    prediction_data = pd.read_csv('treb_toronto_11.csv')
+        # 本地读取数据
+        # prediction_data = pd.read_csv('treb_toronto_11.csv')
 
-    # 数据处理
-    print('prediction data shape', prediction_data.shape)
-    # auto_ml只需要处理一次，keras需要处理两次
-    dp = DataProcess()
-    prediction_data_after_process = dp.data_process(prediction_data, predict_or_test)
-    # 然后保存与处理过后的文件
-    origin_data = prediction_data_after_process.reset_index(drop=True)
-    # 去掉daysOnMarket
-    prediction_data_after_process = prediction_data_after_process.drop(columns='daysOnMarket')
-    print('prediction_data_after_process shape:',prediction_data_after_process.shape)
-    my_prediciton = MyPrediction()
-    # auto_ml 预测
-    if sys.argv[1] == 'auto_ml':
-        result_auto_ml = my_prediciton.my_predict_auto_ml(prediction_data_after_process)
-        result_auto_ml_df = transform_data_to_dataframe(result_auto_ml, 'predictions')
-        print(result_auto_ml_df.head())
-        result_auto_ml_df.to_csv('./auto_ml_result.csv')
 
-        save_data_to_database(result_auto_ml_df,origin_data,'test3',[])
-        merge_prediction_orgin_auto_ml = pd.concat((origin_data, result_auto_ml_df), axis=1)
-        compute_ratio(merge_prediction_orgin_auto_ml, 'predictions')
-    # keras 预测
-    if sys.argv[1] == 'keras':
-        keras_process = dp.keras_data_process(prediction_data_after_process)
-        result_keras = my_prediciton.my_predict_keras(keras_process)
-        # 转化成DataFrame格式
-        result_keras_df = transform_data_to_dataframe(result_keras, 'predictions')
-        merge_prediction_origin_keras = pd.concat((origin_data, result_keras_df), axis=1)
-        compute_ratio(merge_prediction_origin_keras, 'predictions')
-        save_data_to_database(result_keras_df,origin_data,'test3',[])
+        # 数据处理
+        print('prediction data shape', prediction_data.shape)
+        total_data_number = prediction_data.shape[0]
+        # auto_ml只需要处理一次，keras需要处理两次
+        dp = DataProcess()
+        prediction_data_after_process = dp.data_process(prediction_data, predict_or_test)
+        # 然后保存与处理过后的文件
+        origin_data = prediction_data_after_process.reset_index(drop=True)
+        # 去掉daysOnMarket
+        prediction_data_after_process = prediction_data_after_process.drop(columns='daysOnMarket')
+        print('prediction_data_after_process shape:',prediction_data_after_process.shape)
+        prediction_data_number = prediction_data_after_process.shape[0]
+        my_prediciton = MyPrediction()
+        # auto_ml 预测
+        if sys.argv[1] == 'auto_ml':
+            result_auto_ml = my_prediciton.my_predict_auto_ml(prediction_data_after_process)
+            result_auto_ml_df = transform_data_to_dataframe(result_auto_ml, 'predictions')
+            print(result_auto_ml_df.head())
+            result_auto_ml_df.to_csv('./auto_ml_result.csv')
+
+            save_data_to_database(result_auto_ml_df,origin_data,'test3',[])
+            merge_prediction_orgin_auto_ml = pd.concat((origin_data, result_auto_ml_df), axis=1)
+            compute_ratio(merge_prediction_orgin_auto_ml, 'predictions')
+
+        # keras 预测
+        if sys.argv[1] == 'keras':
+            keras_process = dp.keras_data_process(prediction_data_after_process)
+            result_keras = my_prediciton.my_predict_keras(keras_process)
+            # 转化成DataFrame格式
+            result_keras_df = transform_data_to_dataframe(result_keras, 'predictions')
+            merge_prediction_origin_keras = pd.concat((origin_data, result_keras_df), axis=1)
+            compute_ratio(merge_prediction_origin_keras, 'predictions')
+            save_data_to_database(result_keras_df,origin_data,'test3',[])
+        send_email("AI预测", '总共查询:{0}条数据，使用{1}方法预测了:{}'.format(total_data_number, sys.argv[1], prediction_data_number))
+    except Exception as e:
+        print(e)
+        send_email("AI预测", '预测失败：{}'.format(e))
 
 
 
