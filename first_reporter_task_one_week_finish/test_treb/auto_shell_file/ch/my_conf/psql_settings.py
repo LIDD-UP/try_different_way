@@ -4,11 +4,22 @@
 @file: psql_settings.py
 @time: 2018/11/27
 """
+# local
 # HOST = '127.0.0.1'
 # PORT = 5432
 # USER = 'postgres'
 # PASSWORD = '123456'
 # DBNAME = 'test2'
+
+# remote
+
+HOST = '138.197.138.231'
+PORT = 22
+USER = 'root'
+PASSWORD = 'saninco123#@!'
+DBNAME = 'saninco_realtor_db'
+
+
 
 is_ssh = True
 ssh_host = "138.197.138.231"

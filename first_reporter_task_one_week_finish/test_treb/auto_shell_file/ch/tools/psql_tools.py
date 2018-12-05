@@ -13,12 +13,29 @@ from sql_script import sql_script
 
 
 class PSQLToos(object):
+    def __init__(self):
+        self.host = psql_settings.HOST
+        self.port = psql_settings.PORT
+        self.user = psql_settings.USER
+        self.password = psql_settings.PASSWORD
+        self.dbname = psql_settings.DBNAME
 
-    def get_psql_connection_obj(self,is_ssh):
+    def get_psql_connection_obj(self):
+        conn = psycopg2.connect(
+            host=self.host,
+            port=self.port,
+            user=self.user,
+            password=self.password,
+            dbname=self.dbname
+        )
+        return conn
+
+    def get_psql_connection_obj1(self,is_ssh):
         if is_ssh:
             with SSHTunnelForwarder((psql_settings.ssh_host, psql_settings.ssh_port),
                                     ssh_password=psql_settings.ssh_password, ssh_username=psql_settings.ssh_username,
-                                    remote_bind_address=(psql_settings.host, psql_settings.port)) as server:
+                                    remote_bind_address=(psql_settings.host, psql_settings.port)
+                                    ) as server:
 
                 conn = psycopg2.connect(
                     host='localhost',
@@ -40,9 +57,11 @@ class PSQLToos(object):
 
 
 
+
+
 if __name__ == '__main__':
     psql_tools = PSQLToos()
-    conn = psql_tools.get_psql_connection_obj(psql_settings.is_ssh)
+    conn = psql_tools.get_psql_connection_obj()
     print(conn)
     cursor = conn.cursor()
     query_string = sql_script.prediciton_query_string
