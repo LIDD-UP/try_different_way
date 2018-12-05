@@ -13,11 +13,11 @@ from tools.psql_tools import PSQLToos
 from new_pdn.pdn import MyPrediction
 # from tools.do_predictions import MyPrediction
 import pandas as pd
-from sql_script.sql_script import treb_sql_string
+from sql_script.sql_script import treb_sql_string,prediciton_query_string
 # from do_prediction import do_predictions
 from data_process.data_process import DataProcess
 from my_conf.merge_data_file_for_dummies_settings import merge_data_path
-from my_conf.psql_settings import USER,PASSWORD,DBNAME
+from my_conf import psql_settings
 print('merge_data_path:',merge_data_path)
 from keras.models import load_model
 from my_conf.model_file_settings import model_keras_path
@@ -35,28 +35,35 @@ def get_data_from_database(treb_sql_string):
     prediction_data = pd.read_sql(sql_query_string,con=conn)
     return prediction_data
 
-def save_data_to_database(prediction_result):
-    engine = create_engine('postgresql://{0}:{1}@localhost:5432/{2}'.format(USER,PASSWORD,DBNAME))
+def save_data_to_database(prediction_result,origin_data,table_name,columns_list):
+    engine = create_engine('postgresql://{0}:{1}@localhost:5432/{2}'.format(psql_settings.user,psql_settings.password,psql_settings.dbname))
     # create_engine说明：dialect[+driver]://user:password@host/dbname[?key=value..]
     # psql_tools = PSQLToos('test2')
     # conn = psql_tools.get_psql_connection_obj()
-    prediction_result.to_sql(name='test',con=engine,if_exists='append')
+    columns_list = [
+        'estateMasterId',
+        'realtorDataId',
+        'realtorHistoryId',
+        'mlsnumber',
+    ]
+    orgin_data_need = origin_data[columns_list]
+    merge_data = pd.concat((orgin_data_need,prediction_result),axis=1)
+    merge_data.to_sql(name=table_name,con=engine,if_exists='append')
 
 
 
 def main():
     predict_or_test = "test"
     print(sys.argv[1])
-    test = 'auto_ml'
 
     # 读取数据库数据
-    # psql_tools = PSQLToos()
-    # conn = psql_tools.get_psql_connection_obj()
-    # sql_query_string = treb_sql_string
-    # prediction_data = pd.read_sql(sql_query_string,con=conn)
+    psql_tools = PSQLToos()
+    conn = psql_tools.get_psql_connection_obj(psql_settings.is_ssh)
+    sql_query_string = prediciton_query_string
+    prediction_data = pd.read_sql(sql_query_string,con=conn)
 
     # 本地读取数据
-    prediction_data = pd.read_csv('treb_toronto_11.csv')
+    # prediction_data = pd.read_csv('treb_toronto_11.csv')
 
     # 数据处理
     print('prediction data shape', prediction_data.shape)

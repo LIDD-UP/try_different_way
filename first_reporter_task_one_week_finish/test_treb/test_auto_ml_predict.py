@@ -28,7 +28,7 @@ def preprocess_data(data):
         "bedrooms",
         "bathroomTotal",
         # 'postalCode',
-        'daysOnMarket',
+        # 'daysOnMarket',
         'ownerShipType',
         # 'projectDaysOnMarket',
         'district',
@@ -102,22 +102,22 @@ def compute_ratio(data):
 
     for i in range(len(data)):
         # print(i)
-        if abs(data.iloc[i][test_column] - data.iloc[i]['daysOnMarket']) <= 10:
+        if abs(data.iloc[i][test_column] - data.iloc[i]['price']) <= 10000:
             data_10.append(i)
-        if abs(data.iloc[i][test_column] - data.iloc[i]['daysOnMarket']) > 10 and abs(
-                data.iloc[i][test_column] - data.iloc[i]['daysOnMarket']) <= 20:
+        if abs(data.iloc[i][test_column] - data.iloc[i]['price']) > 10000 and abs(
+                data.iloc[i][test_column] - data.iloc[i]['price']) <= 20000:
             data_20.append(i)
-        if abs(data.iloc[i][test_column] - data.iloc[i]['daysOnMarket']) > 20 and abs(
-                data.iloc[i][test_column] - data.iloc[i]['daysOnMarket']) <= 30:
+        if abs(data.iloc[i][test_column] - data.iloc[i]['price']) > 20000 and abs(
+                data.iloc[i][test_column] - data.iloc[i]['price']) <= 30000:
             data_30.append(i)
-        if abs(data.iloc[i][test_column] - data.iloc[i]['daysOnMarket']) > 30:
+        if abs(data.iloc[i][test_column] - data.iloc[i]['price']) > 30000:
             data_more.append(i)
 
     print(len(data_10) / len(data))
     print(len(data_20) / len(data))
     print(len(data_30) / len(data))
     print(len(data_more) / len(data))
-    print(mean_absolute_error(data[test_column], data['daysOnMarket']))
+    print(mean_absolute_error(data[test_column], data['price']))
 
 
 
@@ -129,7 +129,7 @@ def compute_ratio(data):
 
 if __name__ == '__main__':
     # 训练数据
-    df_train = pd.read_csv('./input/treb_toronto_3to8_1.csv')
+    df_train = pd.read_csv('./input/treb_toronto_3to8.csv')
     # df_train = pd.read_csv('./input/treb_toronto_678_1.csv')
     # df_train = pd.read_csv('./input/treb_toronto_78_1.csv')
 
@@ -139,7 +139,7 @@ if __name__ == '__main__':
 
     # 用于预测原始数据
     df_train_middle = df_train
-    df_train_prediction = df_train_middle.drop(columns=['daysOnMarket'])
+    df_train_prediction = df_train_middle.drop(columns=['price'])
     # 用于保存原始的数据
     origin_data_train = df_train.reset_index(drop=True)
 
@@ -170,9 +170,9 @@ if __name__ == '__main__':
     df_test_middle = df_test_middle.dropna()
     # df_test_middle = df_test_middle.drop(columns='projectDaysOnMarket')
 
-    df_test = df_test_middle.drop(columns='daysOnMarket')
+    df_test = df_test_middle.drop(columns='price')
 
-    df_test_label = df_test_middle['daysOnMarket']
+    df_test_label = df_test_middle['price']
 
     value_list = []
     for i in range(len(df_train.columns)):
@@ -181,7 +181,7 @@ if __name__ == '__main__':
 
     column_description1 = {key:value for key in df_train.columns for value in value_list if df_train[key].dtype =='object'}
     column_description2 = {
-        'daysOnMarket': 'output',
+        'price': 'output',
         'buildingTypeId': 'categorical',
         "tradeTypeId": 'categorical',
         # 'bedrooms': 'categorical',
