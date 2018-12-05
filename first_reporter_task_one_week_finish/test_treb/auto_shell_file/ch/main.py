@@ -46,8 +46,8 @@ def save_data_to_database(prediction_result,origin_data,table_name,columns_list)
         'realtorHistoryId',
         'mlsnumber',
     ]
-    orgin_data_need = origin_data[columns_list]
-    merge_data = pd.concat((orgin_data_need,prediction_result),axis=1)
+    origin_data_need = origin_data[columns_list]
+    merge_data = pd.concat((origin_data_need,prediction_result),axis=1)
     merge_data.to_sql(name=table_name,con=engine,if_exists='append')
 
 
@@ -57,13 +57,13 @@ def main():
     print(sys.argv[1])
 
     # 读取数据库数据
-    psql_tools = PSQLToos()
-    conn = psql_tools.get_psql_connection_obj(psql_settings.is_ssh)
-    sql_query_string = prediciton_query_string
-    prediction_data = pd.read_sql(sql_query_string,con=conn)
+    # psql_tools = PSQLToos()
+    # conn = psql_tools.get_psql_connection_obj(psql_settings.is_ssh)
+    # sql_query_string = prediciton_query_string
+    # prediction_data = pd.read_sql(sql_query_string,con=conn)
 
     # 本地读取数据
-    # prediction_data = pd.read_csv('treb_toronto_11.csv')
+    prediction_data = pd.read_csv('treb_toronto_11.csv')
 
     # 数据处理
     print('prediction data shape', prediction_data.shape)
@@ -71,7 +71,7 @@ def main():
     dp = DataProcess()
     prediction_data_after_process = dp.data_process(prediction_data, predict_or_test)
     # 然后保存与处理过后的文件
-    orgin_data = prediction_data_after_process.reset_index(drop=True)
+    origin_data = prediction_data_after_process.reset_index(drop=True)
     # 去掉daysOnMarket
     prediction_data_after_process = prediction_data_after_process.drop(columns='daysOnMarket')
     print('prediction_data_after_process shape:',prediction_data_after_process.shape)
@@ -83,8 +83,8 @@ def main():
         print(result_auto_ml_df.head())
         result_auto_ml_df.to_csv('./auto_ml_result.csv')
 
-        save_data_to_database(result_auto_ml_df)
-        merge_prediction_orgin_auto_ml = pd.concat((orgin_data, result_auto_ml_df), axis=1)
+        save_data_to_database(result_auto_ml_df,origin_data,'test3',[])
+        merge_prediction_orgin_auto_ml = pd.concat((origin_data, result_auto_ml_df), axis=1)
         compute_ratio(merge_prediction_orgin_auto_ml, 'predictions')
     # keras 预测
     if sys.argv[1] == 'keras':
@@ -92,9 +92,9 @@ def main():
         result_keras = my_prediciton.my_predict_keras(keras_process)
         # 转化成DataFrame格式
         result_keras_df = transform_data_to_dataframe(result_keras, 'predictions')
-        merge_prediction_origin_keras = pd.concat((orgin_data, result_keras_df), axis=1)
+        merge_prediction_origin_keras = pd.concat((origin_data, result_keras_df), axis=1)
         compute_ratio(merge_prediction_origin_keras, 'predictions')
-        save_data_to_database(result_keras_df)
+        save_data_to_database(result_keras_df,origin_data,'test3',[])
 
 
 
