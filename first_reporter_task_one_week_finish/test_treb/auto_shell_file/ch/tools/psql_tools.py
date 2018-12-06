@@ -4,56 +4,56 @@
 @file: psql_tools.py
 @time: 2018/11/27
 """
-import psycopg2
 import os,sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from my_conf import psql_settings
+
+import pandas as pd
 from sshtunnel import SSHTunnelForwarder
+import psycopg2
+
+from my_conf import psql_settings as jdbc
 from sql_script import sql_script
 
 
 class PSQLToos(object):
-    def __init__(self):
-        self.host = psql_settings.HOST
-        self.port = psql_settings.PORT
-        self.user = psql_settings.USER
-        self.password = psql_settings.PASSWORD
-        self.dbname = psql_settings.DBNAME
 
     def get_psql_connection_obj(self):
         conn = psycopg2.connect(
-            host=self.host,
-            port=self.port,
-            user=self.user,
-            password=self.password,
-            dbname=self.dbname
+            host=jdbc.host,
+            port=jdbc.port,
+            user=jdbc.user,
+            password=jdbc.password,
+            dbname=jdbc.dbname
         )
         return conn
 
-    def get_psql_connection_obj1(self,is_ssh):
+    def get_data(self,is_ssh):
         if is_ssh:
-            with SSHTunnelForwarder((psql_settings.ssh_host, psql_settings.ssh_port),
-                                    ssh_password=psql_settings.ssh_password, ssh_username=psql_settings.ssh_username,
-                                    remote_bind_address=(psql_settings.host, psql_settings.port)
-                                    ) as server:
+            with SSHTunnelForwarder((jdbc.ssh_host, jdbc.ssh_port),
+                                    ssh_password=jdbc.ssh_password, ssh_username=jdbc.ssh_username,
+                                    remote_bind_address=(jdbc.host, jdbc.port)) as server:
 
                 conn = psycopg2.connect(
                     host='localhost',
                     port=server.local_bind_port,
-                    database=psql_settings.database,
-                    user=psql_settings.user,
-                    password=psql_settings.password
+                    database=jdbc.database,
+                    user=jdbc.user,
+                    password=jdbc.password
                 )
-                return conn
+                data = pd.read_sql(con=conn, sql=sql_script.prediciton_query_string)
+                return data
         else:
             conn = psycopg2.connect(
-                host=psql_settings.host,
-                port=psql_settings.port,
-                database=psql_settings.database,
-                user=psql_settings.user,
-                password=psql_settings.password
+                host=jdbc.host,
+                port=jdbc.port,
+                database=jdbc.database,
+                user=jdbc.user,
+                password=jdbc.password
             )
-            return conn
+            data = pd.read_sql(con=conn,sql=sql_script.prediciton_query_string)
+            return data
+
+
 
 
 
@@ -61,12 +61,6 @@ class PSQLToos(object):
 
 if __name__ == '__main__':
     psql_tools = PSQLToos()
-    conn = psql_tools.get_psql_connection_obj()
-    print(conn)
-    cursor = conn.cursor()
-    query_string = sql_script.prediciton_query_string
-    result = cursor.execute(query_string)
-    result = cursor.fetchall()
-    for i in result:
-        print(result)
-    conn.commit()
+    data = psql_tools.get_data(True)
+    print(data)
+

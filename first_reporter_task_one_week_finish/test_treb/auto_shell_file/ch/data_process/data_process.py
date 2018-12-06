@@ -8,7 +8,7 @@ import os,sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import pandas as pd
 from my_conf.merge_data_file_for_dummies_settings import merge_data_path
-print('merege_data_path:',merge_data_path)
+# print('merege_data_path:',merge_data_path)
 
 
 class DataProcess(object):
@@ -23,6 +23,10 @@ class DataProcess(object):
         # 原始数据，并且计算误差和预测比例
         if predict_or_test == 'test':
             data = data[[
+                'estateMasterId',
+                'realtorDataId',
+                'realtorHistoryId',
+                'mlsNumber',
                 "longitude",
                 "latitude",
                 # "city",
