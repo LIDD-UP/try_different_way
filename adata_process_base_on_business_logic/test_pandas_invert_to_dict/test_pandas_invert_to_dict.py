@@ -13,4 +13,11 @@ data_dict = dict(data)
 print(data_dict.keys())
 
 print(type(data_dict['province']))
-# for key,value in
+
+'''
+1：直接通过dict将DataFrame格式的数据转化成dict之后
+
+通过type（dict['key'] ） 类型依然是Series；
+
+如果想要用到list，还需嵌套一层list（）
+'''

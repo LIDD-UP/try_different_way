@@ -11,6 +11,9 @@ import sys
 import os
 import seaborn as sns
 from sklearn.preprocessing import StandardScaler
+'''
+通过box_plot(盒图来确认）异常值
+'''
 
 # 获取项目根目录
 input_data_path = os.path.dirname(os.path.dirname(os.getcwd())) + '/input/'

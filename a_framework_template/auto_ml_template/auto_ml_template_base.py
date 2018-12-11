@@ -1,7 +1,7 @@
 # -*- coding:utf-8 _*-  
 """ 
 @author:Administrator
-@file: auto_ml_template.py
+@file: auto_ml_template_base.py
 @time: 2018/9/20
 """
 from auto_ml import Predictor

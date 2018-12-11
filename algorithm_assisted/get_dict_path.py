@@ -7,6 +7,7 @@
 
 '''
 the function is to get the path of dict ,
+or json data path 
 '''
 import json
 

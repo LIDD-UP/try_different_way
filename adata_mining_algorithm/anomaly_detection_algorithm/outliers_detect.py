@@ -6,6 +6,9 @@
 """
 import numpy as np
 from collections import Counter
+'''
+通过百分比来确认异常值
+'''
 def detect_outliers(df,n,features):
     """
     Tuckey算法

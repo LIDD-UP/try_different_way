@@ -4,12 +4,10 @@
 @file: all_column_analysis.py
 @time: 2018/10/9
 """
-# -*- coding:utf-8 _*-
-""" 
-@author:Administrator
-@file: origin_data_analysis.py
-@time: 2018/9/29
-"""
+'''
+the py file is to process analysis all data
+'''
+
 import pandas as pd
 import matplotlib.pyplot as plt
 import missingno as msno
