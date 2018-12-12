@@ -1,7 +1,7 @@
 #-*- coding:utf-8 _*-  
 """ 
 @author:Administrator
-@file: data_analysis.py
+@file: get_quantile_based_buckets.py
 @time: 2018/8/13
 """
 import pandas as pd
